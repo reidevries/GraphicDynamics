@@ -1,5 +1,5 @@
 [submodule "DPF"]
-	path = DPF
+	path = dpf
 	url = https://github.com/reidevries/DPF.git
 [submodule "plugins/graphic-dynamics/Common/Structures/test/gnuplot-iostream"]
 	path = plugins/graphic-dynamics/Common/Structures/test/gnuplot-iostream
