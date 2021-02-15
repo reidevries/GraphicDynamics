@@ -49,7 +49,7 @@ endif
 # --------------------------------------------------------------
 
 clean:
-	$(MAKE) clean -C dpf/dgl
+	$(MAKE) clean -C dpf
 	$(MAKE) clean -C plugins/graphic-dynamics
 	rm -rf bin build
 

@@ -28,7 +28,7 @@ void LabelBoxList::goPrevious()
 
     setSelectedIndex(index);
 }
-
+/*
 void LabelBoxList::onShow()
 {
     fLabelBox.setVisible(true);
@@ -38,5 +38,5 @@ void LabelBoxList::onHide()
 {
     fLabelBox.setVisible(false);
 }
-
+*/
 END_NAMESPACE_DISTRHO

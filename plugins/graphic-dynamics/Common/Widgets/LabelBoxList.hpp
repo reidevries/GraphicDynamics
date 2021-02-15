@@ -17,9 +17,7 @@ class LabelBoxList : public LabelContainer
     
   protected:
     void onNanoDisplay() override;
-    void onShow() override;
-    void onHide() override;
-    
+
   private:
     LabelBox fLabelBox;
 

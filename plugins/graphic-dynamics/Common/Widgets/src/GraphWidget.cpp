@@ -999,6 +999,7 @@ bool GraphWidgetInner::onMotion(const MotionEvent &ev)
     return true;
 }
 
+/*
 void GraphWidgetInner::onFocusOut()
 {
     if (focusedElement != nullptr)
@@ -1015,6 +1016,7 @@ void GraphWidgetInner::onFocusOut()
 
     repaint();
 }
+*/
 
 void GraphWidgetInner::onMouseLeave()
 {
