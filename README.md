@@ -1,2 +1,2 @@
 # GraphicDynamics
-Flexible dynamics plugin based on wolf-shaper, WIP
+This is edited from [wolf-shaper](https://github.com/pdesaulniers/wolf-shaper) by Patrick Desaulniers. Most of the DSP side is written by me, most of the UI code is unchanged. Like wolf-shaper, it's based on Distrho Plugin Framework for building as LV2, DSSI, VST or standalone. Again, like wolf-shaper, it uses NanoVG for the user interface. It is very much a work in progress and I don't recommend trying it yet. Thought I would start using version control to make it clearer which parts I modified and how I did so.
