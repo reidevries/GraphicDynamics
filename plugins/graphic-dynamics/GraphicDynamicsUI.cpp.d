@@ -88,10 +88,12 @@ GraphicDynamicsUI.cpp.o: GraphicDynamicsUI.cpp /usr/include/stdc-predef.h \
  /usr/include/c++/10.2.0/typeinfo \
  /usr/include/c++/10.2.0/bits/hash_bytes.h \
  /usr/include/c++/10.2.0/bits/nested_exception.h \
- /usr/include/c++/10.2.0/bits/uniform_int_dist.h /usr/include/GL/gl.h \
+ /usr/include/c++/10.2.0/bits/uniform_int_dist.h \
+ ../../dpf/distrho/../dgl/OpenGL.hpp \
+ ../../dpf/distrho/../dgl/ImageBase.hpp \
+ ../../dpf/distrho/../dgl/Geometry.hpp /usr/include/GL/gl.h \
  /usr/include/GL/glext.h /usr/include/KHR/khrplatform.h \
- ../../dpf/distrho/../dgl/Widget.hpp \
- ../../dpf/distrho/../dgl/Geometry.hpp /usr/include/c++/10.2.0/vector \
+ ../../dpf/distrho/../dgl/Widget.hpp /usr/include/c++/10.2.0/vector \
  /usr/include/c++/10.2.0/bits/allocator.h \
  /usr/include/c++/10.2.0/x86_64-pc-linux-gnu/bits/c++allocator.h \
  /usr/include/c++/10.2.0/ext/new_allocator.h \
@@ -334,11 +336,13 @@ DistrhoPluginInfo.h:
 /usr/include/c++/10.2.0/bits/hash_bytes.h:
 /usr/include/c++/10.2.0/bits/nested_exception.h:
 /usr/include/c++/10.2.0/bits/uniform_int_dist.h:
+../../dpf/distrho/../dgl/OpenGL.hpp:
+../../dpf/distrho/../dgl/ImageBase.hpp:
+../../dpf/distrho/../dgl/Geometry.hpp:
 /usr/include/GL/gl.h:
 /usr/include/GL/glext.h:
 /usr/include/KHR/khrplatform.h:
 ../../dpf/distrho/../dgl/Widget.hpp:
-../../dpf/distrho/../dgl/Geometry.hpp:
 /usr/include/c++/10.2.0/vector:
 /usr/include/c++/10.2.0/bits/allocator.h:
 /usr/include/c++/10.2.0/x86_64-pc-linux-gnu/bits/c++allocator.h:

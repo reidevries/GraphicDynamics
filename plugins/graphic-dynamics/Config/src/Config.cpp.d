@@ -157,8 +157,7 @@ Config/src/Config.cpp.o: Config/src/Config.cpp /usr/include/stdc-predef.h \
  /usr/include/c++/10.2.0/bits/algorithmfwd.h \
  /usr/include/c++/10.2.0/bits/stl_heap.h \
  /usr/include/c++/10.2.0/bits/stl_tempbuf.h \
- /usr/include/c++/10.2.0/bits/uniform_int_dist.h /usr/include/GL/gl.h \
- /usr/include/GL/glext.h /usr/include/KHR/khrplatform.h \
+ /usr/include/c++/10.2.0/bits/uniform_int_dist.h \
  Common/Utils/StringManipulation.hpp /usr/include/c++/10.2.0/cassert \
  /usr/include/assert.h Config/Config.hpp
 /usr/include/stdc-predef.h:
@@ -385,9 +384,6 @@ Config/src/Config.cpp.o: Config/src/Config.cpp /usr/include/stdc-predef.h \
 /usr/include/c++/10.2.0/bits/stl_heap.h:
 /usr/include/c++/10.2.0/bits/stl_tempbuf.h:
 /usr/include/c++/10.2.0/bits/uniform_int_dist.h:
-/usr/include/GL/gl.h:
-/usr/include/GL/glext.h:
-/usr/include/KHR/khrplatform.h:
 Common/Utils/StringManipulation.hpp:
 /usr/include/c++/10.2.0/cassert:
 /usr/include/assert.h:

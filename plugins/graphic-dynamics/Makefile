@@ -8,11 +8,8 @@
 #
 # --------------------------------------------------------------
 # Project name, used for binaries
-#
-# Set PLUGIN_NAME in Makefile.mk at the project's root directory
-#
 
-NAME = $(PLUGIN_NAME)
+NAME = graphic_dynamics
 
 # --------------------------------------------------------------
 # Plugin types to build
@@ -25,59 +22,59 @@ BUILD_DSSI ?= true
 # --------------------------------------------------------------
 # Files to build
 
-OBJS_DSP = \
-	Common/Utils/src/Mathf.cpp.o \
-	Common/Structures/src/Graph.cpp.o \
-	Common/Structures/src/Oversampler.cpp.o \
-	Common/Structures/src/ParamSmooth.cpp.o \
-	Common/Structures/src/RCFilter.cpp.o \
-	Libs/DSPFilters/source/Butterworth.cpp.o \
-	Libs/DSPFilters/source/Biquad.cpp.o \
-	Libs/DSPFilters/source/Cascade.cpp.o \
-	Libs/DSPFilters/source/Filter.cpp.o \
-	Libs/DSPFilters/source/Param.cpp.o \
-	Libs/DSPFilters/source/Butterworth.cpp.o \
-	Libs/DSPFilters/source/PoleFilter.cpp.o \
-	Libs/DSPFilters/source/RBJ.cpp.o \
-	Libs/DSPFilters/source/Bessel.cpp.o \
-	Libs/DSPFilters/source/RootFinder.cpp.o \
-	GraphicDynamicsPlugin.cpp.o
+FILES_DSP = \
+	Common/Utils/src/Mathf.cpp \
+	Common/Structures/src/Graph.cpp \
+	Common/Structures/src/Oversampler.cpp \
+	Common/Structures/src/ParamSmooth.cpp \
+	Common/Structures/src/RCFilter.cpp \
+	Libs/DSPFilters/source/Butterworth.cpp \
+	Libs/DSPFilters/source/Biquad.cpp \
+	Libs/DSPFilters/source/Cascade.cpp \
+	Libs/DSPFilters/source/Filter.cpp \
+	Libs/DSPFilters/source/Param.cpp \
+	Libs/DSPFilters/source/Butterworth.cpp \
+	Libs/DSPFilters/source/PoleFilter.cpp \
+	Libs/DSPFilters/source/RBJ.cpp \
+	Libs/DSPFilters/source/Bessel.cpp \
+	Libs/DSPFilters/source/RootFinder.cpp \
+	GraphicDynamicsPlugin.cpp
 
-OBJS_UI  = \
-	Common/Utils/src/Mathf.cpp.o \
-	Common/Structures/src/Graph.cpp.o \
-	Common/Structures/src/Margin.cpp.o \
-	Common/Structures/src/Animation.cpp.o \
-	Common/Widgets/src/WolfWidget.cpp.o \
-	Common/Widgets/src/GraphNode.cpp.o \
-	Common/Widgets/src/GraphWidget.cpp.o \
-	Common/Widgets/src/NanoSwitch.cpp.o \
-	Common/Widgets/src/RemoveDCSwitch.cpp.o \
-	Common/Widgets/src/NanoButton.cpp.o \
-	Common/Widgets/src/ResetGraphButton.cpp.o \
-	Common/Widgets/src/NanoWheel.cpp.o \
-	Common/Widgets/src/OversampleWheel.cpp.o \
-	Common/Widgets/src/NanoKnob.cpp.o \
-	Common/Widgets/src/VolumeKnob.cpp.o \
-	Common/Widgets/src/ResizeHandle.cpp.o \
-	Common/Widgets/src/LabelBox.cpp.o \
-	Common/Widgets/src/LabelBoxList.cpp.o \
-	Common/Widgets/src/BipolarModeSwitch.cpp.o \
-	Common/Widgets/src/LabelContainer.cpp.o \
-	Common/Widgets/src/GlowingLabelsBox.cpp.o \
-	Common/Widgets/src/NanoLabel.cpp.o \
-	Common/Widgets/src/WidgetBar.cpp.o \
-	Common/Widgets/src/ArrowButton.cpp.o \
-	Common/Widgets/src/RightClickMenu.cpp.o \
-	Config/src/Config.cpp.o \
-	Resources/Fonts/chivo_bold.cpp.o \
-	Resources/Fonts/chivo_italic.cpp.o \
-	GraphicDynamicsUI.cpp.o 
+FILES_UI  = \
+	Common/Utils/src/Mathf.cpp \
+	Common/Structures/src/Graph.cpp \
+	Common/Structures/src/Margin.cpp \
+	Common/Structures/src/Animation.cpp \
+	Common/Widgets/src/WolfWidget.cpp \
+	Common/Widgets/src/GraphNode.cpp \
+	Common/Widgets/src/GraphWidget.cpp \
+	Common/Widgets/src/NanoSwitch.cpp \
+	Common/Widgets/src/RemoveDCSwitch.cpp \
+	Common/Widgets/src/NanoButton.cpp \
+	Common/Widgets/src/ResetGraphButton.cpp \
+	Common/Widgets/src/NanoWheel.cpp \
+	Common/Widgets/src/OversampleWheel.cpp \
+	Common/Widgets/src/NanoKnob.cpp \
+	Common/Widgets/src/VolumeKnob.cpp \
+	Common/Widgets/src/ResizeHandle.cpp \
+	Common/Widgets/src/LabelBox.cpp \
+	Common/Widgets/src/LabelBoxList.cpp \
+	Common/Widgets/src/BipolarModeSwitch.cpp \
+	Common/Widgets/src/LabelContainer.cpp \
+	Common/Widgets/src/GlowingLabelsBox.cpp \
+	Common/Widgets/src/NanoLabel.cpp \
+	Common/Widgets/src/WidgetBar.cpp \
+	Common/Widgets/src/ArrowButton.cpp \
+	Common/Widgets/src/RightClickMenu.cpp \
+	Config/src/Config.cpp \
+	Resources/Fonts/chivo_bold.cpp \
+	Resources/Fonts/chivo_italic.cpp \
+	GraphicDynamicsUI.cpp
 
 # --------------------------------------------------------------
 # Do some magic
 
-include ../Makefile.mk
+include ../Makefile.plugins.mk
 
 # --------------------------------------------------------------
 # Additional flags

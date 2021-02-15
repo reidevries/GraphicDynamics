@@ -170,8 +170,7 @@ GraphicDynamicsPlugin.cpp.o: GraphicDynamicsPlugin.cpp \
  Common/Structures/Graph.hpp Common/Utils/Mathf.hpp \
  ../../dpf/dgl/Geometry.hpp ../../dpf/dgl/Base.hpp \
  ../../dpf/dgl/../distrho/extra/LeakDetector.hpp \
- ../../dpf/dgl/../distrho/extra/ScopedPointer.hpp /usr/include/GL/gl.h \
- /usr/include/GL/glext.h /usr/include/KHR/khrplatform.h \
+ ../../dpf/dgl/../distrho/extra/ScopedPointer.hpp \
  /usr/include/c++/10.2.0/cassert /usr/include/assert.h \
  Common/Structures/RCFilter.hpp ../../dpf/distrho/extra/LeakDetector.hpp \
  Libs/DSPFilters/include/DspFilters/Dsp.h \
@@ -441,9 +440,6 @@ Common/Utils/Mathf.hpp:
 ../../dpf/dgl/Base.hpp:
 ../../dpf/dgl/../distrho/extra/LeakDetector.hpp:
 ../../dpf/dgl/../distrho/extra/ScopedPointer.hpp:
-/usr/include/GL/gl.h:
-/usr/include/GL/glext.h:
-/usr/include/KHR/khrplatform.h:
 /usr/include/c++/10.2.0/cassert:
 /usr/include/assert.h:
 Common/Structures/RCFilter.hpp:
