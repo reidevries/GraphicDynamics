@@ -13,6 +13,7 @@
 #include <chrono>
 #include <cstdlib>
 #include <cmath>
+#include <iostream>
 
 START_NAMESPACE_DISTRHO
 

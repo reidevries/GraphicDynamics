@@ -76,7 +76,7 @@ public:
 
 protected:
   void onNanoDisplay() override;
-  void onFocusOut(); //this doesn't seem to be called anywhere
+  //void onFocusOut(); this doesn't seem to be called anywhere
   bool onMouse(const MouseEvent &ev) override;
   bool onMotion(const MotionEvent &ev) override;
   void adaptSize();

@@ -595,12 +595,7 @@ void GraphicDynamicsUI::nanoWheelValueChanged(NanoWheel *nanoWheel, const int va
 {
 	const uint id = nanoWheel->getId();
 	setParameterValue(id, value);
-	/* this code seems to be duplicated in setParameterValue?
-	if (id == p_hor_warp_mode) {
-		graph_widget->setHorWarpMode((graphdyn::WarpMode)std::round(value));
-	} else if (id == p_ver_warp_mode) {
-		graph_widget->setVerWarpMode((graphdyn::WarpMode)std::round(value));
-	} */
+	updateOnParamChange(id, value);
 }
 
 void GraphicDynamicsUI::nanoKnobValueChanged(NanoKnob *nanoKnob, const float value)
@@ -608,12 +603,6 @@ void GraphicDynamicsUI::nanoKnobValueChanged(NanoKnob *nanoKnob, const float val
 	const uint id = nanoKnob->getId();
 	setParameterValue(id, value);
 	updateOnParamChange(id, value);
-	/* this code seems to be duplicated in setParameterValue?
-	if (id == p_hor_warp_amt) {
-		graph_widget->setHorWarpAmt(value);
-	} else if (id == p_ver_warp_amt) {
-		graph_widget->setVerWarpAmt(value);
-	} */
 }
 
 void GraphicDynamicsUI::resizeHandleMoved(int width, int height)

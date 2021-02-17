@@ -4,12 +4,16 @@
 
 START_NAMESPACE_DISTRHO
 
-RightClickMenuItem::RightClickMenuItem(int id, const char *label, const char *comment, bool enabled) noexcept : fIsSection(false),
-                                                                                                                fId(id),
-                                                                                                                fEnabled(enabled),
-                                                                                                                fLabel(label),
-                                                                                                                fComment(comment),
-                                                                                                                fSelected(false)
+RightClickMenuItem::RightClickMenuItem(int id,
+	const char *label,
+	const char *comment,
+	bool enabled) noexcept
+		: fIsSection(false),
+		fId(id),
+		fEnabled(enabled),
+		fLabel(label),
+		fComment(comment),
+		fSelected(false)
 {
 }
 
@@ -58,20 +62,22 @@ void RightClickMenuItem::setSelected(const bool selected)
     fSelected = selected;
 }
 
-RightClickMenuSection::RightClickMenuSection(const char *label) noexcept : RightClickMenuItem(-1, label, "", false)
+RightClickMenuSection::RightClickMenuSection(const char *label) noexcept
+	: RightClickMenuItem(-1, label, "", false)
 {
     fIsSection = true;
 }
 
-RightClickMenu::RightClickMenu(NanoWidget *parent) noexcept : Window(parent->getParentApp(), parent->getParentWindow()),
-                                                              NanoWidget((Window &)*this),
-                                                              fParent(parent),
-                                                              fFontSize(17.0f),
-                                                              fSectionFontSize(14.0f),
-                                                              fHoveredIndex(-1),
-                                                              fLongestWidth(0.0f),
-                                                              fBorderColor(CONFIG_NAMESPACE::right_click_menu_border_color),
-                                                              fMargin(Margin(7, 15, 7, 13))
+RightClickMenu::RightClickMenu(NanoWidget *parent) noexcept
+	: Window(parent->getParentApp(), parent->getParentWindow()),
+	NanoWidget((Window &)*this),
+	fParent(parent),
+	fFontSize(17.0f),
+	fSectionFontSize(14.0f),
+	fHoveredIndex(-1),
+	fLongestWidth(0.0f),
+	fBorderColor(CONFIG_NAMESPACE::right_click_menu_border_color),
+	fMargin(Margin(7, 15, 7, 13))
 {
     Window::setResizable(false);
     Window::setBorderless(true);
@@ -92,7 +98,7 @@ void RightClickMenu::show(int posX, int posY)
 
     adaptSize();
 
-    Window::hideFromTaskbar();
+	Window::hideFromTaskbar();
 
     Window &parentWindow = fParent->getParentWindow();
     Point<int> windowPos = parentWindow.getAbsolutePos();
@@ -346,14 +352,15 @@ void RightClickMenu::onNanoDisplay()
 
 bool RightClickMenu::onMouse(const MouseEvent &ev)
 {
-    if (ev.press == true)
-    {
-        for (size_t i = 0; i < fItems.size(); ++i)
-        {
-            Rectangle<float> itemBounds = getBoundsOfItem(i);
-            itemBounds.setWidth(Widget::getWidth() - fMargin.right);
+	if (ev.press == true) {
+		for (size_t i = 0; i < fItems.size(); ++i) {
+			Rectangle<float> itemBounds = getBoundsOfItem(i);
+			itemBounds.setWidth(Widget::getWidth() - fMargin.right);
 
-            if (fItems[i].getEnabled() == true && itemBounds.contains(Point<float>(ev.pos.getX(), ev.pos.getY())) && !fItems[i].isSection())
+			if (fItems[i].getEnabled()
+				&& itemBounds.contains(Point<float>(
+					ev.pos.getX(), ev.pos.getY()))
+				&& !fItems[i].isSection())
             {
                 fCallback->rightClickMenuItemSelected(&fItems[i]);
 
@@ -387,10 +394,10 @@ bool RightClickMenu::onMotion(const MotionEvent &ev)
     return true;
 }
 
-void RightClickMenu::onFocusOut()
+/*void RightClickMenu::onFocusOut()
 {
     close();
-}
+}*/
 
 void RightClickMenu::onClose()
 {
