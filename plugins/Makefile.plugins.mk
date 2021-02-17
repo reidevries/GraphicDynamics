@@ -7,7 +7,7 @@
 # NOTE: NAME, FILES_DSP and FILES_UI must have been
 # defined before including this file!
 
-DPF_PATH=../../dpf
+DPF_PATH=../../DPF
 
 include $(DPF_PATH)/Makefile.base.mk
 

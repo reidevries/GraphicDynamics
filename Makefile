@@ -4,7 +4,7 @@
 # Created by falkTX
 # Modified by Rei de Vries for GraphicDynamics
 
-include dpf/Makefile.base.mk
+include DPF/Makefile.base.mk
 
 all: dgl plugins gen
 
@@ -24,10 +24,10 @@ Cannot find DGL! Run "git submodule update --init --recursive" and retry
 endef
 
 dgl:
-ifeq (,$(wildcard dpf/dgl))
+ifeq (,$(wildcard DPF/dgl))
 	$(error $(MISSING_SUBMODULES_ERROR))
 else
-	$(MAKE) -C dpf dgl
+	$(MAKE) -C DPF dgl
 endif
 
 plugins: dgl
@@ -35,13 +35,13 @@ plugins: dgl
 
 ifeq ($(CAN_GENERATE_TTL),true)
 gen: plugins utils/lv2_ttl_generator
-	@$(CURDIR)/dpf/utils/generate-ttl.sh
+	@$(CURDIR)/DPF/utils/generate-ttl.sh
 ifeq ($(MACOS),true)
-	@$(CURDIR)/dpf/utils/generate-vst-bundles.sh
+	@$(CURDIR)/DPF/utils/generate-vst-bundles.sh
 endif
 
 utils/lv2_ttl_generator:
-	$(MAKE) -C dpf/utils/lv2-ttl-generator
+	$(MAKE) -C DPF/utils/lv2-ttl-generator
 else
 gen:
 endif
@@ -49,7 +49,7 @@ endif
 # --------------------------------------------------------------
 
 clean:
-	$(MAKE) clean -C dpf
+	$(MAKE) clean -C DPF
 	$(MAKE) clean -C plugins/graphic-dynamics
 	rm -rf bin build
 
