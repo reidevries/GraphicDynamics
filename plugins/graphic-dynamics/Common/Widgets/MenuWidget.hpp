@@ -8,8 +8,11 @@
 #include "Widget.hpp"
 #include "NanoVG.hpp"
 #include "WolfWidget.hpp"
+#include "Margin.hpp"
+#include "Config.hpp"
 
 #include <vector>
+#include <array>
 #include <string>
 
 START_NAMESPACE_DISTRHO
@@ -17,6 +20,13 @@ START_NAMESPACE_DISTRHO
 class MenuWidget : public WolfWidget
 {
 public:
+	struct MenuItem
+	{
+		const int id; // item is considered a section if id < 0
+		const std::string name;
+		const std::string description;
+	};
+
 	class Callback
 	{
 	public:
@@ -26,16 +36,10 @@ public:
 
 	explicit MenuWidget(NanoWidget *widget) noexcept;
 
-	struct MenuItem
-	{
-		const int id; // item is considered a section if id < 0
-		const std::string name;
-		const std::string description;
-	};
-
 	// shows and hides the widget without affecting the elements
-	void show(Point<int> pos) override;
-	void show(int pos_x, int pos_y) : show(Point<int>(pos_x,pos_y)) {}
+	void show(Point<int> pos);
+	void show(int pos_x, int pos_y) { show(Point<int>(pos_x,pos_y)); }
+	void hide();
 
 	// clear all sections and items
 	void clear();
@@ -48,11 +52,10 @@ public:
 
 	// find the index of the first section with a matching name
 	// obviously this won't work if two sections have the same name
-	auto findItemIndexByName(const std::string name) -> uint;
+	auto findItemIndexByName(const std::string name) -> int;
 
-	void setBorderColor(const Color color) const noexcept;
-	void setRegularFontSize(const uint size) const noexcept;
-	void setSectionFontSize(const uint size) const noexcept;
+	void setRegularFontSize(const uint size) noexcept;
+	void setSectionFontSize(const uint size) noexcept;
 	void setCallback(Callback * callback) noexcept {this->callback = callback;}
 
 protected:
@@ -88,8 +91,8 @@ private:
 	void updateMaxItemWidth(const MenuItem& item);
 	void adaptSize();
 	auto getItemWidthPx(const MenuItem& item) const -> float;
-	auto getItemBoundsPx(const int index) const -> Rectangle<float>;
-}
+	auto getItemBoundsPx(const int index) -> Rectangle<float>;
+};
 
 END_NAMESPACE_DISTRHO
 

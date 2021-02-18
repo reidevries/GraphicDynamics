@@ -2,8 +2,6 @@
 
 MenuWidget::MenuWidget(NanoWidget *widget) noexcept
 	: WolfWidget(widget),
-	  callback(nullptr),
-	  visible(false),
 	  font_item_size(17.0f),
 	  font_section_size(14.0f),
 	  hover_i(-1),
@@ -15,7 +13,8 @@ MenuWidget::MenuWidget(NanoWidget *widget) noexcept
 	  font_item_color(CONFIG_NAMESPACE::menu_font_item_color),
 	  font_selected_color(CONFIG_NAMESPACE::menu_font_selected_color),
 	  font_section_color(CONFIG_NAMESPACE::menu_font_section_color),
-	  margin(Margin(7,15,7,13))
+	  margin(Margin(7,15,7,13)),
+	  callback(nullptr)
 {
 }
 
@@ -30,6 +29,11 @@ void MenuWidget::show(Point<int> pos)
 	Widget::show();
 }
 
+void MenuWidget::hide()
+{
+	Widget::hide();
+}
+
 void MenuWidget::clear()
 {
 	items.clear();
@@ -41,7 +45,7 @@ void MenuWidget::clear()
 void MenuWidget::addItem(const MenuItem item)
 {
 	items.push_back(item);
-	updateMaxNameLen(name);
+	updateMaxItemWidth(item);
 }
 
 template<size_t t_size>
@@ -50,30 +54,25 @@ void MenuWidget::addItems(const std::array<MenuItem, t_size> items)
 	for (auto item : items) addItem(item);
 }
 
-auto MenuWidget::findItemIndexByName(std::string name) -> int
+auto MenuWidget::findItemIndexByName(const std::string name) -> int
 {
 	for (size_t i = 0; i < items.size(); ++i) {
-		if (items[i] == name) return i;
+		if (items[i].name == name) return i;
 	}
 	return -1;
 }
 
-void MenuWidget::setBorderColor(const Color color) const noexcept
-{
-	this->border_color = color;
-}
-
-void MenuWidget::setRegularFontSize(const uint size) const noexcept
+void MenuWidget::setRegularFontSize(const uint size) noexcept
 {
 	this->font_item_size = size;
 }
 
-void MenuWidget::setSectionFontSize(const uint size) const noexcept
+void MenuWidget::setSectionFontSize(const uint size) noexcept
 {
 	this->font_section_size = size;
 }
 
-void MenuWidget::onNanoDisplay() override
+void MenuWidget::onNanoDisplay()
 {
 	if (items.size() == 0) return; // don't render an empty menu
 
@@ -95,9 +94,9 @@ void MenuWidget::onNanoDisplay() override
 	strokeColor(border_color);
 	strokeWidth(3.0f);
 
-	rect(0, 0, width, height);
+	rect(0, 0, w, h);
 	fill();
-	stroke():
+	stroke();
 
 	closePath();
 
@@ -107,10 +106,10 @@ void MenuWidget::onNanoDisplay() override
 
 	for (size_t i = 0; i < items.size(); ++i) {
 		MenuItem& item = items[i];
-		if (i == hover_i) {
+		if (static_cast<int>(i) == hover_i) {
 			beginPath();
 			fillColor(background_selected_color);
-			rect(0, vertical_offset, width - margin.right, font_item_size);
+			rect(0, vertical_offset, w - margin.right, font_item_size);
 			fill();
 			closePath();
 		}
@@ -133,14 +132,14 @@ void MenuWidget::onNanoDisplay() override
 			fontSize(font_section_size);
 			fillColor(font_section_color);
 
-			text(getTextWidthPx(item.name) + font_section_size, vertical_offset,
-				 item.description.c_str(), NULL);
+			text(item.name.size()*font_item_size + font_section_size,
+				 vertical_offset, item.description.c_str(), NULL);
 		}
 
-		if (item.selected) {
+		if (static_cast<int>(i) == selected_i) {
 			fontSize(font_item_size);
 			fillColor(font_item_color);
-			text(0, verticalOffset, "✓", NULL);
+			text(0, vertical_offset, "✓", NULL);
 		}
 
 		vertical_offset += text_h;
@@ -193,7 +192,7 @@ auto MenuWidget::onMotion(const MotionEvent& ev) -> bool
 			static_cast<float>(ev.pos.getY())
 		);
 
-		if (!items[i].is_selected && bounds.contains(mouse_pos)) {
+		if (static_cast<int>(i) != selected_i && bounds.contains(mouse_pos)) {
 			hover_i = i;
 			return true;
 		}
@@ -204,7 +203,9 @@ auto MenuWidget::onMotion(const MotionEvent& ev) -> bool
 
 auto MenuWidget::onScroll(const ScrollEvent& ev) -> bool
 {
-	if (std::abs(ev.delta.y) < 0.5f) return true;
+	const float scroll_y = ev.delta.getY();
+	if (std::abs(scroll_y) < 0.5f) return true;
+	if (items.size() == 0) return true;
 
 	const Rectangle<float> bounds = Rectangle<float>(
 		static_cast<float>(Widget::getAbsoluteX()),
@@ -218,7 +219,9 @@ auto MenuWidget::onScroll(const ScrollEvent& ev) -> bool
 	);
 
 	if (bounds.contains(mouse_pos)) {
-		hover_i = (hover_i + std::round(ev.delta.y))%items.size();
+		hover_i += std::round(scroll_y);
+		while (hover_i > items.size()) hover_i -= items.size();
+		while (hover_i < 0) hover_i += items.size();
 	}
 	return true;
 }
@@ -247,12 +250,12 @@ auto MenuWidget::getItemWidthPx(const MenuItem& item) const -> float
 	}
 }
 
-auto MenuWidget::getItemBoundsPx(const int index) const -> Rectangle<float>
+auto MenuWidget::getItemBoundsPx(const int index) -> Rectangle<float>
 {
 	fontSize(font_item_size);
 	textAlign(ALIGN_LEFT | ALIGN_TOP);
 	Rectangle<float> bounds;
 	textBounds(margin.left, index*font_item_size + margin.top,
-		items[i].name, NULL, bounds);
+		items[index].name.c_str(), NULL, bounds);
 	return bounds;
 }

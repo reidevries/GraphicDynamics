@@ -53,8 +53,7 @@ protected:
 		Single,
 		Double,
 		Stairs,
-		Wave,
-		Size
+		Wave
 	};
 
 	/**
