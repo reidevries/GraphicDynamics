@@ -10,6 +10,7 @@
 #include "WolfWidget.hpp"
 
 #include <vector>
+#include <string>
 
 START_NAMESPACE_DISTRHO
 
@@ -28,35 +29,30 @@ public:
 
 	struct MenuItem
 	{
-		const char * name;
-		const char * description;
-	};
-
-	struct MenuSection
-	{
-		const char * name;
-		const char * description;
-		std::vector<MenuItem> items;
+		const std::string name;
+		const std::string description;
+		const bool is_section;
 	};
 
 	// shows and hides the widget without affecting the elements
-	void show(Point<int> pos);
-	void hide();
+	void show(Point<int> pos) override;
 
 	// clear all sections and items
 	void clear();
 
-	// add sections, and add items to a section
-	void addItem(uint section, const char * name, const char * description);
-	void addSection(const char * name, const char * description);
+	// add items by pushing them to the end of the list
+	void addItem(const MenuItem item);
+
+	template<size_t t_size>
+	void addItems(const std::array<MenuItem, t_size>);
 
 	// find the index of the first section with a matching name
 	// obviously this won't work if two sections have the same name
-	auto findSectionIndex(const char * name) -> uint;
+	auto findItemIndexByName(const std::string name) -> uint;
 
-	void setBorderColor(const Color color) {this->border_color = color;}
-	void setRegularFontSize(float size) {this->font_size = size;}
-	void setSectionFontSize(float size) {this->section_font_size = size;}
+	void setBorderColor(const Color color) const noexcept;
+	void setRegularFontSize(const uint size) const noexcept;
+	void setSectionFontSize(const uint size) const noexcept;
 	void setCallback(Callback * callback) noexcept {this->callback = callback;}
 
 protected:
@@ -72,21 +68,25 @@ protected:
 
 	DGL_NAMESPACE::Rectangle<float> getBoundsOfItem(const int i);
 
-	virtual void draw() = 0;
 private:
-	bool visible;
+	std::vector<MenuItem> items;
 
-	std::vector<MenuSection> sections;
-
-	void updateMaxNameLen(const char* name);
+	void updateMaxNameLen(const std::string name);
 	uint max_name_w_chars;
 	uint max_name_w_px;
 
+	uint hover_i;
+
+	Margin margin;
 	float font_size;
 	float section_font_size;
-	float hover_i;
+
 	Color border_color;
-	Margin margin;
+	Color background_color;
+	Color selection_color;
+	Color font_color;
+	Color font_color_selected;
+
 
 	Callback *callback;
 }
