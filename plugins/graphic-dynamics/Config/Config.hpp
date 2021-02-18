@@ -41,7 +41,14 @@ extern Color plugin_background;
 extern Color graph_margin;
 extern Color top_border;
 extern Color side_borders;
-extern Color right_click_menu_border_color;
+
+extern Color menu_border_color;
+extern Color menu_background_color;
+extern Color menu_background_selected_color;
+extern Color menu_font_item_color;
+extern Color menu_font_section_color;
+extern Color menu_font_selected_color;
+
 
 void load();
 }

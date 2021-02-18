@@ -80,7 +80,12 @@ Color plugin_background = Color(42, 44, 47, 255);
 Color graph_margin = Color(33, 32, 39, 255);
 Color top_border = Color(0, 0, 0, 255);
 Color side_borders = Color(100, 100, 100, 255);
-Color right_click_menu_border_color = Color(10, 10, 10, 255);
+
+Color menu_border_color = Color(10, 10, 10);
+Color menu_background_color = Color(39, 39, 39);
+Color menu_background_selected_color = Color(255, 255, 255);
+Color menu_font_item_color = Color(255, 255, 255);
+Color menu_font_section_color = Color(100, 100, 100);
 
 } // namespace CONFIG_NAMESPACE
 
