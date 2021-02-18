@@ -32,6 +32,7 @@ public:
 		const std::string name;
 		const std::string description;
 		const bool is_section;
+		bool selected;
 	};
 
 	// shows and hides the widget without affecting the elements
@@ -71,24 +72,26 @@ protected:
 private:
 	std::vector<MenuItem> items;
 
-	void updateMaxNameLen(const std::string name);
 	uint max_name_w_chars;
 	uint max_name_w_px;
 
 	uint hover_i;
 
 	Margin margin;
-	float font_size;
-	float section_font_size;
+	float font_item_size;
+	float font_section_size;
 
-	Color border_color;
-	Color background_color;
-	Color selection_color;
-	Color font_color;
-	Color font_color_selected;
-
+	const Color border_color;
+	const Color background_color;
+	const Color background_selected_color;
+	const Color font_item_color;
+	const Color font_selected_color;
+	const Color font_section_color;
 
 	Callback *callback;
+
+	void updateMaxNameLen(const std::string name);
+	auto getMenuItemWidthPx(MenuItem& item) const -> float;
 }
 
 END_NAMESPACE_DISTRHO

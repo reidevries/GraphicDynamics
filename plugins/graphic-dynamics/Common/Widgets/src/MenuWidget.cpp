@@ -4,12 +4,16 @@ MenuWidget::MenuWidget(NanoWidget *widget, Size<uint> size) noexcept
 	: WolfWidget(widget),
 	  callback(nullptr),
 	  visible(false),
-	  font_size(17.0f),
-	  section_font_size(14.0f),
+	  font_item_size(17.0f),
+	  font_section_size(14.0f),
 	  hover_i(-1),
 	  border_color(CONFIG_NAMESPACE::menu_border_color),
-	  font_color(CONFIG_NAMESPACE::menu_font_color),
-	  selected_font_color(CONFIG_NAMESPACE::menu_selected_font_color),
+	  background_color(CONFIG_NAMESPACE::menu_background_color),
+	  background_selected_color(
+		  CONFIG_NAMESPACE::menu_background_selected_color),
+	  font_item_color(CONFIG_NAMESPACE::menu_font_item_color),
+	  font_selected_color(CONFIG_NAMESPACE::menu_font_selected_color),
+	  font_section_color(CONFIG_NAMESPACE::menu_font_section_color),
 	  margin(Margin(7,15,7,13))
 {
 	setSize(size);
@@ -58,12 +62,12 @@ void MenuWidget::setBorderColor(const Color color) const noexcept
 
 void MenuWidget::setRegularFontSize(const uint size) const noexcept
 {
-	this->font_size = size;
+	this->font_item_size = size;
 }
 
 void MenuWidget::setSectionFontSize(const uint size) const noexcept
 {
-	this->section_font_size = size;
+	this->font_section_size = size;
 }
 
 void MenuWidget::onNanoDisplay() override
@@ -76,13 +80,13 @@ void MenuWidget::onNanoDisplay() override
 	beginPath();
 
 	Rectangle<float> bounds;
-	fontSize(font_size);
+	fontSize(font_item_size);
 	textAlign(ALIGN_LEFT | ALIGN_TOP);
-	textBounds(0, 0, items[0].name, NULL, bounds);
+	textBounds(0, 0, items[0].name.c_str(), NULL, bounds);
 	//NOTE: this is copied from RightClickMenu.cpp, need to look into why
 	//items[0] name is used as an argument
 
-	fillColor(Color(39, 39, 39, 255));
+	fillColor(background_selected_color);
 
 	strokeColor(border_color);
 	strokeWidth(3.0f);
@@ -101,11 +105,43 @@ void MenuWidget::onNanoDisplay() override
 		MenuItem& item = items[i];
 		if (i == hover_i) {
 			beginPath();
-			fillColor(Color(255,255,255));
-			rect(0, vertical_offset, width - margin.right, font_size);
+			fillColor(background_selected_color);
+			rect(0, vertical_offset, width - margin.right, font_item_size);
 			fill();
 			closePath();
 		}
+
+		beginPath();
+
+		int left_offset=0;
+		if (item.is_section) {
+			fontSize(font_section_size);
+			fillColor(font_section_color);
+		} else {
+			left_offset = font_section_size;
+			fontSize(font_item_size);
+			fillColor(font_item_color);
+		}
+
+		text(left_offset, vertical_offset, item.name.c_str(), NULL);
+
+		if (item.description.size() > 0) {
+			fontSize(font_section_size);
+			fillColor(font_section_color);
+
+			text(getTextWidthPx(item.name) + font_section_size, vertical_offset,
+				 item.description.c_str(), NULL);
+		}
+
+		if (item.selected) {
+			fontSize(font_item_size);
+			fillColor(font_item_color);
+			text(0, verticalOffset, "✓", NULL);
+		}
+
+		vertical_offset += bounds.getHeight(); //TODO: what's bounds?
+
+		closePath();
 	}
 }
 
@@ -114,6 +150,16 @@ void MenuWidget::updateMaxNameLen(const std::string name)
 	uint name_w_chars = name.size(); //NOTE: assumes UTF8
 	if (name_w_chars > max_name_w_chars) {
 		max_name_w_chars = name_w_chars;
-		max_name_w_px = name_w_chars*font_size;
+		max_name_w_px = name_w_chars*font_item_size;
+	}
+}
+
+auto MenuWidget::getMenuItemWidthPx(MenuItem& item) const -> float
+{
+	if (item.is_section) {
+		return (item.name.size() + item.description.size()) * font_section_size;
+	} else {
+		return item.name.size()*font_item_size
+			+ item.description.size()*font_section_size;
 	}
 }
