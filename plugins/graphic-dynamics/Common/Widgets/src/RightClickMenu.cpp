@@ -76,7 +76,7 @@ RightClickMenu::RightClickMenu(NanoWidget *parent) noexcept
 	fSectionFontSize(14.0f),
 	fHoveredIndex(-1),
 	fLongestWidth(0.0f),
-	fBorderColor(CONFIG_NAMESPACE::right_click_menu_border_color),
+	fBorderColor(CONFIG_NAMESPACE::menu_border_color),
 	fMargin(Margin(7, 15, 7, 13))
 {
     Window::setResizable(false);

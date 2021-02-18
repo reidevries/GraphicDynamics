@@ -69,7 +69,7 @@ private:
 
   DISTRHO_LEAK_DETECTOR(NanoKnob)
 };
-
+;
 END_NAMESPACE_DISTRHO
 
 #endif

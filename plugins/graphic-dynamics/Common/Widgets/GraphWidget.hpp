@@ -1,12 +1,14 @@
 #ifndef WOLF_GRAPH_WIDGET_HPP_INCLUDED
 #define WOLF_GRAPH_WIDGET_HPP_INCLUDED
 
+#include <memory>
+
 #include "ObjectPool.hpp"
 #include "DistrhoUI.hpp"
 #include "Graph.hpp"
 #include "Margin.hpp"
 #include "Widget.hpp"
-#include "RightClickMenu.hpp"
+#include "MenuWidget.hpp"
 
 START_NAMESPACE_DISTRHO
 
@@ -23,7 +25,7 @@ enum class GraphGradientMode
 
 class GraphWidgetInner : public NanoWidget,
 	public IdleCallback,
-	public RightClickMenu::Callback
+	public MenuWidget::Callback
 {
 	friend class GraphNode;
 	friend class GraphVertex;
@@ -51,7 +53,8 @@ protected:
 		Single,
 		Double,
 		Stairs,
-		Wave
+		Wave,
+		Size
 	};
 
 	/**
@@ -65,7 +68,7 @@ protected:
 
 	void idleCallback() override;
 
-	void rightClickMenuItemSelected(RightClickMenuItem *item) override;
+	void menuItemSelected(MenuWidget::MenuItem* item) override;
 
 	void onMouseLeave();
 
@@ -220,7 +223,7 @@ private:
 
 	float fInput;
 
-	ScopedPointer<RightClickMenu> fRightClickMenu;
+	std::unique_ptr<MenuWidget> click_r_menu;
 	GraphNode *fNodeSelectedByRightClick;
 	graphdyn::Curve fLastCurveTypeSelected;
 

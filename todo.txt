@@ -4,12 +4,18 @@ DONE -- create envelope follower and make the visual indicator respond to it
 DONE -- figure out how to add knobs for attack, release, 
 DONE ( it was because I used num_samples instead of num_oversamples causing probably a segfault) -- investigate why rapidly changing oversampling rate crashes ardour
 DONE -- Hook up attack and release knobs
--- make plugin basic function work
+DONE -- make plugin basic function work
+-- Reimplement right click menu as a widget instead of a window
 -- Implement smoothing control
 -- Put back in a switch for expo/linear
 -- Add knob for stereo link
+-- make attack/release knobs logarithmic
 DONE -- Investigate ParamSmooth stuff
 -- Investigate ways to implement gain reduction VU meters
 -- implement sidechain inputs and add switch for them
 -- investigate ways to replace the custom data structures with std:: ones
 -- (far goal) refactor to allow any number of channels (theoretically)
+
+To pull request in pdesaulniers' wolf-shaper (giving back to opensource!)
+-- make themes work more globally
+-- potentially reimplement right click menu as a widget like I am doing

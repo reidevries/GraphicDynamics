@@ -180,19 +180,21 @@ GraphWidgetInner::GraphWidgetInner(UI *ui, Size<uint> size)
 
 	getParentWindow().addIdleCallback(this);
 
-	fRightClickMenu = new RightClickMenu(this);
+	click_r_menu = new MenuWidget(this);
 
-	fRightClickMenu->addSection("Node");
-	fRightClickMenu->addItem(VertexMenuItem::Delete,
-		"Delete", "(double L-click)");
+	click_r_menu->addSection("Node");
 
-	fRightClickMenu->addSection("Curve Type");
-	fRightClickMenu->addItem(VertexMenuItem::Single, "Single Power");
-	fRightClickMenu->addItem(VertexMenuItem::Double, "Double Power");
-	fRightClickMenu->addItem(VertexMenuItem::Stairs, "Stairs");
-	fRightClickMenu->addItem(VertexMenuItem::Wave, "Wave");
+	const std::array<MenuItem,VertexMenuItem::Size+1> items_array{
+		MenuItem{ VertexMenuItem::Delete, "Delete", "(double l-click)"},
+		MenuItem{ -1, "Curve Type", ""},
+		MenuItem{ VertexMenuItem::Single, "Single Power", ""},
+		MenuItem{ VertexMenuItem::Double, "Double Power", ""},
+		MenuItem{ VertexMenuItem::Stairs, "Stairs", ""},
+		MenuItem{ VertexMenuItem::Wave, "Wave", ""}
+	}
+	click_r_menu->addItems(items_array);
 
-	fRightClickMenu->setCallback(this);
+	click_r_menu->setCallback(this);
 
 	using namespace WOLF_FONTS;
 	createFontFromMemory("chivo_italic", (const uchar *)chivo_italic, chivo_italic_size, 0);
@@ -835,14 +837,14 @@ bool GraphWidgetInner::middleClick(const MouseEvent &)
     return false;
 }
 
-void GraphWidgetInner::rightClickMenuItemSelected(RightClickMenuItem *item)
+void GraphWidgetInner::menuItemSelected(MenuWidget::MenuItem *item)
 {
 	GraphVertex *vertex = static_cast<GraphVertex*>(fNodeSelectedByRightClick);
 
-	if (item->getId() == VertexMenuItem::Delete ) {
+	if (item->id == VertexMenuItem::Delete) {
 		removeVertex(vertex->getIndex());
 	} else {
-		graphdyn::Curve curve = (graphdyn::Curve)(item->getId() - 1);
+		graphdyn::Curve curve = (graphdyn::Curve)(item->id - 1);
 
 		lineEditor.getVertexAtIndex(vertex->getIndex())->setCurve(curve);
 		fLastCurveTypeSelected = curve;
@@ -902,20 +904,7 @@ bool GraphWidgetInner::rightClick(const MouseEvent &ev)
 				const bool mustEnableCurveTypeSection
 					= vertexType != GraphVertexType::Right;
 
-				fRightClickMenu->getItemById(VertexMenuItem::Delete)
-					->setEnabled(mustEnableDelete);
-				fRightClickMenu->setSectionEnabled(1, mustEnableCurveTypeSection);
-
-				fRightClickMenu->getItemById(VertexMenuItem::Single)
-					->setSelected(curveType == graphdyn::Curve::Single);
-				fRightClickMenu->getItemById(VertexMenuItem::Double)
-					->setSelected(curveType == graphdyn::Curve::Double);
-				fRightClickMenu->getItemById(VertexMenuItem::Stairs)
-					->setSelected(curveType == graphdyn::Curve::Stairs);
-				fRightClickMenu->getItemById(VertexMenuItem::Wave)
-					->setSelected(curveType == graphdyn::Curve::Wave);
-
-				fRightClickMenu->show(
+				click_r_menu->show(
 					getAbsoluteX() + ev.pos.getX(), 
 					getAbsoluteY() + ev.pos.getY() );
 			}

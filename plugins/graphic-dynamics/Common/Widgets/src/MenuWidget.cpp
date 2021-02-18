@@ -1,12 +1,13 @@
 #include "MenuWidget.hpp"
 
-MenuWidget::MenuWidget(NanoWidget *widget, Size<uint> size) noexcept
+MenuWidget::MenuWidget(NanoWidget *widget) noexcept
 	: WolfWidget(widget),
 	  callback(nullptr),
 	  visible(false),
 	  font_item_size(17.0f),
 	  font_section_size(14.0f),
 	  hover_i(-1),
+	  selected_i(-1),
 	  border_color(CONFIG_NAMESPACE::menu_border_color),
 	  background_color(CONFIG_NAMESPACE::menu_background_color),
 	  background_selected_color(
@@ -16,7 +17,6 @@ MenuWidget::MenuWidget(NanoWidget *widget, Size<uint> size) noexcept
 	  font_section_color(CONFIG_NAMESPACE::menu_font_section_color),
 	  margin(Margin(7,15,7,13))
 {
-	setSize(size);
 }
 
 void MenuWidget::show(Point<int> pos)
@@ -25,14 +25,17 @@ void MenuWidget::show(Point<int> pos)
 	// "we don't want the mouse to intersect with the popup straight away,
 	// so we add a bit of margin"
 	pos += Point<int>(2,2);
+	adaptSize();
 	Widget::setAbsolutePos(pos);
 	Widget::show();
 }
 
 void MenuWidget::clear()
 {
-	sections.clear();
-	max_len_item_name = 0;
+	items.clear();
+	max_item_w_px = 0;
+	hover_i = -1;
+	selected_i = -1;
 }
 
 void MenuWidget::addItem(const MenuItem item)
@@ -79,12 +82,13 @@ void MenuWidget::onNanoDisplay() override
 
 	beginPath();
 
+	textAlign(ALIGN_LEFT | ALIGN_TOP);
+
+	// these four lines are used to calculate the height of a line of text
 	Rectangle<float> bounds;
 	fontSize(font_item_size);
-	textAlign(ALIGN_LEFT | ALIGN_TOP);
 	textBounds(0, 0, items[0].name.c_str(), NULL, bounds);
-	//NOTE: this is copied from RightClickMenu.cpp, need to look into why
-	//items[0] name is used as an argument
+	const float text_h = bounds.getHeight();
 
 	fillColor(background_selected_color);
 
@@ -114,7 +118,7 @@ void MenuWidget::onNanoDisplay() override
 		beginPath();
 
 		int left_offset=0;
-		if (item.is_section) {
+		if (item.id < 0) {
 			fontSize(font_section_size);
 			fillColor(font_section_color);
 		} else {
@@ -139,27 +143,116 @@ void MenuWidget::onNanoDisplay() override
 			text(0, verticalOffset, "✓", NULL);
 		}
 
-		vertical_offset += bounds.getHeight(); //TODO: what's bounds?
+		vertical_offset += text_h;
 
 		closePath();
 	}
 }
 
-void MenuWidget::updateMaxNameLen(const std::string name)
+auto MenuWidget::onMouse(const MouseEvent& ev) -> bool
 {
-	uint name_w_chars = name.size(); //NOTE: assumes UTF8
-	if (name_w_chars > max_name_w_chars) {
-		max_name_w_chars = name_w_chars;
-		max_name_w_px = name_w_chars*font_item_size;
+	const Rectangle<float> bounds = Rectangle<float>(
+		static_cast<float>(Widget::getAbsoluteX()),
+		static_cast<float>(Widget::getAbsoluteY()),
+		static_cast<float>(Widget::getWidth()),
+		static_cast<float>(Widget::getHeight())
+	);
+	const Point<float> mouse_pos = Point<float>(
+		static_cast<float>(ev.pos.getX()),
+		static_cast<float>(ev.pos.getY())
+	);
+
+	if (ev.press == true) {
+		if (!bounds.contains(mouse_pos)) {
+			NanoWidget::hide();
+			return true;
+		}
+
+		for (size_t i = 0; i < items.size(); ++i) {
+			Rectangle<float> bounds = getItemBoundsPx(i);
+			bounds.setWidth(Widget::getWidth() - margin.right);
+
+			if (items[i].id >= 0 && bounds.contains(mouse_pos)) {
+				callback->menuItemSelected(&items[i]);
+				selected_i = i;
+				NanoWidget::hide();
+				return true;
+			}
+		}
 	}
+	return true;
 }
 
-auto MenuWidget::getMenuItemWidthPx(MenuItem& item) const -> float
+auto MenuWidget::onMotion(const MotionEvent& ev) -> bool
 {
-	if (item.is_section) {
+	for (size_t i = 0; i < items.size(); ++i) {
+		Rectangle<float> bounds = getItemBoundsPx(i);
+		bounds.setWidth(Widget::getWidth() - margin.right);
+		const Point<float> mouse_pos = Point<float>(
+			static_cast<float>(ev.pos.getX()),
+			static_cast<float>(ev.pos.getY())
+		);
+
+		if (!items[i].is_selected && bounds.contains(mouse_pos)) {
+			hover_i = i;
+			return true;
+		}
+	}
+	hover_i = -1;
+	return true;
+}
+
+auto MenuWidget::onScroll(const ScrollEvent& ev) -> bool
+{
+	if (std::abs(ev.delta.y) < 0.5f) return true;
+
+	const Rectangle<float> bounds = Rectangle<float>(
+		static_cast<float>(Widget::getAbsoluteX()),
+		static_cast<float>(Widget::getAbsoluteY()),
+		static_cast<float>(Widget::getWidth()),
+		static_cast<float>(Widget::getHeight())
+	);
+	const Point<float> mouse_pos = Point<float>(
+		static_cast<float>(ev.pos.getX()),
+		static_cast<float>(ev.pos.getY())
+	);
+
+	if (bounds.contains(mouse_pos)) {
+		hover_i = (hover_i + std::round(ev.delta.y))%items.size();
+	}
+	return true;
+}
+
+void MenuWidget::updateMaxItemWidth(const MenuItem& item)
+{
+	max_item_w_px = std::max(max_item_w_px, getItemWidthPx(item));
+}
+
+void MenuWidget::adaptSize()
+{
+	NanoWidget::setSize(Size<uint>(
+		max_item_w_px + margin.left + margin.right + font_section_size,
+		items.size()*font_item_size + margin.top + margin.bottom
+	));
+}
+
+auto MenuWidget::getItemWidthPx(const MenuItem& item) const -> float
+{
+	//NOTE: assumes name, description are UTF8
+	if (item.id < 0) {
 		return (item.name.size() + item.description.size()) * font_section_size;
 	} else {
 		return item.name.size()*font_item_size
 			+ item.description.size()*font_section_size;
 	}
+}
+
+auto MenuWidget::getItemBoundsPx(const int index) const -> Rectangle<float>
+{
+	fontSize(font_item_size);
+	textAlign(ALIGN_LEFT | ALIGN_TOP);
+	Rectangle<float> bounds;
+	textBounds(margin.left, index*font_item_size + margin.top,
+		items[i].name, NULL, bounds);
+	return bounds;
 }

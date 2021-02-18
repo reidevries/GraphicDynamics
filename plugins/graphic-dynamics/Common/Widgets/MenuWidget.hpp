@@ -21,22 +21,21 @@ public:
 	{
 	public:
 		virtual ~Callback() {}
-		virtual void menuItemSelected(
-			MenuWidget *menu_widget, const int item) = 0;
+		virtual void menuItemSelected(MenuItem* item) = 0;
 	};
 
-	explicit MenuWidget(NanoWidget *widget, Size<uint> size) noexcept;
+	explicit MenuWidget(NanoWidget *widget) noexcept;
 
 	struct MenuItem
 	{
+		const int id; // item is considered a section if id < 0
 		const std::string name;
 		const std::string description;
-		const bool is_section;
-		bool selected;
 	};
 
 	// shows and hides the widget without affecting the elements
 	void show(Point<int> pos) override;
+	void show(int pos_x, int pos_y) : show(Point<int>(pos_x,pos_y)) {}
 
 	// clear all sections and items
 	void clear();
@@ -60,22 +59,18 @@ protected:
 	void onNanoDisplay() override;
 	auto onMouse( const MouseEvent &)  -> bool override;
 	auto onMotion(const MotionEvent &) -> bool override;
+	//NOTE: this scroll animation is useless rn, but it's kinda fun
 	auto onScroll(const ScrollEvent &) -> bool override;
-
-	virtual void onMouseHover();
-	virtual void onMouseLeave();
-	virtual void onMouseUp();
-	virtual void onMouseDown();
 
 	DGL_NAMESPACE::Rectangle<float> getBoundsOfItem(const int i);
 
 private:
 	std::vector<MenuItem> items;
 
-	uint max_name_w_chars;
-	uint max_name_w_px;
+	float max_item_w_px;
 
-	uint hover_i;
+	int hover_i;
+	int selected_i;
 
 	Margin margin;
 	float font_item_size;
@@ -90,8 +85,10 @@ private:
 
 	Callback *callback;
 
-	void updateMaxNameLen(const std::string name);
-	auto getMenuItemWidthPx(MenuItem& item) const -> float;
+	void updateMaxItemWidth(const MenuItem& item);
+	void adaptSize();
+	auto getItemWidthPx(const MenuItem& item) const -> float;
+	auto getItemBoundsPx(const int index) const -> Rectangle<float>;
 }
 
 END_NAMESPACE_DISTRHO
