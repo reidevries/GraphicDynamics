@@ -1,5 +1,7 @@
 #include "MenuWidget.hpp"
 
+START_NAMESPACE_DISTRHO
+
 MenuWidget::MenuWidget(NanoWidget *widget) noexcept
 	: WolfWidget(widget),
 	  font_item_size(17.0f),
@@ -259,3 +261,5 @@ auto MenuWidget::getItemBoundsPx(const int index) -> Rectangle<float>
 		items[index].name.c_str(), NULL, bounds);
 	return bounds;
 }
+
+END_NAMESPACE_DISTRHO
