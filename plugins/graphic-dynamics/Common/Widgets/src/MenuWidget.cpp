@@ -50,12 +50,6 @@ void MenuWidget::addItem(const MenuItem item)
 	updateMaxItemWidth(item);
 }
 
-template<size_t t_size>
-void MenuWidget::addItems(const std::array<MenuItem, t_size> items)
-{
-	for (auto item : items) addItem(item);
-}
-
 auto MenuWidget::findItemIndexByName(const std::string name) -> int
 {
 	for (size_t i = 0; i < items.size(); ++i) {

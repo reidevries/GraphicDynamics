@@ -47,8 +47,12 @@ public:
 	// add items by pushing them to the end of the list
 	void addItem(const MenuItem item);
 
+	// add item from array for convenience
 	template<size_t t_size>
-	void addItems(const std::array<MenuItem, t_size>);
+	void addItems(std::array<MenuItem, t_size>)
+	{
+		for (auto item : items) addItem(item);
+	}
 
 	// find the index of the first section with a matching name
 	// obviously this won't work if two sections have the same name
