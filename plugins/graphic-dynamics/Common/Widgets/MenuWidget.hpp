@@ -39,12 +39,21 @@ public:
 		std::vector<MenuItem> items;
 	};
 
-	void show(int x, int y);
-	void close();
-	void addItem(int section, const char * name, const char * description);
-	void addSection(const char * name, const char * description);
-	auto findSectionIndex(const char * name) -> int;
+	// shows and hides the widget without affecting the elements
+	void show(Point<int> pos);
+	void hide();
+
+	// clear all sections and items
 	void clear();
+
+	// add sections, and add items to a section
+	void addItem(uint section, const char * name, const char * description);
+	void addSection(const char * name, const char * description);
+
+	// find the index of the first section with a matching name
+	// obviously this won't work if two sections have the same name
+	auto findSectionIndex(const char * name) -> uint;
+
 	void setBorderColor(const Color color) {this->border_color = color;}
 	void setRegularFontSize(float size) {this->font_size = size;}
 	void setSectionFontSize(float size) {this->section_font_size = size;}
@@ -68,6 +77,10 @@ private:
 	bool visible;
 
 	std::vector<MenuSection> sections;
+
+	void updateMaxNameLen(const char* name);
+	uint max_name_w_chars;
+	uint max_name_w_px;
 
 	float font_size;
 	float section_font_size;

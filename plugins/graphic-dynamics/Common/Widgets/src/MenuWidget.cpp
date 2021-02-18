@@ -58,6 +58,9 @@ auto MenuWidget::findSectionIndex(const char * name) -> int
 
 void MenuWidget::updateMaxNameLen(const char * name)
 {
-	uint name_len = strlen(name);
-	if (name_len > max_name_len) max_name_len = name_len;
+	uint name_w_chars = strlen(name);
+	if (name_w_chars > max_name_w_chars) {
+		max_name_w_chars = name_w_chars;
+		max_name_w_px = name_w_chars*font_size;
+	}
 }
