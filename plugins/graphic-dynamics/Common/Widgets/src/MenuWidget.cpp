@@ -85,7 +85,7 @@ void MenuWidget::onNanoDisplay()
 	textBounds(0, 0, items[0].name.c_str(), NULL, bounds);
 	const float text_h = bounds.getHeight();
 
-	fillColor(background_selected_color);
+	fillColor(background_color);
 
 	strokeColor(border_color);
 	strokeWidth(3.0f);
@@ -102,7 +102,7 @@ void MenuWidget::onNanoDisplay()
 
 	for (size_t i = 0; i < items.size(); ++i) {
 		MenuItem& item = items[i];
-		if (static_cast<int>(i) == hover_i) {
+		if (static_cast<int>(i) == hover_i && item.id >= 0) {
 			beginPath();
 			fillColor(background_selected_color);
 			rect(0, vertical_offset, w - margin.right, font_item_size);
@@ -119,7 +119,8 @@ void MenuWidget::onNanoDisplay()
 		} else {
 			left_offset = font_section_size;
 			fontSize(font_item_size);
-			fillColor(font_item_color);
+			if (static_cast<int>(i) == hover_i) fillColor(font_selected_color);
+			else fillColor(font_item_color);
 		}
 
 		text(left_offset, vertical_offset, item.name.c_str(), NULL);
@@ -134,7 +135,7 @@ void MenuWidget::onNanoDisplay()
 
 		if (static_cast<int>(i) == selected_i) {
 			fontSize(font_item_size);
-			fillColor(font_item_color);
+			fillColor(font_selected_color);
 			text(0, vertical_offset, "✓", NULL);
 		}
 
