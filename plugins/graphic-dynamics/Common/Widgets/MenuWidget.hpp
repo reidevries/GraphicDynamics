@@ -46,10 +46,10 @@ public:
 
 	// add items by pushing them to the end of the list
 	void addItem(const MenuItem item);
-//test
+
 	// add item from array for convenience
 	template<size_t t_size>
-	void addItems(std::array<MenuItem, t_size>)
+	void addItems(std::array<MenuItem, t_size> items)
 	{
 		for (auto item : items) addItem(item);
 	}
