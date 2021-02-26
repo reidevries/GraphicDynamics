@@ -179,7 +179,7 @@ GraphWidgetInner::GraphWidgetInner(UI *ui, Size<uint> size)
 
 	getParentWindow().addIdleCallback(this);
 
-	click_r_menu = std::make_unique<MenuWidget>(this);
+	click_r_menu = std::make_unique<MenuWidget>(ui);
 	const std::array<MenuWidget::MenuItem,6> items_array{
 		MenuWidget::MenuItem{ VertexMenuItem::Delete, "Delete",
 			"(double l-click)"},
@@ -191,6 +191,7 @@ GraphWidgetInner::GraphWidgetInner(UI *ui, Size<uint> size)
 	};
 	click_r_menu->addItems(items_array);
 	click_r_menu->setCallback(this);
+	click_r_menu->hide();
 
 	using namespace WOLF_FONTS;
 	createFontFromMemory("chivo_italic", (const uchar *)chivo_italic, chivo_italic_size, 0);

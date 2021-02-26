@@ -27,13 +27,13 @@ void MenuWidget::show(Point<int> pos)
 	// so we add a bit of margin"
 	pos += Point<int>(2,2);
 	adaptSize();
-	Widget::setAbsolutePos(pos);
-	Widget::show();
+	NanoWidget::setAbsolutePos(pos);
+	NanoWidget::show();
 }
 
 void MenuWidget::hide()
 {
-	Widget::hide();
+	NanoWidget::hide();
 }
 
 void MenuWidget::clear()
