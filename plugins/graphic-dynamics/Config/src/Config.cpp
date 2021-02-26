@@ -85,6 +85,7 @@ Color menu_border_color = Color(10, 10, 10);
 Color menu_background_color = Color(39, 39, 39);
 Color menu_background_selected_color = Color(255, 255, 255);
 Color menu_font_item_color = Color(255, 255, 255);
+Color menu_font_selected_color = Color(0, 0, 0);
 Color menu_font_section_color = Color(100, 100, 100);
 
 } // namespace CONFIG_NAMESPACE

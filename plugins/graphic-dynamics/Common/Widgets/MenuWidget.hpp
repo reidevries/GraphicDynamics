@@ -20,18 +20,19 @@ START_NAMESPACE_DISTRHO
 class MenuWidget : public WolfWidget
 {
 public:
-	struct MenuItem
+	struct Item
 	{
 		const int id; // item is considered a section if id < 0
 		const std::string name;
 		const std::string description;
+		bool enabled = true;
 	};
 
 	class Callback
 	{
 	public:
 		virtual ~Callback() {}
-		virtual void menuItemSelected(MenuItem* item) = 0;
+		virtual void menuItemSelected(Item& item) = 0;
 	};
 
 	explicit MenuWidget(NanoWidget *widget) noexcept;
@@ -45,18 +46,24 @@ public:
 	void clear();
 
 	// add items by pushing them to the end of the list
-	void addItem(const MenuItem item);
+	void addItem(const Item item);
 
 	// add item from array for convenience
 	template<size_t t_size>
-	void addItems(std::array<MenuItem, t_size>)
+	void addItems(std::array<Item, t_size>)
 	{
 		for (auto item : items) addItem(item);
 	}
 
+	//TODO: Find a better data structure to handle sections so that they don't
+	// have to be indexed by name
+	void setItemEnabled(const int id, const bool enabled);
+	void setSectionEnabled(const std::string name, const bool enabled);
+
 	// find the index of the first section with a matching name
 	// obviously this won't work if two sections have the same name
 	auto findItemIndexByName(const std::string name) -> int;
+	auto findItemIndexByID(const int id) -> int;
 
 	void setRegularFontSize(const uint size) noexcept;
 	void setSectionFontSize(const uint size) noexcept;
@@ -72,7 +79,7 @@ protected:
 	DGL_NAMESPACE::Rectangle<float> getBoundsOfItem(const int i);
 
 private:
-	std::vector<MenuItem> items;
+	std::vector<Item> items;
 
 	float max_item_w_px;
 
@@ -92,9 +99,9 @@ private:
 
 	Callback *callback;
 
-	void updateMaxItemWidth(const MenuItem& item);
+	void updateMaxItemWidth(const Item& item);
 	void adaptSize();
-	auto getItemWidthPx(const MenuItem& item) const -> float;
+	auto getItemWidthPx(const Item& item) const -> float;
 	auto getItemBoundsPx(const int index) -> Rectangle<float>;
 };
 

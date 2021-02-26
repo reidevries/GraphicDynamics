@@ -34,6 +34,7 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
 		this,
 		Size<uint>(width - 4 * 2, height - 4 * 2 - 122)
 	);
+	graph_widget->setInnerCallback(this);
 
 	graph_bar = std::make_unique<WidgetBar>(
 		this,
@@ -172,7 +173,7 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
 	knob_attack->setColor(ui.time_col);
 	knob_attack->setUsingLogScale(true);
 
-    label_release = std::make_unique<LabelBox>(this, ui.labelSize());
+	label_release = std::make_unique<LabelBox>(this, ui.labelSize());
 	knob_release = std::make_unique<VolumeKnob>(this, ui.knob_s);
 	knob_release->setCallback(this);
 	knob_release->setRange(0.1f, 10000.0f);
@@ -214,7 +215,25 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
 		0, 0,
 		label_oversample->getHeight() / 2.0f, 0
 	));
-    
+
+	click_r_menu = std::make_unique<MenuWidget>(this);
+	const std::array<MenuWidget::Item, 6> menu_layout = {
+		MenuWidget::Item{ GraphWidget::MenuItem::Delete,
+			"Delete", "(double l-click)"},
+		MenuWidget::Item{ -1,
+			"Curve Type", ""},
+		MenuWidget::Item{ GraphWidget::MenuItem::Single,
+			"Single Power", ""},
+		MenuWidget::Item{ GraphWidget::MenuItem::Double,
+			"Double Power", ""},
+		MenuWidget::Item{ GraphWidget::MenuItem::Stairs,
+			"Stairs", ""},
+		MenuWidget::Item{ GraphWidget::MenuItem::Wave,
+			"Wave", ""}
+	};
+	click_r_menu->addItems(menu_layout);
+	click_r_menu->setCallback(this);
+
     positionWidgets(width, height);
 }
 
@@ -502,6 +521,28 @@ void GraphicDynamicsUI::uiIdle()
 bool GraphicDynamicsUI::onMouse(const MouseEvent &)
 {
     return false;
+}
+
+void GraphicDynamicsUI::vertexClicked(GraphVertex* vertex)
+{
+	const GraphVertexType vertex_type = vertex->getType();
+	click_r_menu->setItemEnabled(GraphWidget::MenuItem::Delete,
+		vertex_type == GraphVertexType::Middle);
+	click_r_menu->setSectionEnabled("Curve Type",
+		vertex_type != GraphVertexType::Right);
+
+	click_r_menu->show(vertex->getX(), vertex->getY());
+}
+
+void GraphicDynamicsUI::menuItemSelected(MenuWidget::Item& item)
+{
+	if (item.id == GraphWidget::MenuItem::Delete) {
+		graph_widget->deleteSelectedNode();
+	} else {
+		graphdyn::Curve curve = (graphdyn::Curve)(item.id - 1);
+		graph_widget->setCurveSelectedNode(curve);
+		repaint();
+	}
 }
 
 void GraphicDynamicsUI::uiReshape(uint width, uint height)
