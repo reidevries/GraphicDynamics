@@ -8,3 +8,4 @@ bin/
 *.o
 compile_commands.json
 .dir-locals.el
+.cache/
