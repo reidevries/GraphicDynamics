@@ -1,5 +1,7 @@
 #include "MenuWidget.hpp"
 
+#include <iostream>
+
 START_NAMESPACE_DISTRHO
 
 MenuWidget::MenuWidget(NanoWidget *widget) noexcept
@@ -147,9 +149,7 @@ void MenuWidget::onNanoDisplay()
 
 auto MenuWidget::onMouse(const MouseEvent& ev) -> bool
 {
-	const Rectangle<float> bounds = Rectangle<float>(
-		static_cast<float>(Widget::getAbsoluteX()),
-		static_cast<float>(Widget::getAbsoluteY()),
+	const Rectangle<float> bounds = Rectangle<float>(0.0f, 0.0f,
 		static_cast<float>(Widget::getWidth()),
 		static_cast<float>(Widget::getHeight())
 	);
@@ -160,19 +160,30 @@ auto MenuWidget::onMouse(const MouseEvent& ev) -> bool
 
 	if (ev.press == true) {
 		if (!bounds.contains(mouse_pos)) {
+			std::cout << "mouse clicked out of bounds" << std::endl;
+			std::cout << "bounds: " << bounds.getX()
+				<< "x" << bounds.getY()
+				<< ", " << bounds.getWidth()
+				<< "x" << bounds.getHeight()
+				<< std::endl;
+			std::cout << "mouse: " << mouse_pos.getX()
+				<< "x" << mouse_pos.getY()
+				<< std::endl;
 			NanoWidget::hide();
 			return true;
-		}
+		} else std::cout << "mouse clicked in bounds" << std::endl;
 
 		for (size_t i = 0; i < items.size(); ++i) {
 			Rectangle<float> bounds = getItemBoundsPx(i);
 			bounds.setWidth(Widget::getWidth() - margin.right);
 
 			if (items[i].id >= 0 && bounds.contains(mouse_pos)) {
-				callback->menuItemSelected(&items[i]);
+				callback->menuItemSelected(items[i].id);
 				selected_i = i;
 				NanoWidget::hide();
 				return true;
+			} else {
+				std::cout << "outside bounds of " << items[i].name << std::endl;
 			}
 		}
 	}

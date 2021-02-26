@@ -834,14 +834,15 @@ bool GraphWidgetInner::middleClick(const MouseEvent &)
     return false;
 }
 
-void GraphWidgetInner::menuItemSelected(MenuWidget::MenuItem *item)
+void GraphWidgetInner::menuItemSelected(const int id)
 {
+	std::cout << "user selected menu item " << id << std::endl;
 	GraphVertex *vertex = static_cast<GraphVertex*>(fNodeSelectedByRightClick);
 
-	if (item->id == VertexMenuItem::Delete) {
+	if (id == VertexMenuItem::Delete) {
 		removeVertex(vertex->getIndex());
 	} else {
-		graphdyn::Curve curve = (graphdyn::Curve)(item->id - 1);
+		graphdyn::Curve curve = (graphdyn::Curve)(id - 1);
 
 		lineEditor.getVertexAtIndex(vertex->getIndex())->setCurve(curve);
 		fLastCurveTypeSelected = curve;

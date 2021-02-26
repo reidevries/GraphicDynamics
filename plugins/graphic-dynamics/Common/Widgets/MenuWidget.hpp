@@ -31,7 +31,7 @@ public:
 	{
 	public:
 		virtual ~Callback() {}
-		virtual void menuItemSelected(MenuItem* item) = 0;
+		virtual void menuItemSelected(const int id) = 0;
 	};
 
 	explicit MenuWidget(NanoWidget *widget) noexcept;
@@ -60,7 +60,7 @@ public:
 
 	void setRegularFontSize(const uint size) noexcept;
 	void setSectionFontSize(const uint size) noexcept;
-	void setCallback(Callback * callback) noexcept {this->callback = callback;}
+	void setCallback(Callback *callback) noexcept {this->callback = callback;}
 
 protected:
 	void onNanoDisplay() override;

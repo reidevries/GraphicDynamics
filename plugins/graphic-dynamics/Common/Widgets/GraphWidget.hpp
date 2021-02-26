@@ -67,7 +67,8 @@ protected:
 
 	void idleCallback() override;
 
-	void menuItemSelected(MenuWidget::MenuItem* item) override;
+	// callback when a menu item is selected
+	void menuItemSelected(const int id) override;
 
 	void onMouseLeave();
 
