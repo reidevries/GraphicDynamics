@@ -1,0 +1,10 @@
+.DS_Store
+.idea
+*.log
+tmp/
+build/
+bin/
+*.d
+*.o
+compile_commands.json
+.dir-locals.el
