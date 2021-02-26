@@ -2,7 +2,7 @@
 #define WOLF_GRAPH_WIDGET_HPP_INCLUDED
 
 #include <memory>
-
+#include <array>
 #include "ObjectPool.hpp"
 #include "DistrhoUI.hpp"
 #include "Graph.hpp"
@@ -23,9 +23,7 @@ enum class GraphGradientMode
 	Bottom
 };
 
-class GraphWidgetInner : public NanoWidget,
-	public IdleCallback,
-	public MenuWidget::Callback
+class GraphWidgetInner : public NanoWidget, public IdleCallback
 {
 	friend class GraphNode;
 	friend class GraphVertex;
@@ -33,6 +31,13 @@ class GraphWidgetInner : public NanoWidget,
 	friend class GraphWidget;
 
 public:
+	class Callback
+	{
+	public:
+		virtual ~Callback() {}
+		virtual void vertexClicked(GraphVertex* vertex) = 0;
+	};
+
 	GraphWidgetInner(UI *ui, Size<uint> size);
 	~GraphWidgetInner();
 
@@ -46,16 +51,14 @@ public:
 	*/
 	void reset();
 
-protected:
-	enum VertexMenuItem
-	{
-		Delete = 0,
-		Single,
-		Double,
-		Stairs,
-		Wave
-	};
+	// WARNING: Hacky
+	// TODO: make not be hacky
+	// deletes or changes the curve of the currently selected ndoe
+	void setCallback(Callback* callback);
+	void deleteSelectedNode();
+	void setCurveSelectedNode(graphdyn::Curve curve);
 
+protected:
 	/**
 	* DPF stuff
 	*/
@@ -66,8 +69,6 @@ protected:
 	bool onMotion(const MotionEvent &ev) override;
 
 	void idleCallback() override;
-
-	void menuItemSelected(MenuWidget::MenuItem* item) override;
 
 	void onMouseLeave();
 
@@ -161,6 +162,7 @@ protected:
 
 private:
 	UI *ui;
+	Callback* callback;
 
 	/**
 	* Initialize the left and right vertices in the graph.
@@ -222,10 +224,8 @@ private:
 
 	float fInput;
 
-	std::unique_ptr<MenuWidget> click_r_menu;
-	GraphNode *fNodeSelectedByRightClick;
-	graphdyn::Curve fLastCurveTypeSelected;
-
+	graphdyn::Curve recent_curve_selection;
+	GraphVertex* selected_vertex;
 	GraphWidget *parent;
 
 	DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GraphWidgetInner)
@@ -234,7 +234,17 @@ private:
 class GraphWidget : public NanoWidget
 {
 public:
+	enum MenuItem
+	{
+		Delete = 0,
+		Single,
+		Double,
+		Stairs,
+		Wave
+	};
+
 	GraphWidget(UI *ui, Size<uint> size);
+
 	~GraphWidget();
 
 	void rebuildFromString(const char *serializedGraph);
@@ -251,12 +261,18 @@ public:
 
 	void setMustHideVertices(const bool hide);
 
+	// bit hacky TODO: make not be hacky
+	void setInnerCallback(GraphWidgetInner::Callback* callback) noexcept;
+	void deleteSelectedNode() {fGraphWidgetInner->deleteSelectedNode();}
+	void setCurveSelectedNode(graphdyn::Curve curve)
+		{fGraphWidgetInner->setCurveSelectedNode(curve);}
+
 protected:
 	void onResize(const ResizeEvent &ev) override;
 	void onNanoDisplay() override;
 
 private:
-	ScopedPointer<GraphWidgetInner> fGraphWidgetInner;
+	std::unique_ptr<GraphWidgetInner> fGraphWidgetInner;
 	Margin fMargin;
 
 	DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GraphWidget)

@@ -4,6 +4,7 @@
 #include "GraphicDynamicsParameters.hpp"
 #include "DistrhoUI.hpp"
 #include "GraphWidget.hpp"
+#include "GraphNode.hpp"
 #include "RemoveDCSwitch.hpp"
 #include "ResetGraphButton.hpp"
 #include "OversampleWheel.hpp"
@@ -17,6 +18,7 @@
 #include "ArrowButton.hpp"
 #include "LabelBoxList.hpp"
 #include "UIConfig.hpp"
+#include "MenuWidget.hpp"
 
 #include <memory>
 
@@ -27,7 +29,9 @@ class GraphicDynamicsUI : public UI,
 	public NanoButton::Callback,
 	public NanoWheel::Callback,
 	public NanoKnob::Callback,
-	public ResizeHandle::Callback
+	public ResizeHandle::Callback,
+	public GraphWidgetInner::Callback,
+	public MenuWidget::Callback
 {
 private:
 	UIConfig ui;
@@ -43,11 +47,17 @@ protected:
 	void tryRememberSize();
 	void positionWidgets(uint width, uint height);
 
+	// controls callbacks
 	void nanoSwitchClicked(NanoSwitch *nanoSwitch) override;
 	void nanoButtonClicked(NanoButton *nanoButton) override;
 	void nanoWheelValueChanged(NanoWheel *nanoWheel, const int value) override;
 	void nanoKnobValueChanged(NanoKnob *nanoKnob, const float value) override;
 
+	// graph menu callbacks
+	void vertexClicked(GraphVertex* vertex) override;
+	void menuItemSelected(MenuWidget::Item& item) override;
+
+	// resize handle cacllback
 	void resizeHandleMoved(int width, int height) override;
 
 	void stateChanged(const char *key, const char *value) override;
@@ -90,6 +100,8 @@ private:
 	std::unique_ptr<WidgetBar> graph_bar;
 	std::unique_ptr<ResetGraphButton> button_reset_graph;
 	std::unique_ptr<NanoLabel> label_reset_graph;
+
+	std::unique_ptr<MenuWidget> click_r_menu;
 
 	bool fBottomBarVisible;
 

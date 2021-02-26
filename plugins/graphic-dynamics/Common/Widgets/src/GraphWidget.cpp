@@ -13,13 +13,14 @@
 #include <cstdlib>
 #include <cmath>
 #include <iostream>
+#include <array>
 
 START_NAMESPACE_DISTRHO
 
 const char *graphDefaultState
 	= "0x0p+0,0x0p+0,0x0p+0,0;0x1p+0,0x1p+0,0x0p+0,0;";
 
-GraphWidget::GraphWidget(UI *ui, Size<uint> size) : 
+GraphWidget::GraphWidget(UI *ui, Size<uint> size) :
 	NanoWidget((NanoWidget *)ui),
 	fMargin(16, 16, 16, 16)
 {
@@ -30,12 +31,28 @@ GraphWidget::GraphWidget(UI *ui, Size<uint> size) :
 
 	const Size<uint> graphInnerSize = Size<uint>(graphWidth, graphHeight);
 
-	fGraphWidgetInner = new GraphWidgetInner(ui, graphInnerSize);
+	fGraphWidgetInner = std::make_unique<GraphWidgetInner>(ui, graphInnerSize);
 	fGraphWidgetInner->parent = this;
 }
 
 GraphWidget::~GraphWidget()
 {
+}
+
+void GraphWidget::onResize(const ResizeEvent &ev)
+{
+	if (ev.oldSize.isNull())
+		return;
+
+	const float graphInnerWidth = getWidth() - fMargin.left - fMargin.right;
+	const float graphInnerHeight = getHeight() - fMargin.top - fMargin.bottom;
+
+	const Size<uint> graphInnerSize = Size<uint>(
+		graphInnerWidth,
+		graphInnerHeight
+	);
+
+	fGraphWidgetInner->setSize(graphInnerSize);
 }
 
 void GraphWidget::onNanoDisplay()
@@ -98,22 +115,6 @@ void GraphWidget::onNanoDisplay()
 		fGraphWidgetInner->drawVertices();
 }
 
-void GraphWidget::onResize(const ResizeEvent &ev)
-{
-	if (ev.oldSize.isNull())
-		return;
-
-	const float graphInnerWidth = getWidth() - fMargin.left - fMargin.right;
-	const float graphInnerHeight = getHeight() - fMargin.top - fMargin.bottom;
-
-	const Size<uint> graphInnerSize = Size<uint>(
-		graphInnerWidth,
-		graphInnerHeight
-	);
-
-	fGraphWidgetInner->setSize(graphInnerSize);
-}
-
 void GraphWidget::rebuildFromString(const char *serializedGraph)
 {
 	fGraphWidgetInner->rebuildFromString(serializedGraph);
@@ -159,6 +160,12 @@ void GraphWidget::setMustHideVertices(const bool hide)
     fGraphWidgetInner->setMustHideVertices(hide);
 }
 
+void GraphWidget::setInnerCallback(
+	GraphWidgetInner::Callback* callback) noexcept
+{
+	fGraphWidgetInner->setCallback(callback);
+}
+
 GraphWidgetInner::GraphWidgetInner(UI *ui, Size<uint> size)
 	: NanoWidget((NanoWidget *)ui),
 	ui(ui),
@@ -170,29 +177,13 @@ GraphWidgetInner::GraphWidgetInner(UI *ui, Size<uint> size)
 	mustHideVertices(false),
 	hovered(false),
 	maxInput(0.0f),
-	fInput(0.0f),
-	fLastCurveTypeSelected(graphdyn::Curve::Single)
+	fInput(0.0f)
 {
 	setSize(size);
 
 	initializeDefaultVertices();
 
 	getParentWindow().addIdleCallback(this);
-
-	click_r_menu = std::make_unique<MenuWidget>(this);
-
-	const std::array<MenuWidget::MenuItem,6> items_array{
-		MenuWidget::MenuItem{ VertexMenuItem::Delete, "Delete",
-			"(double l-click)"},
-		MenuWidget::MenuItem{ -1, "Curve Type", ""},
-		MenuWidget::MenuItem{ VertexMenuItem::Single, "Single Power", ""},
-		MenuWidget::MenuItem{ VertexMenuItem::Double, "Double Power", ""},
-		MenuWidget::MenuItem{ VertexMenuItem::Stairs, "Stairs", ""},
-		MenuWidget::MenuItem{ VertexMenuItem::Wave, "Wave", ""}
-	};
-	click_r_menu->addItems(items_array);
-
-	click_r_menu->setCallback(this);
 
 	using namespace WOLF_FONTS;
 	createFontFromMemory("chivo_italic", (const uchar *)chivo_italic, chivo_italic_size, 0);
@@ -204,6 +195,60 @@ GraphWidgetInner::~GraphWidgetInner()
 		delete graphVertices[i];
 	}
 }
+
+void GraphWidgetInner::rebuildFromString(const char *serializedGraph)
+{
+    resetVerticesPool();
+
+    lineEditor.deserialize(serializedGraph);
+
+    //position ui vertices to match the new graph
+    for (int i = 0; i < lineEditor.getNumVertices(); ++i)
+    {
+        GraphVertex *vertex = graphVerticesPool.getObject();
+
+        vertex->index = i;
+
+        if (i == 0)
+            vertex->type = GraphVertexType::Left;
+        else if (i == lineEditor.getNumVertices() - 1)
+            vertex->type = GraphVertexType::Right;
+        else
+            vertex->type = GraphVertexType::Middle;
+
+        graphVertices[i] = vertex;
+    }
+
+    positionGraphNodes();
+}
+
+void GraphWidgetInner::reset()
+{
+	resetVerticesPool();
+
+	initializeDefaultVertices();
+
+	ui->setState("graph", graphDefaultState);
+	lineEditor.deserialize(graphDefaultState);
+}
+
+void GraphWidgetInner::setCallback(Callback* callback)
+{
+	this->callback = callback;
+}
+
+void GraphWidgetInner::deleteSelectedNode()
+{
+	removeVertex(selected_vertex->getIndex());
+}
+
+void GraphWidgetInner::setCurveSelectedNode(graphdyn::Curve curve)
+{
+	recent_curve_selection = curve;
+	lineEditor.getVertexAtIndex(selected_vertex->getIndex())->setCurve(curve);
+	ui->setState("graph", lineEditor.serialize());
+}
+
 
 void GraphWidgetInner::onResize(const ResizeEvent &ev)
 {
@@ -249,48 +294,12 @@ void GraphWidgetInner::initializeDefaultVertices()
 	graphVertices[1] = vertex;
 }
 
-void GraphWidgetInner::reset()
-{
-	resetVerticesPool();
-
-	initializeDefaultVertices();
-
-	ui->setState("graph", graphDefaultState);
-	lineEditor.deserialize(graphDefaultState);
-}
-
 void GraphWidgetInner::resetVerticesPool()
 {
     for (int i = 0; i < lineEditor.getNumVertices(); ++i)
     {
         graphVerticesPool.freeObject(graphVertices[i]);
     }
-}
-
-void GraphWidgetInner::rebuildFromString(const char *serializedGraph)
-{
-    resetVerticesPool();
-
-    lineEditor.deserialize(serializedGraph);
-
-    //position ui vertices to match the new graph
-    for (int i = 0; i < lineEditor.getNumVertices(); ++i)
-    {
-        GraphVertex *vertex = graphVerticesPool.getObject();
-
-        vertex->index = i;
-
-        if (i == 0)
-            vertex->type = GraphVertexType::Left;
-        else if (i == lineEditor.getNumVertices() - 1)
-            vertex->type = GraphVertexType::Right;
-        else
-            vertex->type = GraphVertexType::Middle;
-
-        graphVertices[i] = vertex;
-    }
-
-    positionGraphNodes();
 }
 
 void GraphWidgetInner::updateAnimations()
@@ -765,7 +774,7 @@ GraphVertex *GraphWidgetInner::insertVertex(const Point<int> pos)
 	const float normalizedX = wolf::normalize(pos.getX(), width);
 	const float normalizedY = wolf::normalize(pos.getY(), height);
 
-	lineEditor.insertVertex(normalizedX, normalizedY, 0, fLastCurveTypeSelected);
+	lineEditor.insertVertex(normalizedX, normalizedY, 0, recent_curve_selection);
 
 	ui->setState("graph", lineEditor.serialize());
 
@@ -835,23 +844,6 @@ bool GraphWidgetInner::middleClick(const MouseEvent &)
     return false;
 }
 
-void GraphWidgetInner::menuItemSelected(MenuWidget::MenuItem *item)
-{
-	GraphVertex *vertex = static_cast<GraphVertex*>(fNodeSelectedByRightClick);
-
-	if (item->id == VertexMenuItem::Delete) {
-		removeVertex(vertex->getIndex());
-	} else {
-		graphdyn::Curve curve = (graphdyn::Curve)(item->id - 1);
-
-		lineEditor.getVertexAtIndex(vertex->getIndex())->setCurve(curve);
-		fLastCurveTypeSelected = curve;
-
-		ui->setState("graph", lineEditor.serialize());
-		repaint();
-	}
-}
-
 bool GraphWidgetInner::rightClick(const MouseEvent &ev)
 {
 	const Point<int> point = wolf::flipY(ev.pos, getHeight());
@@ -889,22 +881,10 @@ bool GraphWidgetInner::rightClick(const MouseEvent &ev)
 			//else, show curve selection menu
 			else
 			{
-				fNodeSelectedByRightClick = node;
-
-				GraphVertex *vertex = static_cast<GraphVertex *>(node);
-				GraphVertexType vertexType = vertex->getType();
-				const graphdyn::Curve curveType
-					= lineEditor.getVertexAtIndex( vertex->getIndex() )
-					->getCurve();
-
-				const bool mustEnableDelete
-					= vertexType == GraphVertexType::Middle;
-				const bool mustEnableCurveTypeSection
-					= vertexType != GraphVertexType::Right;
-
-				click_r_menu->show(
-					getAbsoluteX() + ev.pos.getX(), 
-					getAbsoluteY() + ev.pos.getY() );
+				//fNodeSelectedByRightClick = node; dont think this necessary
+				// any more
+				selected_vertex = static_cast<GraphVertex*>(node);
+				callback->vertexClicked(selected_vertex);
 			}
 
 			return true;
@@ -986,25 +966,6 @@ bool GraphWidgetInner::onMotion(const MotionEvent &ev)
 
     return true;
 }
-
-/*
-void GraphWidgetInner::onFocusOut()
-{
-    if (focusedElement != nullptr)
-    {
-        focusedElement->grabbed = false;
-        focusedElement = nullptr;
-    }
-
-    hovered = false;
-    mouseLeftDown = false;
-    mouseRightDown = false;
-
-    getParentWindow().showCursor();
-
-    repaint();
-}
-*/
 
 void GraphWidgetInner::onMouseLeave()
 {

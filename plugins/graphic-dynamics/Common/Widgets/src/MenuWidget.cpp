@@ -44,16 +44,46 @@ void MenuWidget::clear()
 	selected_i = -1;
 }
 
-void MenuWidget::addItem(const MenuItem item)
+void MenuWidget::addItem(const Item item)
 {
 	items.push_back(item);
 	updateMaxItemWidth(item);
+}
+
+void MenuWidget::setItemEnabled(const int id, const bool enabled)
+{
+	const int index = findItemIndexByID(id);
+	items[index].enabled = enabled;
+}
+
+void MenuWidget::setSectionEnabled(const std::string name, const bool enabled)
+{
+	// at the moment, this will also work when given the name of an item
+	// it just started at the index and sets each element from there until the
+	// next section to 'enabled'
+	const int index = findItemIndexByName(name);
+	if (index < 0) return; // this means name didn't exist
+
+	items[index].enabled = enabled;
+
+	for (size_t i = index+1; i < items.size(); ++i) {
+		if (items[i].id < 0) break; // stop if another section is reached
+		items[i].enabled = enabled;
+	}
 }
 
 auto MenuWidget::findItemIndexByName(const std::string name) -> int
 {
 	for (size_t i = 0; i < items.size(); ++i) {
 		if (items[i].name == name) return i;
+	}
+	return -1;
+}
+
+auto MenuWidget::findItemIndexByID(const int id) -> int
+{
+	for (size_t i = 0; i < items.size(); ++i) {
+		if (items[i].id == id) return i;
 	}
 	return -1;
 }
@@ -101,7 +131,7 @@ void MenuWidget::onNanoDisplay()
 	translate(margin.left, margin.top);
 
 	for (size_t i = 0; i < items.size(); ++i) {
-		MenuItem& item = items[i];
+		Item& item = items[i];
 		if (static_cast<int>(i) == hover_i) {
 			beginPath();
 			fillColor(background_selected_color);
@@ -168,7 +198,7 @@ auto MenuWidget::onMouse(const MouseEvent& ev) -> bool
 			bounds.setWidth(Widget::getWidth() - margin.right);
 
 			if (items[i].id >= 0 && bounds.contains(mouse_pos)) {
-				callback->menuItemSelected(&items[i]);
+				callback->menuItemSelected(items[i]);
 				selected_i = i;
 				NanoWidget::hide();
 				return true;
@@ -222,7 +252,7 @@ auto MenuWidget::onScroll(const ScrollEvent& ev) -> bool
 	return true;
 }
 
-void MenuWidget::updateMaxItemWidth(const MenuItem& item)
+void MenuWidget::updateMaxItemWidth(const Item& item)
 {
 	max_item_w_px = std::max(max_item_w_px, getItemWidthPx(item));
 }
@@ -235,7 +265,7 @@ void MenuWidget::adaptSize()
 	));
 }
 
-auto MenuWidget::getItemWidthPx(const MenuItem& item) const -> float
+auto MenuWidget::getItemWidthPx(const Item& item) const -> float
 {
 	//NOTE: assumes name, description are UTF8
 	if (item.id < 0) {
