@@ -202,28 +202,26 @@ auto MenuWidget::onMouse(const MouseEvent& ev) -> bool
 
 	if (ev.press == true) {
 		if (!bounds.contains(mouse_pos)) {
-			std::cout << "mouse clicked out of bounds" << std::endl;
-			std::cout << "bounds: " << bounds.getX()
-				<< "x" << bounds.getY()
-				<< ", " << bounds.getWidth()
-				<< "x" << bounds.getHeight()
-				<< std::endl;
-			std::cout << "mouse: " << mouse_pos.getX()
-				<< "x" << mouse_pos.getY()
-				<< std::endl;
 			NanoWidget::hide();
 			return true;
-		} else std::cout << "mouse clicked in bounds" << std::endl;
+		}
 
+		bool cur_section_enabled = true;
 		for (size_t i = 0; i < items.size(); ++i) {
-			Rectangle<float> bounds = getItemBoundsPx(i);
-			bounds.setWidth(Widget::getWidth() - margin.right);
+			bool is_section = (items[i].id < 0);
+			if (is_section) cur_section_enabled = items[i].enabled;
+			bool is_enabled = cur_section_enabled && items[i].enabled;
 
-			if (items[i].id >= 0 && bounds.contains(mouse_pos)) {
-				callback->menuItemSelected(items[i].id);
-				selected_i = i;
-				NanoWidget::hide();
-				return true;
+			if (!is_section && is_enabled) {
+				Rectangle<float> bounds = getItemBoundsPx(i);
+				bounds.setWidth(Widget::getWidth() - margin.right);
+
+				if (bounds.contains(mouse_pos)) {
+					callback->menuItemSelected(items[i].id);
+					selected_i = i;
+					NanoWidget::hide();
+					return true;
+				}
 			}
 		}
 	}
