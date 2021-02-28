@@ -69,6 +69,7 @@ protected:
 
 	// callback when a menu item is selected
 	void menuItemSelected(const int id) override;
+	void propagateMouseEvent(const MouseEvent &ev) override;
 
 	void onMouseLeave();
 

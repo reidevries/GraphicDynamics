@@ -32,6 +32,9 @@ public:
 	public:
 		virtual ~Callback() {}
 		virtual void menuItemSelected(const int id) = 0;
+		// this is necessary to maintain the stored state of mouse buttons in
+		// the parent class
+		virtual void propagateMouseEvent(const MouseEvent& ev) = 0;
 	};
 
 	explicit MenuWidget(NanoWidget *widget) noexcept;

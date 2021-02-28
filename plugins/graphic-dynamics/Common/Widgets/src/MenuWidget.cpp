@@ -1,6 +1,7 @@
 #include "MenuWidget.hpp"
 
 #include <iostream>
+#include "DebugPrint.hpp"
 
 START_NAMESPACE_DISTRHO
 
@@ -24,10 +25,6 @@ MenuWidget::MenuWidget(NanoWidget *widget) noexcept
 
 void MenuWidget::show(Point<int> pos)
 {
-	// from pdesaulniers's wolf shaper:
-	// "we don't want the mouse to intersect with the popup straight away,
-	// so we add a bit of margin"
-	pos += Point<int>(2,2);
 	adaptSize();
 	NanoWidget::setAbsolutePos(pos);
 	NanoWidget::show();
@@ -158,6 +155,9 @@ auto MenuWidget::onMouse(const MouseEvent& ev) -> bool
 		static_cast<float>(ev.pos.getY())
 	);
 
+	std::cout << graphdebug::printMouseEvent(ev).str() << std::endl;
+	callback->propagateMouseEvent(ev);
+
 	if (ev.press == true) {
 		if (!bounds.contains(mouse_pos)) {
 			std::cout << "mouse clicked out of bounds" << std::endl;
@@ -182,8 +182,6 @@ auto MenuWidget::onMouse(const MouseEvent& ev) -> bool
 				selected_i = i;
 				NanoWidget::hide();
 				return true;
-			} else {
-				std::cout << "outside bounds of " << items[i].name << std::endl;
 			}
 		}
 	}

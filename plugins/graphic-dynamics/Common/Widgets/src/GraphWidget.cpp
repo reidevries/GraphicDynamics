@@ -19,146 +19,6 @@ START_NAMESPACE_DISTRHO
 const char *graphDefaultState
 	= "0x0p+0,0x0p+0,0x0p+0,0;0x1p+0,0x1p+0,0x0p+0,0;";
 
-GraphWidget::GraphWidget(UI *ui, Size<uint> size) : 
-	NanoWidget((NanoWidget *)ui),
-	fMargin(16, 16, 16, 16)
-{
-	setSize(size);
-
-	const float graphWidth = size.getWidth() - fMargin.left - fMargin.right;
-	const float graphHeight = size.getHeight() - fMargin.top - fMargin.bottom;
-
-	const Size<uint> graphInnerSize = Size<uint>(graphWidth, graphHeight);
-
-	fGraphWidgetInner = new GraphWidgetInner(ui, graphInnerSize);
-	fGraphWidgetInner->parent = this;
-}
-
-GraphWidget::~GraphWidget()
-{
-}
-
-void GraphWidget::onNanoDisplay()
-{
-	const float width = getWidth();
-	const float height = getHeight();
-
-	beginPath();
-
-	fillColor(CONFIG_NAMESPACE::graph_margin);
-	strokeColor(CONFIG_NAMESPACE::side_borders);
-	strokeWidth(1.0f);
-
-	rect(0.f, 0.f, width, height);
-
-	fill();
-	stroke();
-
-	closePath();
-
-	beginPath();
-
-	const float topBorderWidth = 2.0f;
-
-	strokeColor(CONFIG_NAMESPACE::top_border);
-	strokeWidth(topBorderWidth);
-
-	moveTo(0, 1);
-	lineTo(width, 1);
-
-	stroke();
-
-	closePath();
-
-	translate(fMargin.left, fMargin.top);
-	fGraphWidgetInner->setAbsolutePos(
-		getAbsoluteX() + fMargin.left,
-		getAbsoluteY() + fMargin.top );
-
-	fGraphWidgetInner->drawBackground();
-	fGraphWidgetInner->drawGrid();
-	fGraphWidgetInner->drawInOutLabels();
-
-	fGraphWidgetInner->flipYAxis();
-
-	if (fGraphWidgetInner->focusedElement != nullptr
-		&& dynamic_cast<GraphVertex *>(fGraphWidgetInner->focusedElement)) {
-		fGraphWidgetInner->drawAlignmentLines();
-	}
-
-	fGraphWidgetInner->drawGradient();
-	fGraphWidgetInner->drawGraphLine(
-		CONFIG_NAMESPACE::graph_edges_stroke_width,
-		CONFIG_NAMESPACE::graph_edges_foreground_normal,
-		CONFIG_NAMESPACE::graph_edges_foreground_focused ); //inner
-
-	fGraphWidgetInner->drawInputIndicator();
-
-	if (!fGraphWidgetInner->mustHideVertices)
-		fGraphWidgetInner->drawVertices();
-}
-
-void GraphWidget::onResize(const ResizeEvent &ev)
-{
-	if (ev.oldSize.isNull())
-		return;
-
-	const float graphInnerWidth = getWidth() - fMargin.left - fMargin.right;
-	const float graphInnerHeight = getHeight() - fMargin.top - fMargin.bottom;
-
-	const Size<uint> graphInnerSize = Size<uint>(
-		graphInnerWidth,
-		graphInnerHeight
-	);
-
-	fGraphWidgetInner->setSize(graphInnerSize);
-}
-
-void GraphWidget::rebuildFromString(const char *serializedGraph)
-{
-	fGraphWidgetInner->rebuildFromString(serializedGraph);
-}
-
-void GraphWidget::reset()
-{
-	fGraphWidgetInner->reset();
-}
-
-void GraphWidget::updateInput(const float input)
-{
-	fGraphWidgetInner->updateInput(input);
-}
-
-void GraphWidget::setGraphGradientMode(GraphGradientMode graphGradientMode)
-{
-	fGraphWidgetInner->setGraphGradientMode(graphGradientMode);
-}
-
-void GraphWidget::setHorWarpAmt(const float amt)
-{
-	fGraphWidgetInner->setHorWarpAmt(amt);
-}
-
-void GraphWidget::setHorWarpMode(const graphdyn::WarpMode mode)
-{
-    fGraphWidgetInner->setHorWarpMode(mode);
-}
-
-void GraphWidget::setVerWarpAmt(const float amt)
-{
-    fGraphWidgetInner->setVerWarpAmt(amt);
-}
-
-void GraphWidget::setVerWarpMode(const graphdyn::WarpMode mode)
-{
-    fGraphWidgetInner->setVerWarpMode(mode);
-}
-
-void GraphWidget::setMustHideVertices(const bool hide)
-{
-    fGraphWidgetInner->setMustHideVertices(hide);
-}
-
 GraphWidgetInner::GraphWidgetInner(UI *ui, Size<uint> size)
 	: NanoWidget((NanoWidget *)ui),
 	ui(ui),
@@ -689,7 +549,7 @@ bool GraphWidgetInner::onScroll(const ScrollEvent &ev)
 			if ( graphVertices[i]->getY() < graphVertices[i + 1]->getY() ) {
 				delta = -delta;
 			}
-			
+
 			const float oldTension = lineEditor.getVertexAtIndex(i)
 				->getTension();
 
@@ -834,24 +694,6 @@ bool GraphWidgetInner::middleClick(const MouseEvent &)
     return false;
 }
 
-void GraphWidgetInner::menuItemSelected(const int id)
-{
-	std::cout << "user selected menu item " << id << std::endl;
-	GraphVertex *vertex = static_cast<GraphVertex*>(fNodeSelectedByRightClick);
-
-	if (id == VertexMenuItem::Delete) {
-		removeVertex(vertex->getIndex());
-	} else {
-		graphdyn::Curve curve = (graphdyn::Curve)(id - 1);
-
-		lineEditor.getVertexAtIndex(vertex->getIndex())->setCurve(curve);
-		fLastCurveTypeSelected = curve;
-
-		ui->setState("graph", lineEditor.serialize());
-		repaint();
-	}
-}
-
 bool GraphWidgetInner::rightClick(const MouseEvent &ev)
 {
 	const Point<int> point = wolf::flipY(ev.pos, getHeight());
@@ -891,20 +733,10 @@ bool GraphWidgetInner::rightClick(const MouseEvent &ev)
 			{
 				fNodeSelectedByRightClick = node;
 
-				GraphVertex *vertex = static_cast<GraphVertex *>(node);
-				GraphVertexType vertexType = vertex->getType();
-				const graphdyn::Curve curveType
-					= lineEditor.getVertexAtIndex( vertex->getIndex() )
-					->getCurve();
-
-				const bool mustEnableDelete
-					= vertexType == GraphVertexType::Middle;
-				const bool mustEnableCurveTypeSection
-					= vertexType != GraphVertexType::Right;
-
 				click_r_menu->show(
-					getAbsoluteX() + ev.pos.getX(), 
+					getAbsoluteX() + ev.pos.getX(),
 					getAbsoluteY() + ev.pos.getY() );
+
 			}
 
 			return true;
@@ -931,7 +763,14 @@ bool GraphWidgetInner::rightClick(const MouseEvent &ev)
 
 bool GraphWidgetInner::onMouse(const MouseEvent &ev)
 {
-    if (mustHideVertices)
+	/* debug stuff
+	std::cout << "current mouse state:" << std::endl;
+	if (mouseLeftDown)  std::cout << "\tleft  down" << std::endl;
+	if (mouseRightDown) std::cout << "\tright down" << std::endl;
+	std::cout << "\tfocused element:" << focusedElement << std::endl;
+	*/
+
+	if (mustHideVertices)
         return false;
 
     switch (ev.button)
@@ -945,6 +784,36 @@ bool GraphWidgetInner::onMouse(const MouseEvent &ev)
     }
 
     return false;
+}
+
+void GraphWidgetInner::menuItemSelected(const int id)
+{
+	std::cout << "user selected menu item " << id << std::endl;
+	GraphVertex *vertex = static_cast<GraphVertex*>(fNodeSelectedByRightClick);
+
+	if (id == VertexMenuItem::Delete) {
+		removeVertex(vertex->getIndex());
+	} else {
+		graphdyn::Curve curve = (graphdyn::Curve)(id - 1);
+
+		lineEditor.getVertexAtIndex(vertex->getIndex())->setCurve(curve);
+		fLastCurveTypeSelected = curve;
+
+		ui->setState("graph", lineEditor.serialize());
+		repaint();
+	}
+}
+
+void GraphWidgetInner::propagateMouseEvent(const MouseEvent &ev)
+{
+	switch (ev.button) {
+		case 1:
+			mouseLeftDown = ev.press;
+			break;
+		case 3:
+			mouseRightDown = ev.press;
+			break;
+	}
 }
 
 bool GraphWidgetInner::onMotion(const MotionEvent &ev)
@@ -987,28 +856,149 @@ bool GraphWidgetInner::onMotion(const MotionEvent &ev)
     return true;
 }
 
-/*
-void GraphWidgetInner::onFocusOut()
-{
-    if (focusedElement != nullptr)
-    {
-        focusedElement->grabbed = false;
-        focusedElement = nullptr;
-    }
-
-    hovered = false;
-    mouseLeftDown = false;
-    mouseRightDown = false;
-
-    getParentWindow().showCursor();
-
-    repaint();
-}
-*/
-
 void GraphWidgetInner::onMouseLeave()
 {
     getParentWindow().setCursorStyle(Window::CursorStyle::Default);
+}
+
+GraphWidget::GraphWidget(UI *ui, Size<uint> size) : 
+	NanoWidget((NanoWidget *)ui),
+	fMargin(16, 16, 16, 16)
+{
+	setSize(size);
+
+	const float graphWidth = size.getWidth() - fMargin.left - fMargin.right;
+	const float graphHeight = size.getHeight() - fMargin.top - fMargin.bottom;
+
+	const Size<uint> graphInnerSize = Size<uint>(graphWidth, graphHeight);
+
+	fGraphWidgetInner = new GraphWidgetInner(ui, graphInnerSize);
+	fGraphWidgetInner->parent = this;
+}
+
+GraphWidget::~GraphWidget()
+{
+}
+
+void GraphWidget::onNanoDisplay()
+{
+	const float width = getWidth();
+	const float height = getHeight();
+
+	beginPath();
+
+	fillColor(CONFIG_NAMESPACE::graph_margin);
+	strokeColor(CONFIG_NAMESPACE::side_borders);
+	strokeWidth(1.0f);
+
+	rect(0.f, 0.f, width, height);
+
+	fill();
+	stroke();
+
+	closePath();
+
+	beginPath();
+
+	const float topBorderWidth = 2.0f;
+
+	strokeColor(CONFIG_NAMESPACE::top_border);
+	strokeWidth(topBorderWidth);
+
+	moveTo(0, 1);
+	lineTo(width, 1);
+
+	stroke();
+
+	closePath();
+
+	translate(fMargin.left, fMargin.top);
+	fGraphWidgetInner->setAbsolutePos(
+		getAbsoluteX() + fMargin.left,
+		getAbsoluteY() + fMargin.top );
+
+	fGraphWidgetInner->drawBackground();
+	fGraphWidgetInner->drawGrid();
+	fGraphWidgetInner->drawInOutLabels();
+
+	fGraphWidgetInner->flipYAxis();
+
+	if (fGraphWidgetInner->focusedElement != nullptr
+		&& dynamic_cast<GraphVertex *>(fGraphWidgetInner->focusedElement)) {
+		fGraphWidgetInner->drawAlignmentLines();
+	}
+
+	fGraphWidgetInner->drawGradient();
+	fGraphWidgetInner->drawGraphLine(
+		CONFIG_NAMESPACE::graph_edges_stroke_width,
+		CONFIG_NAMESPACE::graph_edges_foreground_normal,
+		CONFIG_NAMESPACE::graph_edges_foreground_focused ); //inner
+
+	fGraphWidgetInner->drawInputIndicator();
+
+	if (!fGraphWidgetInner->mustHideVertices)
+		fGraphWidgetInner->drawVertices();
+}
+
+void GraphWidget::onResize(const ResizeEvent &ev)
+{
+	if (ev.oldSize.isNull())
+		return;
+
+	const float graphInnerWidth = getWidth() - fMargin.left - fMargin.right;
+	const float graphInnerHeight = getHeight() - fMargin.top - fMargin.bottom;
+
+	const Size<uint> graphInnerSize = Size<uint>(
+		graphInnerWidth,
+		graphInnerHeight
+	);
+
+	fGraphWidgetInner->setSize(graphInnerSize);
+}
+
+void GraphWidget::rebuildFromString(const char *serializedGraph)
+{
+	fGraphWidgetInner->rebuildFromString(serializedGraph);
+}
+
+void GraphWidget::reset()
+{
+	fGraphWidgetInner->reset();
+}
+
+void GraphWidget::updateInput(const float input)
+{
+	fGraphWidgetInner->updateInput(input);
+}
+
+void GraphWidget::setGraphGradientMode(GraphGradientMode graphGradientMode)
+{
+	fGraphWidgetInner->setGraphGradientMode(graphGradientMode);
+}
+
+void GraphWidget::setHorWarpAmt(const float amt)
+{
+	fGraphWidgetInner->setHorWarpAmt(amt);
+}
+
+void GraphWidget::setHorWarpMode(const graphdyn::WarpMode mode)
+{
+    fGraphWidgetInner->setHorWarpMode(mode);
+}
+
+void GraphWidget::setVerWarpAmt(const float amt)
+{
+    fGraphWidgetInner->setVerWarpAmt(amt);
+}
+
+void GraphWidget::setVerWarpMode(const graphdyn::WarpMode mode)
+{
+    fGraphWidgetInner->setVerWarpMode(mode);
+}
+
+void GraphWidget::setMustHideVertices(const bool hide)
+{
+    fGraphWidgetInner->setMustHideVertices(hide);
 }
 
 END_NAMESPACE_DISTRHO

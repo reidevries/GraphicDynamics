@@ -415,9 +415,7 @@ bool GraphTensionHandle::onMouse(const Widget::MouseEvent &ev)
 
         window.hideCursor();
         window.clipCursor(Rectangle<int>(getAbsoluteX(), 0, 0, (int)window.getHeight()));
-    }
-    else
-    {
+    } else {
         window.unclipCursor();
         window.setCursorPos(getAbsoluteX(), getAbsoluteY());
         window.showCursor();

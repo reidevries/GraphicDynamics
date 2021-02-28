@@ -42,6 +42,7 @@ FILES_DSP = \
 
 FILES_UI  = \
 	Common/Utils/src/Mathf.cpp \
+	Common/Utils/src/DebugPrint.cpp \
 	Common/Structures/src/Graph.cpp \
 	Common/Structures/src/Margin.cpp \
 	Common/Structures/src/Animation.cpp \
