@@ -7,11 +7,13 @@ DONE -- Hook up attack and release knobs
 DONE -- make plugin basic function work
 DONE -- Reimplement right click menu as a widget instead of a window
 DONE -- Create right click menu directly from UI so that it draws at the top
--- Give ability to enable/disable menuwidget items
--- Implement smoothing control
--- Put back in a switch for expo/linear
--- Add knob for stereo link
+DONE -- Give ability to enable/disable menuwidget items
+-- close right click menu if mouse leaves graph drawing area
 -- make attack/release knobs logarithmic
+-- Put back in a switch for expo/linear
+-- add units to controls, preferrably generated from the control itself
+-- Implement smoothing control
+-- Add knob for stereo link
 DONE -- Investigate ParamSmooth stuff
 -- Investigate ways to implement gain reduction VU meters
 -- implement sidechain inputs and add switch for them
@@ -23,3 +25,4 @@ To (maybe) pull request in pdesaulniers' wolf-shaper
 -- make themes work more globally
 -- potentially reimplement right click menu as a widget like I am doing
 -- presets implementation from whenever I do t
+-- units for controls if desired
