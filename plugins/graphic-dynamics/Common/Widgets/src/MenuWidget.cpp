@@ -7,10 +7,11 @@ START_NAMESPACE_DISTRHO
 
 MenuWidget::MenuWidget(NanoWidget *widget) noexcept
 	: WolfWidget(widget),
-	  font_item_size(17.0f),
-	  font_section_size(14.0f),
 	  hover_i(-1),
 	  selected_i(-1),
+	  margin(Margin(7,15,7,13)),
+	  font_item_size(17.0f),
+	  font_section_size(14.0f),
 	  border_color(CONFIG_NAMESPACE::menu_border_color),
 	  background_color(CONFIG_NAMESPACE::menu_background_color),
 	  background_hover_color(
@@ -18,7 +19,6 @@ MenuWidget::MenuWidget(NanoWidget *widget) noexcept
 	  font_item_color(CONFIG_NAMESPACE::menu_font_item_color),
 	  font_item_hover_color(CONFIG_NAMESPACE::menu_font_item_hover_color),
 	  font_section_color(CONFIG_NAMESPACE::menu_font_section_color),
-	  margin(Margin(7,15,7,13)),
 	  callback(nullptr)
 {
 }
@@ -214,11 +214,6 @@ auto MenuWidget::onMotion(const MotionEvent& ev) -> bool
 		}
 	}
 	hover_i = -1;
-	return true;
-}
-
-auto MenuWidget::onScroll(const ScrollEvent& ev) -> bool
-{
 	return true;
 }
 
