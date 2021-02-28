@@ -97,9 +97,9 @@ private:
 
 	const Color border_color;
 	const Color background_color;
-	const Color background_selected_color;
+	const Color background_hover_color;
 	const Color font_item_color;
-	const Color font_selected_color;
+	const Color font_item_hover_color;
 	const Color font_section_color;
 
 	Callback *callback;

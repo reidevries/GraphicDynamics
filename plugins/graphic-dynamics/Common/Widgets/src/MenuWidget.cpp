@@ -13,10 +13,10 @@ MenuWidget::MenuWidget(NanoWidget *widget) noexcept
 	  selected_i(-1),
 	  border_color(CONFIG_NAMESPACE::menu_border_color),
 	  background_color(CONFIG_NAMESPACE::menu_background_color),
-	  background_selected_color(
-		  CONFIG_NAMESPACE::menu_background_selected_color),
+	  background_hover_color(
+		  CONFIG_NAMESPACE::menu_background_hover_color),
 	  font_item_color(CONFIG_NAMESPACE::menu_font_item_color),
-	  font_selected_color(CONFIG_NAMESPACE::menu_font_selected_color),
+	  font_item_hover_color(CONFIG_NAMESPACE::menu_font_item_hover_color),
 	  font_section_color(CONFIG_NAMESPACE::menu_font_section_color),
 	  margin(Margin(7,15,7,13)),
 	  callback(nullptr)
@@ -116,7 +116,7 @@ void MenuWidget::onNanoDisplay()
 		MenuItem& item = items[i];
 		if (static_cast<int>(i) == hover_i && item.id >= 0) {
 			beginPath();
-			fillColor(background_selected_color);
+			fillColor(background_hover_color);
 			rect(0, vertical_offset, w - margin.right, font_item_size);
 			fill();
 			closePath();
@@ -131,8 +131,11 @@ void MenuWidget::onNanoDisplay()
 		} else {
 			left_offset = font_section_size;
 			fontSize(font_item_size);
-			if (static_cast<int>(i) == hover_i) fillColor(font_selected_color);
-			else fillColor(font_item_color);
+			if (static_cast<int>(i) == hover_i) {
+				fillColor(font_item_hover_color);
+			} else {
+				fillColor(font_item_color);
+			}
 		}
 
 		text(left_offset, vertical_offset, item.name.c_str(), NULL);

@@ -44,10 +44,10 @@ extern Color side_borders;
 
 extern Color menu_border_color;
 extern Color menu_background_color;
-extern Color menu_background_selected_color;
+extern Color menu_background_hover_color;
 extern Color menu_font_item_color;
+extern Color menu_font_item_hover_color;
 extern Color menu_font_section_color;
-extern Color menu_font_selected_color;
 
 
 void load();
