@@ -6,7 +6,8 @@ DONE ( it was because I used num_samples instead of num_oversamples causing prob
 DONE -- Hook up attack and release knobs
 DONE -- make plugin basic function work
 DONE -- Reimplement right click menu as a widget instead of a window
--- Create right click menu directly from UI so that it draws at the top
+DONE -- Create right click menu directly from UI so that it draws at the top
+-- Give ability to enable/disable menuwidget items
 -- Implement smoothing control
 -- Put back in a switch for expo/linear
 -- Add knob for stereo link
@@ -16,7 +17,9 @@ DONE -- Investigate ParamSmooth stuff
 -- implement sidechain inputs and add switch for them
 -- investigate ways to replace the custom data structures with std:: ones
 -- (far goal) refactor to allow any number of channels (theoretically)
+-- (far goal) implement presets for the graph editor, in such a way that they could be smoothly morphed
 
-To pull request in pdesaulniers' wolf-shaper (giving back to opensource!)
+To (maybe) pull request in pdesaulniers' wolf-shaper
 -- make themes work more globally
 -- potentially reimplement right click menu as a widget like I am doing
+-- presets implementation from whenever I do t
