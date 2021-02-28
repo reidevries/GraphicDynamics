@@ -136,6 +136,9 @@ void MenuWidget::onNanoDisplay()
 		}
 
 		text(left_offset, vertical_offset, item.name.c_str(), NULL);
+		if (static_cast<int>(i) == selected_i) {
+			text(0, vertical_offset, "✓", NULL);
+		}
 
 		if (item.description.size() > 0) {
 			fontSize(font_section_size);
@@ -143,12 +146,6 @@ void MenuWidget::onNanoDisplay()
 
 			text(item.name.size()*font_item_size + font_section_size,
 				 vertical_offset, item.description.c_str(), NULL);
-		}
-
-		if (static_cast<int>(i) == selected_i) {
-			fontSize(font_item_size);
-			fillColor(font_selected_color);
-			text(0, vertical_offset, "✓", NULL);
 		}
 
 		vertical_offset += text_h;
