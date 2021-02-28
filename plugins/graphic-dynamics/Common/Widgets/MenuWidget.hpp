@@ -25,6 +25,16 @@ public:
 		const int id; // item is considered a section if id < 0
 		const std::string name;
 		const std::string description;
+		bool enabled = true;
+		MenuItem(const int _id,
+			const std::string& _name,
+			const std::string& _description)
+			: id(_id),
+			  name(_name),
+			  description(_description),
+			  enabled(true)
+		{
+		}
 	};
 
 	class Callback

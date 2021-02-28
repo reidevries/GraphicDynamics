@@ -15,7 +15,7 @@ DONE -- Create right click menu directly from UI so that it draws at the top
 DONE -- Investigate ParamSmooth stuff
 -- Investigate ways to implement gain reduction VU meters
 -- implement sidechain inputs and add switch for them
--- investigate ways to replace the custom data structures with std:: ones
+DONE -- investigate ways to replace the custom data structures with std:: ones
 -- (far goal) refactor to allow any number of channels (theoretically)
 -- (far goal) implement presets for the graph editor, in such a way that they could be smoothly morphed
 

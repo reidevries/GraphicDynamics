@@ -40,14 +40,15 @@ GraphWidgetInner::GraphWidgetInner(UI *ui, Size<uint> size)
 	getParentWindow().addIdleCallback(this);
 
 	click_r_menu = std::make_unique<MenuWidget>(ui);
-	const std::array<MenuWidget::MenuItem,6> items_array{
-		MenuWidget::MenuItem{ VertexMenuItem::Delete, "Delete",
-			"(double l-click)"},
-		MenuWidget::MenuItem{ -1, "Curve Type", ""},
-		MenuWidget::MenuItem{ VertexMenuItem::Single, "Single Power", ""},
-		MenuWidget::MenuItem{ VertexMenuItem::Double, "Double Power", ""},
-		MenuWidget::MenuItem{ VertexMenuItem::Stairs, "Stairs", ""},
-		MenuWidget::MenuItem{ VertexMenuItem::Wave, "Wave", ""}
+	const std::array<MenuWidget::MenuItem,7> items_array{
+		MenuWidget::MenuItem( -1, "Vertex Options", ""),
+		MenuWidget::MenuItem( VertexMenuItem::Delete, "Delete",
+			"(double l-click)"),
+		MenuWidget::MenuItem( -1, "Curve Type", ""),
+		MenuWidget::MenuItem( VertexMenuItem::Single, "Single Power", ""),
+		MenuWidget::MenuItem( VertexMenuItem::Double, "Double Power", ""),
+		MenuWidget::MenuItem( VertexMenuItem::Stairs, "Stairs", ""),
+		MenuWidget::MenuItem( VertexMenuItem::Wave, "Wave", "")
 	};
 	click_r_menu->addItems(items_array);
 	click_r_menu->setCallback(this);
