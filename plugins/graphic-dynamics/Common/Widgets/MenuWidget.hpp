@@ -10,7 +10,7 @@
 #include "WolfWidget.hpp"
 #include "Margin.hpp"
 #include "Config.hpp"
-
+#include "Mathf.hpp"
 #include <vector>
 #include <array>
 #include <string>
@@ -40,8 +40,8 @@ public:
 	explicit MenuWidget(NanoWidget *widget) noexcept;
 
 	// shows and hides the widget without affecting the elements
-	void show(Point<int> pos);
-	void show(int pos_x, int pos_y) { show(Point<int>(pos_x,pos_y)); }
+	void show(const Point<int>& click_pos,
+		const Rectangle<int>& parent_widget_bounds);
 	void hide();
 
 	// clear all sections and items
@@ -63,6 +63,16 @@ public:
 
 	void setRegularFontSize(const uint size) noexcept;
 	void setSectionFontSize(const uint size) noexcept;
+
+	template<typename T>
+	auto getBounds() const -> Rectangle<T>
+	{
+		return Rectangle<T>(0, 0,
+			static_cast<T>(Widget::getWidth()),
+			static_cast<T>(Widget::getHeight())
+		);
+	}
+
 	void setCallback(Callback *callback) noexcept {this->callback = callback;}
 
 protected:

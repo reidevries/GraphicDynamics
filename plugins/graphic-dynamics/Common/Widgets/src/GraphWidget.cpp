@@ -733,10 +733,15 @@ bool GraphWidgetInner::rightClick(const MouseEvent &ev)
 			{
 				fNodeSelectedByRightClick = node;
 
-				click_r_menu->show(
+				auto click_pos = Point<int>(
 					getAbsoluteX() + ev.pos.getX(),
-					getAbsoluteY() + ev.pos.getY() );
-
+					getAbsoluteY() + ev.pos.getY()
+				);
+				auto widget_bounds = Rectangle<int>(
+					getAbsoluteX(), getAbsoluteY(),
+					getWidth(), getHeight()
+				);
+				click_r_menu->show(click_pos, widget_bounds);
 			}
 
 			return true;

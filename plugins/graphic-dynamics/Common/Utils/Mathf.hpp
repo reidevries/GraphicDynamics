@@ -106,6 +106,20 @@ double ipow2(int exponent);
 double parseHexFloat(char const* ptr, char **endPointer);
 }
 
+namespace graphdyn
+{
+template<typename T>
+auto getBottomRight(const DGL_NAMESPACE::Rectangle<T>& rect)
+	-> DGL_NAMESPACE::Point<T>
+{
+	return Point<T>(
+		rect.getX() + rect.getWidth(),
+		rect.getY() + rect.getHeight()
+	);
+}
+
+}
+
 END_NAMESPACE_DISTRHO
 
 #endif

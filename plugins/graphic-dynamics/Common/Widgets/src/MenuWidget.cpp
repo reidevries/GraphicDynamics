@@ -23,10 +23,23 @@ MenuWidget::MenuWidget(NanoWidget *widget) noexcept
 {
 }
 
-void MenuWidget::show(Point<int> pos)
+void MenuWidget::show(const Point<int>& click_pos,
+	const Rectangle<int>& parent_widget_bounds)
 {
 	adaptSize();
-	NanoWidget::setAbsolutePos(pos);
+
+	// move the menuwidget so that it always appears within the parent widget
+	// bounds
+	const auto menu_br = Point<int>(
+		click_pos.getX() + getWidth(),
+		click_pos.getY() + getHeight()
+	);
+	const auto parent_br = graphdyn::getBottomRight<int>(parent_widget_bounds);
+	auto show_pos = click_pos;
+	if (menu_br.getX() > parent_br.getX()) show_pos.moveBy(-getWidth(), 0);
+	if (menu_br.getY() > parent_br.getY()) show_pos.moveBy(0, -getHeight());
+
+	NanoWidget::setAbsolutePos(show_pos);
 	NanoWidget::show();
 }
 
@@ -146,11 +159,8 @@ void MenuWidget::onNanoDisplay()
 
 auto MenuWidget::onMouse(const MouseEvent& ev) -> bool
 {
-	const Rectangle<float> bounds = Rectangle<float>(0.0f, 0.0f,
-		static_cast<float>(Widget::getWidth()),
-		static_cast<float>(Widget::getHeight())
-	);
-	const Point<float> mouse_pos = Point<float>(
+	const auto bounds = getBounds<float>();
+	const auto mouse_pos = Point<float>(
 		static_cast<float>(ev.pos.getX()),
 		static_cast<float>(ev.pos.getY())
 	);
