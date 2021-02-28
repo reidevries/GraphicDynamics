@@ -79,7 +79,6 @@ protected:
 	void onNanoDisplay() override;
 	auto onMouse( const MouseEvent &)  -> bool override;
 	auto onMotion(const MotionEvent &) -> bool override;
-	//NOTE: this scroll animation is useless rn, but it's kinda fun
 	auto onScroll(const ScrollEvent &) -> bool override;
 
 	DGL_NAMESPACE::Rectangle<float> getBoundsOfItem(const int i);

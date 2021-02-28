@@ -219,26 +219,6 @@ auto MenuWidget::onMotion(const MotionEvent& ev) -> bool
 
 auto MenuWidget::onScroll(const ScrollEvent& ev) -> bool
 {
-	const float scroll_y = ev.delta.getY();
-	if (std::abs(scroll_y) < 0.5f) return true;
-	if (items.size() == 0) return true;
-
-	const Rectangle<float> bounds = Rectangle<float>(
-		static_cast<float>(Widget::getAbsoluteX()),
-		static_cast<float>(Widget::getAbsoluteY()),
-		static_cast<float>(Widget::getWidth()),
-		static_cast<float>(Widget::getHeight())
-	);
-	const Point<float> mouse_pos = Point<float>(
-		static_cast<float>(ev.pos.getX()),
-		static_cast<float>(ev.pos.getY())
-	);
-
-	if (bounds.contains(mouse_pos)) {
-		hover_i += std::round(scroll_y);
-		while (hover_i > items.size()) hover_i -= items.size();
-		while (hover_i < 0) hover_i += items.size();
-	}
 	return true;
 }
 
