@@ -56,6 +56,11 @@ protected:
 		Wave
 	};
 
+	// stores menu layout
+	static const std::array<MenuWidget::Item, 7> menu_layout;
+	static const int section_index_delete = 0;
+	static const int section_index_curve = 2;
+
 	/**
 	* DPF stuff
 	*/

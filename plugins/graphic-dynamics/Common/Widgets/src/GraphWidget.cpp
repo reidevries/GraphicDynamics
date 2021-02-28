@@ -19,6 +19,17 @@ START_NAMESPACE_DISTRHO
 const char *graphDefaultState
 	= "0x0p+0,0x0p+0,0x0p+0,0;0x1p+0,0x1p+0,0x0p+0,0;";
 
+const std::array<MenuWidget::Item, 7> GraphWidgetInner::menu_layout
+	= std::array<MenuWidget::Item, 7>{
+		MenuWidget::Item( "Vertex Options" ),
+		MenuWidget::Item( VertexMenuItem::Delete, "Delete", "(double l-click)"),
+		MenuWidget::Item( "Curve Mode" ),
+		MenuWidget::Item( VertexMenuItem::Single, "Single Power", ""),
+		MenuWidget::Item( VertexMenuItem::Double, "Double Power", ""),
+		MenuWidget::Item( VertexMenuItem::Stairs, "Stairs", ""),
+		MenuWidget::Item( VertexMenuItem::Wave, "Wave", "")
+};
+
 GraphWidgetInner::GraphWidgetInner(UI *ui, Size<uint> size)
 	: NanoWidget((NanoWidget *)ui),
 	ui(ui),
@@ -40,17 +51,7 @@ GraphWidgetInner::GraphWidgetInner(UI *ui, Size<uint> size)
 	getParentWindow().addIdleCallback(this);
 
 	click_r_menu = std::make_unique<MenuWidget>(ui);
-	const std::array<MenuWidget::MenuItem,7> items_array{
-		MenuWidget::MenuItem( -1, "Vertex Options", ""),
-		MenuWidget::MenuItem( VertexMenuItem::Delete, "Delete",
-			"(double l-click)"),
-		MenuWidget::MenuItem( -1, "Curve Type", ""),
-		MenuWidget::MenuItem( VertexMenuItem::Single, "Single Power", ""),
-		MenuWidget::MenuItem( VertexMenuItem::Double, "Double Power", ""),
-		MenuWidget::MenuItem( VertexMenuItem::Stairs, "Stairs", ""),
-		MenuWidget::MenuItem( VertexMenuItem::Wave, "Wave", "")
-	};
-	click_r_menu->addItems(items_array);
+	click_r_menu->addItems(menu_layout);
 	click_r_menu->setCallback(this);
 	click_r_menu->hide();
 
@@ -733,6 +734,18 @@ bool GraphWidgetInner::rightClick(const MouseEvent &ev)
 			else
 			{
 				fNodeSelectedByRightClick = node;
+
+				//disable certain items depending which vertex is selected
+				click_r_menu->setAllItemsEnabled(true);
+				const auto vertex_type
+					= dynamic_cast<GraphVertex*>(node)->getType();
+				if (vertex_type != GraphVertexType::Middle) {
+					click_r_menu->setItemEnabled(section_index_delete, false);
+					if (vertex_type == GraphVertexType::Right) {
+						click_r_menu->setItemEnabled(section_index_curve,
+							false);
+					}
+				}
 
 				auto click_pos = Point<int>(
 					getAbsoluteX() + ev.pos.getX(),

@@ -14,24 +14,34 @@
 #include <vector>
 #include <array>
 #include <string>
+#include <utility>
 
 START_NAMESPACE_DISTRHO
 
 class MenuWidget : public WolfWidget
 {
 public:
-	struct MenuItem
+	struct Item
 	{
 		const int id; // item is considered a section if id < 0
 		const std::string name;
 		const std::string description;
 		bool enabled = true;
-		MenuItem(const int _id,
+		Item(const int _id,
 			const std::string& _name,
 			const std::string& _description)
 			: id(_id),
 			  name(_name),
 			  description(_description),
+			  enabled(true)
+		{
+		}
+
+		// constructor for sections
+		Item(const std::string& _name)
+			: id(-1),
+			  name(_name),
+			  description(""),
 			  enabled(true)
 		{
 		}
@@ -57,19 +67,25 @@ public:
 	// clear all sections and items
 	void clear();
 
-	// add items by pushing them to the end of the list
-	void addItem(const MenuItem item);
-
-	// add item from array for convenience
+	// add items in sections from array for convenience
 	template<size_t t_size>
-	void addItems(std::array<MenuItem, t_size> items)
+	void addItems(std::array<Item, t_size> new_items)
 	{
-		for (auto item : items) addItem(item);
+		for (auto item : new_items) {
+			this->items.push_back(item);
+			updateMaxItemWidth(item);
+		}
 	}
 
-	// find the index of the first section with a matching name
-	// obviously this won't work if two sections have the same name
-	auto findItemIndexByName(const std::string name) -> int;
+	// find the index of the first item with a matching name/id
+	// obviously this won't work if two items have the same name/id
+	auto findItemIndex(const std::string& name) -> int;
+	auto findItemIndex(const int id) -> int;
+	// if you disable an item that's a section header, all the items
+	// until the next section header will be disabled too
+	void setAllItemsEnabled(const bool enabled);
+	void setItemEnabled(const uint index, const bool enabled);
+	void setItemEnabled(const std::string& name, const bool enabled);
 
 	void setRegularFontSize(const uint size) noexcept;
 	void setSectionFontSize(const uint size) noexcept;
@@ -93,7 +109,7 @@ protected:
 	DGL_NAMESPACE::Rectangle<float> getBoundsOfItem(const int i);
 
 private:
-	std::vector<MenuItem> items;
+	std::vector<Item> items;
 
 	float max_item_w_px;
 
@@ -113,9 +129,9 @@ private:
 
 	Callback *callback;
 
-	void updateMaxItemWidth(const MenuItem& item);
+	void updateMaxItemWidth(const Item& item);
 	void adaptSize();
-	auto getItemWidthPx(const MenuItem& item) const -> float;
+	auto getItemWidthPx(const Item& item) const -> float;
 	auto getItemBoundsPx(const int index) -> Rectangle<float>;
 };
 

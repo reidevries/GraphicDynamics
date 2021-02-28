@@ -56,18 +56,36 @@ void MenuWidget::clear()
 	selected_i = -1;
 }
 
-void MenuWidget::addItem(const MenuItem item)
-{
-	items.push_back(item);
-	updateMaxItemWidth(item);
-}
-
-auto MenuWidget::findItemIndexByName(const std::string name) -> int
+auto MenuWidget::findItemIndex(const std::string& name) -> int
 {
 	for (size_t i = 0; i < items.size(); ++i) {
 		if (items[i].name == name) return i;
 	}
 	return -1;
+}
+
+auto MenuWidget::findItemIndex(const int id) -> int
+{
+	for (size_t i = 0; i < items.size(); ++i) {
+		if (items[i].id == id) return i;
+	}
+	return -1;
+}
+
+void MenuWidget::setAllItemsEnabled(const bool enabled)
+{
+	for (auto &item : items) item.enabled = enabled;
+}
+
+void MenuWidget::setItemEnabled(const uint index, const bool enabled)
+{
+	items[index].enabled = enabled;
+}
+
+void MenuWidget::setItemEnabled(const std::string &name, const bool enabled)
+{
+	const int index = findItemIndex(name);
+	if (index > 0) setItemEnabled(index, enabled);
 }
 
 void MenuWidget::setRegularFontSize(const uint size) noexcept
@@ -109,12 +127,23 @@ void MenuWidget::onNanoDisplay()
 	closePath();
 
 	float vertical_offset = 0;
+	bool cur_section_enabled = true;
 
 	translate(margin.left, margin.top);
 
 	for (size_t i = 0; i < items.size(); ++i) {
-		MenuItem& item = items[i];
-		if (static_cast<int>(i) == hover_i && item.id >= 0) {
+		Item& item = items[i];
+
+		// black out items if section is disabled
+		const bool is_section = (item.id < 0);
+		if (is_section) cur_section_enabled = item.enabled;
+		const bool is_enabled = (cur_section_enabled && item.enabled);
+		const bool is_hovered = (static_cast<int>(i) == hover_i);
+
+		// draw highlight background for hovered item
+		if (is_hovered
+			&& !is_section
+			&& is_enabled) {
 			beginPath();
 			fillColor(background_hover_color);
 			rect(0, vertical_offset, w - margin.right, font_item_size);
@@ -125,24 +154,27 @@ void MenuWidget::onNanoDisplay()
 		beginPath();
 
 		int left_offset=0;
-		if (item.id < 0) {
+		if (is_section) {
 			fontSize(font_section_size);
 			fillColor(font_section_color);
 		} else {
 			left_offset = font_section_size;
 			fontSize(font_item_size);
-			if (static_cast<int>(i) == hover_i) {
-				fillColor(font_item_hover_color);
+			if (is_enabled) {
+				if (is_hovered) fillColor(font_item_hover_color);
+				else fillColor(font_item_color);
 			} else {
-				fillColor(font_item_color);
+				fillColor(font_section_color);
 			}
 		}
 
 		text(left_offset, vertical_offset, item.name.c_str(), NULL);
+
 		if (static_cast<int>(i) == selected_i) {
 			text(0, vertical_offset, "✓", NULL);
 		}
 
+		// render description if an item has one
 		if (item.description.size() > 0) {
 			fontSize(font_section_size);
 			fillColor(font_section_color);
@@ -217,7 +249,7 @@ auto MenuWidget::onMotion(const MotionEvent& ev) -> bool
 	return true;
 }
 
-void MenuWidget::updateMaxItemWidth(const MenuItem& item)
+void MenuWidget::updateMaxItemWidth(const Item& item)
 {
 	max_item_w_px = std::max(max_item_w_px, getItemWidthPx(item));
 }
@@ -230,7 +262,7 @@ void MenuWidget::adaptSize()
 	));
 }
 
-auto MenuWidget::getItemWidthPx(const MenuItem& item) const -> float
+auto MenuWidget::getItemWidthPx(const Item& item) const -> float
 {
 	//NOTE: assumes name, description are UTF8
 	if (item.id < 0) {
