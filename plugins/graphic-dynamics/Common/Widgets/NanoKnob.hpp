@@ -26,7 +26,8 @@ public:
   void setDefault(float def) noexcept;
   void setRange(float min, float max) noexcept;
   void setStep(float step) noexcept;
-  void setExponential(const int exponent) noexcept;
+  void setExponential(const bool is_exponential) noexcept;
+  void setVariableResistance(const bool variable_resistance) noexcept;
   void setCallback(Callback *callback) noexcept;
   void setColor(Color color) noexcept;
 
@@ -48,9 +49,18 @@ protected:
   virtual void draw() = 0;
 
 private:
-	const float resistance = 1200.f;
-	int exponent = 1; //simulates logarithm using power. linear when =1
-	auto calcMotionDelta(const int mouse_y) const -> float;
+	const float motion_resistance = 1200.f;
+	const float scroll_resistance = 80.f;
+	const float min_resistance = 0.1f;
+	// if is_exponential is set, getValueScaled returns exponentially
+	// scaled fValue
+	bool is_exponential = false;
+	auto getValueScaled() const -> float;
+	// you can set the knob to have exponential resistance, i'm not sure if that
+	// is a good idea yet for user interface design
+	bool variable_resistance = false;
+	auto calcMotionDelta(const float d_y, const float resistance) const
+		-> float;
   float fMin;
   float fMax;
   float fStep;

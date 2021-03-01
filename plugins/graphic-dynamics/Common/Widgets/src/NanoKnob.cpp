@@ -47,7 +47,11 @@ float NanoKnob::getMax() noexcept
     return fMax;
 }
 
-// NOTE: value is assumed to be scaled if using log
+// in pdesaulniers wolf-shaper: value is assumed to be scaled if using log
+// this is not true anymore. fValue is scaled when sent to callback function
+// if is_exponential is set. I'm not sure where pdesaulniers was planning to
+// scale knobs that were supposed to be logarithmic, because we can't set fValue
+// to a logarithmic value and expect onMotion() to still work properly
 void NanoKnob::setValue(float value, bool sendCallback) noexcept
 {
     value = wolf::clamp(value, fMin, fMax);
@@ -58,14 +62,19 @@ void NanoKnob::setValue(float value, bool sendCallback) noexcept
     fValue = value;
 
     if (sendCallback && fCallback != nullptr)
-        fCallback->nanoKnobValueChanged(this, fValue);
+        fCallback->nanoKnobValueChanged(this, getValueScaled());
 
     repaint();
 }
 
-void NanoKnob::setExponential(const int exponent) noexcept
+void NanoKnob::setExponential(const bool is_exponential) noexcept
 {
-    this->exponent = exponent;
+    this->is_exponential = is_exponential;
+}
+
+void NanoKnob::setVariableResistance(const bool variable_resistance) noexcept
+{
+	this->variable_resistance = variable_resistance;
 }
 
 void NanoKnob::setCallback(Callback *callback) noexcept
@@ -152,7 +161,8 @@ bool NanoKnob::onMotion(const MotionEvent &ev)
 {
     if (fLeftMouseDown)
     {
-        const float difference = calcMotionDelta(ev.pos.getY());
+		const float d_y = fLeftMouseDownLocation.getY() - ev.pos.getY();
+        const float difference = calcMotionDelta(d_y, motion_resistance);
 
         Window &window = getParentWindow();
         const int windowHeight = window.getHeight();
@@ -204,26 +214,30 @@ bool NanoKnob::onMotion(const MotionEvent &ev)
 
 bool NanoKnob::onScroll(const ScrollEvent &ev)
 {
-    if (!contains(ev.pos))
-        return false;
+    if (!contains(ev.pos)) return false;
 
-    const float resistance = 80.0f;
-
-    setValue(getValue() + ev.delta.getY() / resistance * (fMax - fMin), true);
+	const auto d_y = calcMotionDelta(ev.delta.getY(), scroll_resistance);
+    setValue(getValue() + d_y, true);
 
     return true;
 }
 
-auto NanoKnob::calcMotionDelta(const int mouse_y) const -> float
+auto NanoKnob::getValueScaled() const -> float
 {
-	const auto d_y = fLeftMouseDownLocation.getY() - mouse_y;
+	if (is_exponential) return wolf::logScale(fValue, fMin, fMax);
+	else return fValue;
+}
+
+auto NanoKnob::calcMotionDelta(const float d_y, const float resistance) const
+	-> float
+{
 	const auto range = fMax - fMin;
 
 	auto scale = 1.0f;
-	if (exponent != 1) {
+	if (variable_resistance) {
 		// calculate knob position scaled within range 0.0f to 1.0f
 		const auto value_coef = (fValue - fMin)/range;
-		scale = std::pow(value_coef, exponent-1.f);
+		scale = value_coef + min_resistance;
 	}
 
 	return d_y * scale * range / resistance;

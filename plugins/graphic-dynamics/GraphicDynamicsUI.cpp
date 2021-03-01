@@ -167,18 +167,18 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
     label_attack = std::make_unique<LabelBox>(this, ui.labelSize());
 	knob_attack = std::make_unique<VolumeKnob>(this, ui.knob_s);
 	knob_attack->setCallback(this);
-	knob_attack->setRange(0.1f, 10000.0f);
+	knob_attack->setRange(0.1f, 9999.9f);
 	knob_attack->setId(p_atk_ms);
 	knob_attack->setColor(ui.time_col);
-	knob_attack->setExponential(2);
+	knob_attack->setExponential(true);
 
     label_release = std::make_unique<LabelBox>(this, ui.labelSize());
 	knob_release = std::make_unique<VolumeKnob>(this, ui.knob_s);
 	knob_release->setCallback(this);
-	knob_release->setRange(0.1f, 10000.0f);
+	knob_release->setRange(0.1f, 9999.9f);
 	knob_release->setId(p_rls_ms);
 	knob_release->setColor(ui.time_col);
-	knob_release->setExponential(2);
+	knob_release->setExponential(true);
 
     handle_resize = std::make_unique<ResizeHandle>(this, Size<uint>(18, 18));
     handle_resize->setCallback(this);
