@@ -118,6 +118,8 @@ auto getBottomRight(const DGL_NAMESPACE::Rectangle<T>& rect)
 	);
 }
 
+auto getNumDigits(int number) -> int;
+
 }
 
 END_NAMESPACE_DISTRHO

@@ -413,4 +413,16 @@ double parseHexFloat(char const *ptr, char **endPointer)
 }
 } // namespace wolf
 
+namespace graphdyn
+{
+
+auto getNumDigits(int number) -> int
+{
+	int result = 1;
+	while (number /= 10) ++result;
+	return result;
+}
+
+} // namespace graphdyn
+
 END_NAMESPACE_DISTRHO

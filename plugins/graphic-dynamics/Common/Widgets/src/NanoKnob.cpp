@@ -77,6 +77,12 @@ void NanoKnob::setVariableResistance(const bool variable_resistance) noexcept
 	this->variable_resistance = variable_resistance;
 }
 
+void NanoKnob::setMinResistance(const float min_resistance) noexcept
+{
+	// doesn't make sense for minimum resistance to be negative
+	if (min_resistance > 0.f) this->min_resistance = min_resistance;
+}
+
 void NanoKnob::setCallback(Callback *callback) noexcept
 {
     fCallback = callback;

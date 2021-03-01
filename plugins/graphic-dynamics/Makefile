@@ -64,6 +64,7 @@ FILES_UI  = \
 	Common/Widgets/src/LabelContainer.cpp \
 	Common/Widgets/src/GlowingLabelsBox.cpp \
 	Common/Widgets/src/NanoLabel.cpp \
+	Common/Widgets/src/DisplayLabel.cpp \
 	Common/Widgets/src/WidgetBar.cpp \
 	Common/Widgets/src/ArrowButton.cpp \
 	Common/Widgets/src/MenuWidget.cpp \

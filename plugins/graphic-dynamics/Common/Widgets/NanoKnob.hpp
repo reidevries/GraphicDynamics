@@ -28,6 +28,7 @@ public:
   void setStep(float step) noexcept;
   void setExponential(const bool is_exponential) noexcept;
   void setVariableResistance(const bool variable_resistance) noexcept;
+  void setMinResistance(const float min_resistance) noexcept;
   void setCallback(Callback *callback) noexcept;
   void setColor(Color color) noexcept;
 
@@ -51,7 +52,7 @@ protected:
 private:
 	const float motion_resistance = 1200.f;
 	const float scroll_resistance = 80.f;
-	const float min_resistance = 0.1f;
+	float min_resistance = 0.1f;
 	// if is_exponential is set, getValueScaled returns exponentially
 	// scaled fValue
 	bool is_exponential = false;
