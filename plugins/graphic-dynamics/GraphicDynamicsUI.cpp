@@ -167,7 +167,7 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
     label_attack = std::make_unique<DisplayLabel>(this, ui.labelSize());
 	label_attack->setDisplayLabel("ATK ");
 	label_attack->setDisplayUnits("ms");
-	label_attack->setMaxChars(5);
+	label_attack->setMaxDigits(4);
 	knob_attack = std::make_unique<VolumeKnob>(this, ui.knob_s);
 	knob_attack->setCallback(this);
 	knob_attack->setRange(0.1f, 9999.0f);
@@ -180,13 +180,15 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
     label_release = std::make_unique<DisplayLabel>(this, ui.labelSize());
 	label_release->setDisplayLabel("RLS ");
 	label_release->setDisplayUnits("ms");
-	label_release->setMaxChars(5);
+	label_release->setMaxDigits(4);
 	knob_release = std::make_unique<VolumeKnob>(this, ui.knob_s);
 	knob_release->setCallback(this);
 	knob_release->setRange(0.1f, 9999.0f);
 	knob_release->setId(p_rls_ms);
 	knob_release->setColor(ui.time_col);
 	knob_release->setExponential(true);
+	knob_release->setVariableResistance(true);
+	knob_release->setMinResistance(0.1f);
 
     handle_resize = std::make_unique<ResizeHandle>(this, Size<uint>(18, 18));
     handle_resize->setCallback(this);

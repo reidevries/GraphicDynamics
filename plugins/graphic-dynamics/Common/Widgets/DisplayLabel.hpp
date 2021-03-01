@@ -20,16 +20,20 @@ public:
 	void setDisplayLabel(const std::string& display_label);
 	void setDisplayNumber(const float display_number);
 	void setDisplayUnits(const std::string& display_units);
-	void setMaxChars(const int max_chars);
+	void setMaxDigits(const int max_digits);
+
+protected:
+	void onNanoDisplay() override;
 
 private:
 	void updateDisplayText();
+	float display_number;
 
 	std::string display_label;
-	float display_number;
+	std::string display_text;
 	std::string display_units;
 
-	int max_chars;
+	int max_digits;
 };
 
 END_NAMESPACE_DISTRHO
