@@ -10,7 +10,7 @@ DONE -- Create right click menu directly from UI so that it draws at the top
 DONE -- Give ability to enable/disable menuwidget items
 DONE -- close right click menu if mouse leaves graph drawing area
 DONE -- make attack/release knobs logarithmic
--- make warp knobs work again
+DONE -- make warp knobs work again
 -- Put back in a switch for expo/linear
 -- redesign attack/release knobs, possibly with a graphic of the envelope
 -- add units to controls, preferrably generated from the control itself

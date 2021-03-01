@@ -389,33 +389,23 @@ void GraphicDynamicsUI::parameterChanged(uint32_t index, float value)
 		wheel_oversample->setValue(value);
 		break;
 	case p_hor_warp_mode:
-	{
 		label_hor_warp->setSelectedIndex(std::round(value));
 		break;
-	}
 	case p_hor_warp_amt:
 		knob_hor_warp->setValue(value);
-		graph_widget->setHorWarpAmt(value);
 		break;
 	case p_ver_warp_mode:
-	{
 		label_ver_warp->setSelectedIndex(std::round(value));
 		break;
-	}
 	case p_ver_warp_amt:
 		knob_ver_warp->setValue(value);
-		graph_widget->setVerWarpAmt(value);
 		break;
 	case p_atk_ms:
-	{
 		knob_attack->setValue(value);
 		break;
-	}
 	case p_rls_ms:
-	{
 		knob_release->setValue(value);
 		break;
-	}
 	case p_out:
 		graph_widget->updateInput(value);
 		break;
@@ -428,6 +418,12 @@ void GraphicDynamicsUI::parameterChanged(uint32_t index, float value)
 void GraphicDynamicsUI::updateOnParamChange(uint32_t index, float value)
 {
 	switch(index) {
+	case p_hor_warp_amt:
+		graph_widget->setHorWarpAmt(value);
+		break;
+	case p_ver_warp_amt:
+		graph_widget->setVerWarpAmt(value);
+		break;
 	case p_hor_warp_mode:
 		graph_widget->setHorWarpMode((graphdyn::WarpMode)std::round(value));
 		break;
