@@ -26,7 +26,7 @@ public:
   void setDefault(float def) noexcept;
   void setRange(float min, float max) noexcept;
   void setStep(float step) noexcept;
-  void setUsingLogScale(bool yesNo) noexcept;
+  void setExponential(const int exponent) noexcept;
   void setCallback(Callback *callback) noexcept;
   void setColor(Color color) noexcept;
 
@@ -48,11 +48,13 @@ protected:
   virtual void draw() = 0;
 
 private:
+	const float resistance = 1200.f;
+	int exponent = 1; //simulates logarithm using power. linear when =1
+	auto calcMotionDelta(const int mouse_y) const -> float;
   float fMin;
   float fMax;
   float fStep;
   float fValue;
-  bool fUsingLog;
 
   bool fLeftMouseDown;
   Point<int> fLeftMouseDownLocation;

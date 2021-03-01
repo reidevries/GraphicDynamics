@@ -9,7 +9,6 @@ NanoKnob::NanoKnob(NanoWidget *widget, Size<uint> size) noexcept
       fMax(1.0f),
       fStep(0.0f),
       fValue(0.5f),
-      fUsingLog(false),
       fLeftMouseDown(false),
       fIsHovered(false),
       fColor(Color(255, 0, 0, 255)),
@@ -64,9 +63,9 @@ void NanoKnob::setValue(float value, bool sendCallback) noexcept
     repaint();
 }
 
-void NanoKnob::setUsingLogScale(bool yesNo) noexcept
+void NanoKnob::setExponential(const int exponent) noexcept
 {
-    fUsingLog = yesNo;
+    this->exponent = exponent;
 }
 
 void NanoKnob::setCallback(Callback *callback) noexcept
@@ -153,13 +152,15 @@ bool NanoKnob::onMotion(const MotionEvent &ev)
 {
     if (fLeftMouseDown)
     {
-        const float resistance = 1200.0f;
-        const float difference = (fLeftMouseDownLocation.getY() - ev.pos.getY()) / resistance * (fMax - fMin);
+        const float difference = calcMotionDelta(ev.pos.getY());
 
         Window &window = getParentWindow();
         const int windowHeight = window.getHeight();
 
-        // this doesn't seem right. TODO: investigate mouse cursor manipulation code for off-by-one error
+		// wrap mouse at top/bottom edges of window,
+        // and update the stored mouse location
+        // this doesn't seem right.
+        // TODO: investigate mouse cursor manipulation code for off-by-one error
         if (ev.pos.getY() + getAbsoluteY() >= windowHeight - 1)
         {
             window.setCursorPos(getAbsoluteX(), 2);
@@ -175,6 +176,7 @@ bool NanoKnob::onMotion(const MotionEvent &ev)
             fLeftMouseDownLocation.setY(ev.pos.getY());
         }
 
+		// update the value
         setValue(fValue + difference, true);
 
         return true;
@@ -210,6 +212,21 @@ bool NanoKnob::onScroll(const ScrollEvent &ev)
     setValue(getValue() + ev.delta.getY() / resistance * (fMax - fMin), true);
 
     return true;
+}
+
+auto NanoKnob::calcMotionDelta(const int mouse_y) const -> float
+{
+	const auto d_y = fLeftMouseDownLocation.getY() - mouse_y;
+	const auto range = fMax - fMin;
+
+	auto scale = 1.0f;
+	if (exponent != 1) {
+		// calculate knob position scaled within range 0.0f to 1.0f
+		const auto value_coef = (fValue - fMin)/range;
+		scale = std::pow(value_coef, exponent-1.f);
+	}
+
+	return d_y * scale * range / resistance;
 }
 
 END_NAMESPACE_DISTRHO

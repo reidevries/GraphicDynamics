@@ -170,7 +170,7 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
 	knob_attack->setRange(0.1f, 10000.0f);
 	knob_attack->setId(p_atk_ms);
 	knob_attack->setColor(ui.time_col);
-	knob_attack->setUsingLogScale(true);
+	knob_attack->setExponential(2);
 
     label_release = std::make_unique<LabelBox>(this, ui.labelSize());
 	knob_release = std::make_unique<VolumeKnob>(this, ui.knob_s);
@@ -178,7 +178,7 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
 	knob_release->setRange(0.1f, 10000.0f);
 	knob_release->setId(p_rls_ms);
 	knob_release->setColor(ui.time_col);
-	knob_release->setUsingLogScale(true);
+	knob_release->setExponential(2);
 
     handle_resize = std::make_unique<ResizeHandle>(this, Size<uint>(18, 18));
     handle_resize->setCallback(this);
