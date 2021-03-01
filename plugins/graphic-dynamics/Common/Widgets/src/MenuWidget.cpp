@@ -40,6 +40,9 @@ void MenuWidget::show(const Point<int>& click_pos,
 	if (menu_br.getX() > parent_br.getX()) show_pos.moveBy(-getWidth(), 0);
 	if (menu_br.getY() > parent_br.getY()) show_pos.moveBy(0, -getHeight());
 
+	// set the cursor style to the default until the user hovers over an item
+	getParentWindow().setCursorStyle(Window::CursorStyle::Default);
+
 	NanoWidget::setAbsolutePos(show_pos);
 	NanoWidget::show();
 }
@@ -239,20 +242,28 @@ auto MenuWidget::onMotion(const MotionEvent& ev) -> bool
 		hide();
 	}
 
-	// update hover_i
-	for (size_t i = 0; i < items.size(); ++i) {
-		Rectangle<float> bounds = getItemBoundsPx(i);
-		bounds.setWidth(Widget::getWidth() - margin.right);
-		const Point<float> mouse_pos = Point<float>(
-			static_cast<float>(ev.pos.getX()),
-			static_cast<float>(ev.pos.getY())
-		);
+	// check if mouse is outside menu and change cursor style
+	const auto menu_bounds = getBounds<int>();
+	if (menu_bounds.contains(ev.pos)) {
+		// update hover_i
+		for (size_t i = 0; i < items.size(); ++i) {
+			Rectangle<float> bounds = getItemBoundsPx(i);
+			bounds.setWidth(Widget::getWidth() - margin.right);
+			const Point<float> mouse_pos = Point<float>(
+				static_cast<float>(ev.pos.getX()),
+				static_cast<float>(ev.pos.getY())
+			);
 
-		if (static_cast<int>(i) != selected_i && bounds.contains(mouse_pos)) {
-			hover_i = i;
-			return true;
+			if (static_cast<int>(i) != selected_i
+				&& items[i].id >= 0 // item must not be a section header
+				&& bounds.contains(mouse_pos)) {
+				getParentWindow().setCursorStyle(Window::CursorStyle::Grab);
+				hover_i = i;
+				return true;
+			}
 		}
 	}
+	getParentWindow().setCursorStyle(Window::CursorStyle::Default);
 	hover_i = -1;
 	return true;
 }

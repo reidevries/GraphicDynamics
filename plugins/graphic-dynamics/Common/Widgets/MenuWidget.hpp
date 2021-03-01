@@ -11,6 +11,7 @@
 #include "Margin.hpp"
 #include "Config.hpp"
 #include "Mathf.hpp"
+#include "Window.hpp"
 #include <vector>
 #include <array>
 #include <string>

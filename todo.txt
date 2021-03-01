@@ -8,7 +8,7 @@ DONE -- make plugin basic function work
 DONE -- Reimplement right click menu as a widget instead of a window
 DONE -- Create right click menu directly from UI so that it draws at the top
 DONE -- Give ability to enable/disable menuwidget items
--- close right click menu if mouse leaves graph drawing area
+DONE -- close right click menu if mouse leaves graph drawing area
 -- make attack/release knobs logarithmic
 -- Put back in a switch for expo/linear
 -- add units to controls, preferrably generated from the control itself
