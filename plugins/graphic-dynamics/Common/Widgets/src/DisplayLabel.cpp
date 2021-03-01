@@ -44,5 +44,5 @@ void DisplayLabel::updateDisplayText()
 	   << " " << std::setw(int_digits) << int_part
 	   << "." << std::setw(decimal_digits) << decimal_part
 	   << " " << display_units;
-	NanoLabel::setText(ss.str().c_str());
+	LabelBox::setText(ss.str().c_str());
 }

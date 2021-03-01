@@ -1,7 +1,7 @@
 #ifndef __DISPLAYLABEL_HPP_
 #define __DISPLAYLABEL_HPP_
 
-#include "NanoLabel.hpp"
+#include "LabelBox.hpp"
 #include "Mathf.hpp"
 
 #include <string>
@@ -12,7 +12,7 @@
 START_NAMESPACE_DISTRHO
 
 // extends NanoLabel by allowing a value to be displayed dynamically
-class DisplayLabel : public NanoLabel
+class DisplayLabel : public LabelBox
 {
 public:
 	void setDisplayLabel(const std::string& display_label);
