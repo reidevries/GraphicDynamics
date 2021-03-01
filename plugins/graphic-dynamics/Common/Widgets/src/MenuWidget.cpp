@@ -26,6 +26,7 @@ MenuWidget::MenuWidget(NanoWidget *widget) noexcept
 void MenuWidget::show(const Point<int>& click_pos,
 	const Rectangle<int>& parent_widget_bounds)
 {
+	this->parent_widget_bounds = parent_widget_bounds;
 	adaptSize();
 
 	// move the menuwidget so that it always appears within the parent widget
@@ -197,7 +198,6 @@ auto MenuWidget::onMouse(const MouseEvent& ev) -> bool
 		static_cast<float>(ev.pos.getY())
 	);
 
-	std::cout << graphdebug::printMouseEvent(ev).str() << std::endl;
 	callback->propagateMouseEvent(ev);
 
 	if (ev.press == true) {
@@ -230,6 +230,16 @@ auto MenuWidget::onMouse(const MouseEvent& ev) -> bool
 
 auto MenuWidget::onMotion(const MotionEvent& ev) -> bool
 {
+	// check if mouse has moved outside the bounds of the parent widget
+	const auto mouse_pos_absolute = Point<int>(
+		ev.pos.getX() + getAbsoluteX(),
+		ev.pos.getY() + getAbsoluteY()
+	);
+	if (!parent_widget_bounds.contains(mouse_pos_absolute)) {
+		hide();
+	}
+
+	// update hover_i
 	for (size_t i = 0; i < items.size(); ++i) {
 		Rectangle<float> bounds = getItemBoundsPx(i);
 		bounds.setWidth(Widget::getWidth() - margin.right);

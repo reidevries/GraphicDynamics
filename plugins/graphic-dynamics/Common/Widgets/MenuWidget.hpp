@@ -111,6 +111,12 @@ protected:
 private:
 	std::vector<Item> items;
 
+	// if the mouse moves outside these bounds, the menu will close.
+	// updated on show. assumes the bounds won't change while the menu is open.
+	// this is a safe assumption as long as the bounds don't include a resize
+	// handle.
+	Rectangle<int> parent_widget_bounds;
+
 	float max_item_w_px;
 
 	int hover_i;
