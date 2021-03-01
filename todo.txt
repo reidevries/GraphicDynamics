@@ -10,7 +10,7 @@ DONE -- Create right click menu directly from UI so that it draws at the top
 DONE -- Give ability to enable/disable menuwidget items
 DONE -- close right click menu if mouse leaves graph drawing area
 DONE -- make attack/release knobs logarithmic
-DONE -- make warp knobs work again
+DONE -- make warp knobs work agai
 -- Put back in a switch for expo/linear
 -- redesign attack/release knobs, possibly with a graphic of the envelope
 -- add units to controls, preferrably generated from the control itself
@@ -21,7 +21,12 @@ DONE -- Investigate ParamSmooth stuff
 -- implement sidechain inputs and add switch for them
 DONE -- investigate ways to replace the custom data structures with std:: ones
 -- (far goal) refactor to allow any number of channels (theoretically)
--- (far goal) implement presets for the graph editor, in such a way that they could be smoothly morphed
+-- (far goal) implement presets for the graph editor, in such a way that they could be smoothly morphed. NOTE: running sizeof(graphdyn::Graph) returns a value of 31312
+bytes. This is pretty huge and I'm thinking it could possibly be simplified to an
+array of 4096 floats which would be about half the size, then linearly interpolate
+between them. I would have to do more research but this is more samples than
+the resolution of most monitors so it should be plenty to accurately reconstruct
+the graph contents, and faster to run as it's basically a wavetable.
 
 To (maybe) pull request in pdesaulniers' wolf-shaper
 -- make themes work more globally

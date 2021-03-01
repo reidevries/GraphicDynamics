@@ -245,6 +245,7 @@ protected:
 	void run(const float **inputs, float **outputs, uint32_t num_samples)
 		override
 	{
+		std::cout << sizeof(graphdyn::Graph) << std::endl;
 		// update the status of the graph line editor
 		if (mutex.tryLock()) {
 			if (must_copy_line_editor) {
