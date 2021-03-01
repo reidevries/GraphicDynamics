@@ -164,7 +164,10 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
     button_r_ver_warp_mode->setId(p_ver_warp_mode);
     button_r_ver_warp_mode->setArrowDirection(ArrowButton::Right);
 
-    label_attack = std::make_unique<LabelBox>(this, ui.labelSize());
+    label_attack = std::make_unique<DisplayLabel>(this, ui.labelSize());
+	label_attack->setDisplayLabel("ATK");
+	label_attack->setDisplayUnits("ms");
+	label_attack->setMaxChars(5);
 	knob_attack = std::make_unique<VolumeKnob>(this, ui.knob_s);
 	knob_attack->setCallback(this);
 	knob_attack->setRange(0.1f, 9999.0f);
@@ -174,7 +177,10 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
 	knob_attack->setVariableResistance(true);
 	knob_attack->setMinResistance(0.1f);
 
-    label_release = std::make_unique<LabelBox>(this, ui.labelSize());
+    label_release = std::make_unique<DisplayLabel>(this, ui.labelSize());
+	label_release->setDisplayLabel("RLS");
+	label_release->setDisplayUnits("ms");
+	label_release->setMaxChars(5);
 	knob_release = std::make_unique<VolumeKnob>(this, ui.knob_s);
 	knob_release->setCallback(this);
 	knob_release->setRange(0.1f, 9999.0f);
@@ -428,17 +434,13 @@ void GraphicDynamicsUI::updateOnParamChange(uint32_t index, float value)
 		break;
 	case p_atk_ms:
 	{
-		std::stringstream ss("");
-		ss << "ATK " << std::round(value) << "ms";
-		label_attack->setText(ss.str());
+		label_attack->setDisplayNumber(value);
 		label_attack->repaint();
 		break;
 	}
 	case p_rls_ms:
 	{
-		std::stringstream ss("");
-		ss << "RLS " << std::round(value) << "ms";
-		label_release->setText(ss.str());
+		label_release->setDisplayNumber(value);
 		label_release->repaint();
 	}
 	default:

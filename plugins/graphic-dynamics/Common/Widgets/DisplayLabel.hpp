@@ -15,6 +15,8 @@ START_NAMESPACE_DISTRHO
 class DisplayLabel : public LabelBox
 {
 public:
+	explicit DisplayLabel(NanoWidget *widget, Size<uint> size) noexcept;
+
 	void setDisplayLabel(const std::string& display_label);
 	void setDisplayNumber(const float display_number);
 	void setDisplayUnits(const std::string& display_units);

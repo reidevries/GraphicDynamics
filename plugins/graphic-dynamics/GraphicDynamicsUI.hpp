@@ -10,6 +10,7 @@
 #include "VolumeKnob.hpp"
 #include "ResizeHandle.hpp"
 #include "LabelBox.hpp"
+#include "DisplayLabel.hpp"
 #include "BipolarModeSwitch.hpp"
 #include "GlowingLabelsBox.hpp"
 #include "NanoLabel.hpp"
@@ -72,17 +73,14 @@ private:
 	std::unique_ptr<VolumeKnob> knob_pre, knob_wet, knob_post;
 	std::unique_ptr<LabelBox> label_pre, label_wet, label_post;
 
-	std::unique_ptr<VolumeKnob> knob_hor_warp;
-	std::unique_ptr<LabelBoxList> label_hor_warp;
-
-	std::unique_ptr<VolumeKnob> knob_ver_warp;
-	std::unique_ptr<LabelBoxList> label_ver_warp;
+	std::unique_ptr<VolumeKnob> knob_hor_warp, knob_ver_warp;
+	std::unique_ptr<LabelBoxList> label_hor_warp, label_ver_warp;
 
 	std::unique_ptr<ArrowButton> button_l_hor_warp_mode, button_r_hor_warp_mode;
 	std::unique_ptr<ArrowButton> button_l_ver_warp_mode, button_r_ver_warp_mode;
 	
 	std::unique_ptr<VolumeKnob> knob_attack, knob_release;
-	std::unique_ptr<LabelBox> label_attack, label_release;
+	std::unique_ptr<DisplayLabel> label_attack, label_release;
 
 	std::unique_ptr<ResizeHandle> handle_resize;
 
