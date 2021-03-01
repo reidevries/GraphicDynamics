@@ -165,7 +165,7 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
     button_r_ver_warp_mode->setArrowDirection(ArrowButton::Right);
 
     label_attack = std::make_unique<DisplayLabel>(this, ui.labelSize());
-	label_attack->setDisplayLabel("ATK");
+	label_attack->setDisplayLabel("ATK ");
 	label_attack->setDisplayUnits("ms");
 	label_attack->setMaxChars(5);
 	knob_attack = std::make_unique<VolumeKnob>(this, ui.knob_s);
@@ -178,7 +178,7 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
 	knob_attack->setMinResistance(0.1f);
 
     label_release = std::make_unique<DisplayLabel>(this, ui.labelSize());
-	label_release->setDisplayLabel("RLS");
+	label_release->setDisplayLabel("RLS ");
 	label_release->setDisplayUnits("ms");
 	label_release->setMaxChars(5);
 	knob_release = std::make_unique<VolumeKnob>(this, ui.knob_s);
