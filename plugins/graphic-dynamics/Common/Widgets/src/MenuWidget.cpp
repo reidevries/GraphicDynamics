@@ -5,20 +5,19 @@
 
 START_NAMESPACE_DISTRHO
 
-MenuWidget::MenuWidget(NanoWidget *widget) noexcept
+MenuWidget::MenuWidget(NanoWidget *widget, const UIConfig& uiconf) noexcept
 	: WolfWidget(widget),
 	  hover_i(-1),
 	  selected_i(-1),
 	  margin(Margin(7,15,7,13)),
 	  font_item_size(17.0f),
 	  font_section_size(14.0f),
-	  border_color(CONFIG_NAMESPACE::menu_border_color),
-	  background_color(CONFIG_NAMESPACE::menu_background_color),
-	  background_hover_color(
-		  CONFIG_NAMESPACE::menu_background_hover_color),
-	  font_item_color(CONFIG_NAMESPACE::menu_font_item_color),
-	  font_item_hover_color(CONFIG_NAMESPACE::menu_font_item_hover_color),
-	  font_section_color(CONFIG_NAMESPACE::menu_font_section_color),
+	  border_color(uiconf.menu_border_color),
+	  background_color(uiconf.menu_background_color),
+	  background_hover_color(uiconf.menu_background_hover_color),
+	  font_item_color(uiconf.menu_font_item_color),
+	  font_item_hover_color(uiconf.menu_font_item_hover_color),
+	  font_section_color(uiconf.menu_font_section_color),
 	  callback(nullptr)
 {
 }

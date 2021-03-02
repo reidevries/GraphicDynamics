@@ -5,7 +5,6 @@
 #include "GraphWidget.hpp"
 #include "GraphNode.hpp"
 #include "Mathf.hpp"
-#include "Config.hpp"
 
 #include "Fonts/chivo_italic.hpp"
 
@@ -30,19 +29,31 @@ const std::array<MenuWidget::Item, 7> GraphWidgetInner::menu_layout
 		MenuWidget::Item( VertexMenuItem::Wave, "Wave", "")
 };
 
-GraphWidgetInner::GraphWidgetInner(UI *ui, Size<uint> size)
+GraphWidgetInner::GraphWidgetInner(UI *ui, Size<uint> size,
+	const UIConfig& uiconf)
 	: NanoWidget((NanoWidget *)ui),
-	ui(ui),
-	graphVerticesPool(graphdyn::max_vertices, this, GraphVertexType::Middle),
-	focusedElement(nullptr),
-	mouseLeftDown(false),
-	mouseRightDown(false),
-	graphGradientMode(GraphGradientMode::None),
-	mustHideVertices(false),
-	hovered(false),
-	maxInput(0.0f),
-	fInput(0.0f),
-	fLastCurveTypeSelected(graphdyn::Curve::Single)
+	  ui(ui),
+	  stroke_fg(uiconf.grid_stroke_fg),
+	  stroke_bg(uiconf.grid_stroke_bg),
+	  stroke_sub(uiconf.grid_stroke_sub),
+	  stroke_middle(uiconf.grid_stroke_middle),
+	  stroke_alignment(uiconf.grid_stroke_alignment),
+	  fill_bg(uiconf.grid_fill_bg),
+	  gradient_i(uiconf.grid_gradient_i),
+	  gradient_o(uiconf.grid_gradient_o),
+	  volume_indicator_stroke(uiconf.volume_indicator_stroke),
+	  playhead_fill(uiconf.playhead_fill),
+	  playhead_stroke(uiconf.playhead_stroke),
+	  graphVerticesPool(graphdyn::max_vertices, this, GraphVertexType::Middle),
+	  focusedElement(nullptr),
+	  mouseLeftDown(false),
+	  mouseRightDown(false),
+	  graphGradientMode(GraphGradientMode::None),
+	  mustHideVertices(false),
+	  hovered(false),
+	  maxInput(0.0f),
+	  fInput(0.0f),
+	  fLastCurveTypeSelected(graphdyn::Curve::Single)
 {
 	setSize(size);
 
@@ -50,7 +61,7 @@ GraphWidgetInner::GraphWidgetInner(UI *ui, Size<uint> size)
 
 	getParentWindow().addIdleCallback(this);
 
-	click_r_menu = std::make_unique<MenuWidget>(ui);
+	click_r_menu = std::make_unique<MenuWidget>(ui, uiconf);
 	click_r_menu->addItems(menu_layout);
 	click_r_menu->setCallback(this);
 	click_r_menu->hide();
@@ -180,12 +191,6 @@ void GraphWidgetInner::drawGrid()
     const float verticalStep = width / squaresPerRow;
     const float horizontalStep = height / squaresPerRow;
 
-    const Color gridForegroundColor = CONFIG_NAMESPACE::grid_foreground;
-    const Color gridBackgroundColor = CONFIG_NAMESPACE::grid_background;
-    const Color subGridColor = CONFIG_NAMESPACE::sub_grid;
-    const Color gridMiddleLineHorizontalColor = CONFIG_NAMESPACE::grid_middle_line_horizontal;
-    const Color gridMiddleLineVerticalColor = CONFIG_NAMESPACE::grid_middle_line_vertical;
-
     //vertical
     for (int i = 0; i < squaresPerRow + 1; ++i)
     {
@@ -194,7 +199,7 @@ void GraphWidgetInner::drawGrid()
         //subgrid
         beginPath();
         strokeWidth(lineWidth);
-        strokeColor(subGridColor);
+        strokeColor(stroke_sub);
 
         moveTo(std::round(posX + verticalStep / 2.0f), 0.0f);
         lineTo(std::round(posX + verticalStep / 2.0f), height);
@@ -205,7 +210,7 @@ void GraphWidgetInner::drawGrid()
         //background
         beginPath();
         strokeWidth(lineWidth);
-        strokeColor(gridBackgroundColor);
+        strokeColor(stroke_bg);
 
         moveTo(posX + lineWidth, 0.0f);
         lineTo(posX + lineWidth, height);
@@ -216,7 +221,7 @@ void GraphWidgetInner::drawGrid()
         //foreground
         beginPath();
         strokeWidth(lineWidth);
-        strokeColor(i == gridMiddleLineIndex ? gridMiddleLineVerticalColor : gridForegroundColor);
+        strokeColor(i == gridMiddleLineIndex ? stroke_middle : stroke_fg);
 
         moveTo(posX, 0.0f);
         lineTo(posX, height);
@@ -233,7 +238,7 @@ void GraphWidgetInner::drawGrid()
         //subgrid
         beginPath();
         strokeWidth(lineWidth);
-        strokeColor(subGridColor);
+        strokeColor(stroke_sub);
 
         moveTo(0.0f, std::round(posY + horizontalStep / 2.0f));
         lineTo(width, std::round(posY + horizontalStep / 2.0f));
@@ -248,7 +253,7 @@ void GraphWidgetInner::drawGrid()
         moveTo(0.0f, posY + lineWidth);
         lineTo(width, posY + lineWidth);
 
-        strokeColor(gridBackgroundColor);
+        strokeColor(stroke_bg);
 
         stroke();
         closePath();
@@ -260,7 +265,7 @@ void GraphWidgetInner::drawGrid()
         moveTo(0.0f, posY);
         lineTo(width, posY);
 
-        strokeColor(i == gridMiddleLineIndex ? gridMiddleLineHorizontalColor : gridForegroundColor);
+        strokeColor(i == gridMiddleLineIndex ? stroke_middle : stroke_fg);
 
         stroke();
         closePath();
@@ -280,7 +285,7 @@ void GraphWidgetInner::drawBackground()
     rect(0.f, 0.f, width, height);
     //Paint gradient = radialGradient(centerX, centerY, 1.0f, centerX, Color(42, 42, 42, 255), Color(33, 32, 39, 255));
     //fillPaint(gradient);
-    fillColor(CONFIG_NAMESPACE::graph_background);
+    fillColor(fill_bg);
     fill();
 
     closePath();
@@ -353,21 +358,21 @@ void GraphWidgetInner::drawAlignmentLines()
 {
     const int x = focusedElement->getX();
     const int y = focusedElement->getY();
-    const int width = getWidth();
-    const int height = getHeight();
+    const int w = getWidth();
+    const int h = getHeight();
 
     translate(0.5f, 0.5f);
 
     beginPath();
 
     strokeWidth(1.0f);
-    strokeColor(CONFIG_NAMESPACE::alignment_lines);
+    strokeColor(stroke_alignment);
 
     moveTo(x, 0);
-    lineTo(x, height);
+    lineTo(x, h);
 
     moveTo(0, y);
-    lineTo(width, y);
+    lineTo(w, y);
 
     stroke();
 
@@ -414,8 +419,8 @@ void GraphWidgetInner::drawGradient()
 	fillPaint( linearGradient(
 		width / 2.0f, 0,    // start x and y
 		width / 2.0f, peak, // end x and y
-		CONFIG_NAMESPACE::graph_gradient_icol,
-		CONFIG_NAMESPACE::graph_gradient_ocol
+		gradient_i,
+		gradient_o
 	) );
 	fill();
 
@@ -477,7 +482,7 @@ void GraphWidgetInner::drawInputIndicator()
 
     beginPath();
 
-    strokeColor(CONFIG_NAMESPACE::input_volume_indicator);
+    strokeColor(volume_indicator_stroke);
     strokeWidth(1.0f);
 
     moveTo(inputIndicatorX, 0);
@@ -494,8 +499,8 @@ void GraphWidgetInner::drawInputIndicator()
 
     beginPath();
 
-    fillColor(CONFIG_NAMESPACE::playhead_circle_fill);
-    strokeColor(CONFIG_NAMESPACE::playhead_circle_stroke);
+    fillColor(playhead_fill);
+    strokeColor(playhead_stroke);
 
     circle(inputIndicatorX, circleY, 3.5f);
     fill();
@@ -880,37 +885,35 @@ void GraphWidgetInner::onMouseLeave()
     getParentWindow().setCursorStyle(Window::CursorStyle::Default);
 }
 
-GraphWidget::GraphWidget(UI *ui, Size<uint> size) : 
+GraphWidget::GraphWidget( UI *ui, Size<uint> size, const UIConfig& uiconf ) :
 	NanoWidget((NanoWidget *)ui),
-	fMargin(16, 16, 16, 16)
+	margin(uiconf.graph_margin),
+	m_fill(uiconf.graph_m_fill),
+	m_stroke(uiconf.graph_m_stroke),
+	m_stroke_w(uiconf.graph_m_stroke_w),
+	top_stroke(uiconf.graph_top_stroke),
+	top_w(uiconf.graph_top_w),
+	edge_w(uiconf.graph_edge_w),
+	edge_fg_normal(uiconf.graph_edge_fg_normal),
+	edge_fg_focus(uiconf.graph_edge_fg_focus)
 {
 	setSize(size);
-
-	const float graphWidth = size.getWidth() - fMargin.left - fMargin.right;
-	const float graphHeight = size.getHeight() - fMargin.top - fMargin.bottom;
-
-	const Size<uint> graphInnerSize = Size<uint>(graphWidth, graphHeight);
-
-	fGraphWidgetInner = new GraphWidgetInner(ui, graphInnerSize);
-	fGraphWidgetInner->parent = this;
-}
-
-GraphWidget::~GraphWidget()
-{
+	inner = std::make_unique<GraphWidgetInner>(ui, calcInnerSize(), uiconf);
+	inner->parent = this;
 }
 
 void GraphWidget::onNanoDisplay()
 {
-	const float width = getWidth();
-	const float height = getHeight();
+	const float w = getWidth();
+	const float h = getHeight();
 
 	beginPath();
 
-	fillColor(CONFIG_NAMESPACE::graph_margin);
-	strokeColor(CONFIG_NAMESPACE::side_borders);
-	strokeWidth(1.0f);
+	fillColor(m_fill);
+	strokeColor(m_stroke);
+	strokeWidth(m_stroke_w);
 
-	rect(0.f, 0.f, width, height);
+	rect(0.f, 0.f, w, h);
 
 	fill();
 	stroke();
@@ -919,44 +922,39 @@ void GraphWidget::onNanoDisplay()
 
 	beginPath();
 
-	const float topBorderWidth = 2.0f;
-
-	strokeColor(CONFIG_NAMESPACE::top_border);
-	strokeWidth(topBorderWidth);
+	strokeColor(top_stroke);
+	strokeWidth(top_w);
 
 	moveTo(0, 1);
-	lineTo(width, 1);
+	lineTo(w, 1);
 
 	stroke();
 
 	closePath();
 
-	translate(fMargin.left, fMargin.top);
-	fGraphWidgetInner->setAbsolutePos(
-		getAbsoluteX() + fMargin.left,
-		getAbsoluteY() + fMargin.top );
+	translate(margin, margin);
+	inner->setAbsolutePos(
+		getAbsoluteX() + margin,
+		getAbsoluteY() + margin );
 
-	fGraphWidgetInner->drawBackground();
-	fGraphWidgetInner->drawGrid();
-	fGraphWidgetInner->drawInOutLabels();
+	inner->drawBackground();
+	inner->drawGrid();
+	inner->drawInOutLabels();
 
-	fGraphWidgetInner->flipYAxis();
+	inner->flipYAxis();
 
-	if (fGraphWidgetInner->focusedElement != nullptr
-		&& dynamic_cast<GraphVertex *>(fGraphWidgetInner->focusedElement)) {
-		fGraphWidgetInner->drawAlignmentLines();
+	if (inner->focusedElement != nullptr
+		&& dynamic_cast<GraphVertex *>(inner->focusedElement)) {
+		inner->drawAlignmentLines();
 	}
 
-	fGraphWidgetInner->drawGradient();
-	fGraphWidgetInner->drawGraphLine(
-		CONFIG_NAMESPACE::graph_edges_stroke_width,
-		CONFIG_NAMESPACE::graph_edges_foreground_normal,
-		CONFIG_NAMESPACE::graph_edges_foreground_focused ); //inner
+	inner->drawGradient();
+	inner->drawGraphLine( edge_w, edge_fg_normal, edge_fg_focus );
 
-	fGraphWidgetInner->drawInputIndicator();
+	inner->drawInputIndicator();
 
-	if (!fGraphWidgetInner->mustHideVertices)
-		fGraphWidgetInner->drawVertices();
+	if (!inner->mustHideVertices)
+		inner->drawVertices();
 }
 
 void GraphWidget::onResize(const ResizeEvent &ev)
@@ -964,60 +962,57 @@ void GraphWidget::onResize(const ResizeEvent &ev)
 	if (ev.oldSize.isNull())
 		return;
 
-	const float graphInnerWidth = getWidth() - fMargin.left - fMargin.right;
-	const float graphInnerHeight = getHeight() - fMargin.top - fMargin.bottom;
-
-	const Size<uint> graphInnerSize = Size<uint>(
-		graphInnerWidth,
-		graphInnerHeight
-	);
-
-	fGraphWidgetInner->setSize(graphInnerSize);
+	inner->setSize(calcInnerSize());
 }
 
 void GraphWidget::rebuildFromString(const char *serializedGraph)
 {
-	fGraphWidgetInner->rebuildFromString(serializedGraph);
+	inner->rebuildFromString(serializedGraph);
 }
 
 void GraphWidget::reset()
 {
-	fGraphWidgetInner->reset();
+	inner->reset();
 }
 
 void GraphWidget::updateInput(const float input)
 {
-	fGraphWidgetInner->updateInput(input);
+	inner->updateInput(input);
 }
 
 void GraphWidget::setGraphGradientMode(GraphGradientMode graphGradientMode)
 {
-	fGraphWidgetInner->setGraphGradientMode(graphGradientMode);
+	inner->setGraphGradientMode(graphGradientMode);
 }
 
 void GraphWidget::setHorWarpAmt(const float amt)
 {
-	fGraphWidgetInner->setHorWarpAmt(amt);
+	inner->setHorWarpAmt(amt);
 }
 
 void GraphWidget::setHorWarpMode(const graphdyn::WarpMode mode)
 {
-    fGraphWidgetInner->setHorWarpMode(mode);
+    inner->setHorWarpMode(mode);
 }
 
 void GraphWidget::setVerWarpAmt(const float amt)
 {
-    fGraphWidgetInner->setVerWarpAmt(amt);
+    inner->setVerWarpAmt(amt);
 }
 
 void GraphWidget::setVerWarpMode(const graphdyn::WarpMode mode)
 {
-    fGraphWidgetInner->setVerWarpMode(mode);
+    inner->setVerWarpMode(mode);
 }
 
 void GraphWidget::setMustHideVertices(const bool hide)
 {
-    fGraphWidgetInner->setMustHideVertices(hide);
+    inner->setMustHideVertices(hide);
+}
+
+auto GraphWidget::calcInnerSize() -> Size<uint>
+{
+	return Size<uint>(getWidth() - margin*2, getHeight() - margin*2);
 }
 
 END_NAMESPACE_DISTRHO

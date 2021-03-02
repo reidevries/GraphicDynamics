@@ -15,8 +15,6 @@ GraphNode::GraphNode(GraphWidgetInner *parent)
 {
 }
 
-GraphNode::~GraphNode() {}
-
 bool GraphNode::onMotion(const Widget::MotionEvent &) { return false; }
 bool GraphNode::onMouse(const Widget::MouseEvent &) { return false; }
 void GraphNode::render() {}
@@ -37,16 +35,20 @@ auto GraphNode::getParentWindow() -> Window&
     return parent->getParentWindow();
 }
 
-auto GraphNode::getLineEditor() const -> *graphdyn::Graph
+auto GraphNode::getLineEditor() const -> graphdyn::Graph*
 {
     return &parent->lineEditor;
 }
 
 
 GraphTensionHandle::GraphTensionHandle( GraphWidgetInner *parent,
-	GraphVertex *vertex )
+	GraphVertex *vertex, const UIConfig& uiconf )
 	: GraphNode(parent),
-	  vertex(vertex)
+	  vertex(vertex),
+	  radius(uiconf.tension_handle_radius),
+	  stroke_w(uiconf.tension_handle_stroke_w),
+	  col_normal(uiconf.tension_handle_normal),
+	  col_focus(uiconf.tension_handle_focus)
 {
 }
 
@@ -180,14 +182,14 @@ void GraphTensionHandle::render()
 
     parent->beginPath();
 
-    parent->strokeWidth(CONFIG_NAMESPACE::tension_handle_stroke_width);
+    parent->strokeWidth(stroke_w);
 
     if (parent->edgeMustBeEmphasized(vertex->getIndex())) //TODO: make that a method on the vertex
-        parent->strokeColor(CONFIG_NAMESPACE::tension_handle_focused);
+        parent->strokeColor(col_focus);
     else
-        parent->strokeColor(CONFIG_NAMESPACE::tension_handle_normal);
+        parent->strokeColor(col_normal);
 
-    parent->circle(getX(), getY(), CONFIG_NAMESPACE::tension_handle_radius);
+    parent->circle(getX(), getY(), radius);
 
     parent->stroke();
 
@@ -199,26 +201,33 @@ void GraphTensionHandle::render()
 GraphVertex::GraphVertex( GraphWidgetInner *parent, GraphVertexType type,
 	const UIConfig& uiconf )
 	: GraphNode(parent),
-	  tensionHandle(parent, this),
+	  tensionHandle(parent, this, uiconf),
 	  surface(Circle<int>(0, 0, 8.0f)),
 	  type(type),
-	  lastClickButton(0)
+	  lastClickButton(0),
+	  radius(uiconf.vertex_radius),
+	  stroke_w(uiconf.vertex_stroke_w),
+	  fill_normal(uiconf.vertex_fill_normal),
+	  fill_focus(uiconf.vertex_fill_focus),
+	  stroke_normal(uiconf.vertex_stroke_normal),
+	  stroke_focus(uiconf.vertex_stroke_focus),
+	  halo(uiconf.vertex_halo)
 {
     switch (type)
     {
     case GraphVertexType::Left:
     case GraphVertexType::Middle:
-        surface = Circle<int>(0, 0, CONFIG_NAMESPACE::vertex_radius);
+        surface = Circle<int>(0, 0, radius);
         break;
     case GraphVertexType::Right:
-        surface = Circle<int>(parent->getWidth(), parent->getHeight(), CONFIG_NAMESPACE::vertex_radius);
+        surface = Circle<int>(parent->getWidth(), parent->getHeight(), radius);
         break;
     }
 }
 
 void GraphVertex::reset()
 {
-    surface = Circle<int>(0, 0, CONFIG_NAMESPACE::vertex_radius);
+    surface = Circle<int>(0, 0, radius);
     type = GraphVertexType::Middle;
     grabbed = false;
 }
@@ -234,18 +243,18 @@ void GraphVertex::render()
 
     parent->beginPath();
 
-    parent->strokeWidth(CONFIG_NAMESPACE::vertex_stroke_width);
+    parent->strokeWidth(stroke_w);
 
 
     if (focused)
     {
-        parent->strokeColor(CONFIG_NAMESPACE::vertex_stroke_focused);
-        parent->fillColor(CONFIG_NAMESPACE::vertex_fill_focused);
+        parent->strokeColor(stroke_focus);
+        parent->fillColor(fill_focus);
     }
     else
     {
-        parent->strokeColor(CONFIG_NAMESPACE::vertex_stroke_normal);
-        parent->fillColor(CONFIG_NAMESPACE::vertex_fill_normal);
+        parent->strokeColor(stroke_normal);
+        parent->fillColor(fill_normal);
     }
 
     parent->circle(getX(), getY(), getSize());

@@ -9,9 +9,9 @@
 #include "NanoVG.hpp"
 #include "WolfWidget.hpp"
 #include "Margin.hpp"
-#include "Config.hpp"
 #include "Mathf.hpp"
 #include "Window.hpp"
+#include "UIConfig.hpp"
 #include <vector>
 #include <array>
 #include <string>
@@ -58,7 +58,7 @@ public:
 		virtual void propagateMouseEvent(const MouseEvent& ev) = 0;
 	};
 
-	explicit MenuWidget(NanoWidget *widget) noexcept;
+	explicit MenuWidget( NanoWidget *widget, const UIConfig& uiconf ) noexcept;
 
 	// shows and hides the widget without affecting the elements
 	void show(const Point<int>& click_pos,

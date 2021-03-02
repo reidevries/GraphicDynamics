@@ -39,6 +39,8 @@ public:
 
 	float getParameterValue(uint32_t index) const;
 
+	auto conf() const { return ui; } // lets child classes access configuration
+
 protected:
 	void parameterChanged(uint32_t, float value) override;
 	void tryRememberSize();

@@ -9,6 +9,7 @@
 #include "Margin.hpp"
 #include "Widget.hpp"
 #include "MenuWidget.hpp"
+#include "UIConfig.hpp"
 
 START_NAMESPACE_DISTRHO
 
@@ -33,7 +34,7 @@ class GraphWidgetInner : public NanoWidget,
 	friend class GraphWidget;
 
 public:
-	GraphWidgetInner(UI *ui, Size<uint> size);
+	GraphWidgetInner( UI *ui, Size<uint> size, const UIConfig& uiconf );
 	~GraphWidgetInner();
 
 	/**
@@ -169,6 +170,20 @@ protected:
 private:
 	UI *ui;
 
+	// UI configuration variables
+	const Color stroke_fg;
+	const Color stroke_bg;
+	const Color stroke_sub;
+	const Color stroke_middle;
+	const Color stroke_alignment;
+	const Color fill_bg;
+	const Color gradient_i;
+	const Color gradient_o;
+
+	const Color volume_indicator_stroke;
+	const Color playhead_fill;
+	const Color playhead_stroke;
+
 	/**
 	* Initialize the left and right vertices in the graph.
 	*/
@@ -241,7 +256,7 @@ private:
 class GraphWidget : public NanoWidget
 {
 public:
-	GraphWidget(UI *ui, Size<uint> size);
+	GraphWidget( UI *ui, Size<uint> size, const UIConfig& uiconf );
 	~GraphWidget();
 
 	void rebuildFromString(const char *serializedGraph);
@@ -263,8 +278,19 @@ protected:
 	void onNanoDisplay() override;
 
 private:
-	ScopedPointer<GraphWidgetInner> fGraphWidgetInner;
-	Margin fMargin;
+	auto calcInnerSize() -> Size<uint>;
+
+	std::unique_ptr<GraphWidgetInner> inner;
+
+	uint margin;
+	Color m_fill;
+	Color m_stroke;
+	float m_stroke_w;
+	Color top_stroke;
+	float top_w;
+	float edge_w;
+	Color edge_fg_normal;
+	Color edge_fg_focus;
 
 	DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GraphWidget)
 };
