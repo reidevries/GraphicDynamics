@@ -127,7 +127,7 @@ void OversampleWheel::drawOutline()
     closePath();
 }
 
-void OversampleWheel::draw()
+void OversampleWheel::onNanoDisplay()
 {
     const float width = getWidth();
 

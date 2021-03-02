@@ -84,7 +84,6 @@ float NanoSlider::getValue() noexcept
 void NanoSlider::onNanoDisplay()
 {
     positionHandle();
-    draw();
 }
 
 void NanoSlider::setHandleSize(const float width, const float height)

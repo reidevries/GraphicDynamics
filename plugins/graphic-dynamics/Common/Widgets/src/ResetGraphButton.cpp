@@ -60,7 +60,7 @@ void ResetGraphButton::drawHover()
     closePath();
 }
 
-void ResetGraphButton::draw()
+void ResetGraphButton::onNanoDisplay()
 {
     switch (getButtonState())
     {

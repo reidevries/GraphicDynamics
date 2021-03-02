@@ -23,11 +23,8 @@ class NanoSwitch : public WolfWidget
     void setCallback(Callback *callback) noexcept;
 
   protected:
-    void onNanoDisplay() override;
     bool onMouse(const MouseEvent &) override;
     bool onMotion(const MotionEvent &ev) override;
-
-    virtual void draw() = 0;
 
     virtual void onStateChanged();
 

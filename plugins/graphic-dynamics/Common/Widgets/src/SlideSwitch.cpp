@@ -52,7 +52,7 @@ void SlideSwitch::drawHandle()
     closePath();
 }
 
-void SlideSwitch::draw()
+void SlideSwitch::onNanoDisplay()
 {
     drawSocket();
     drawHandle();

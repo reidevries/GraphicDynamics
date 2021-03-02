@@ -30,16 +30,12 @@ public:
     ButtonState getButtonState();
 
 protected:
-    void onNanoDisplay() override;
-
     bool leftClick(const MouseEvent &ev);
     bool middleClick(const MouseEvent &ev);
     bool rightClick(const MouseEvent &ev);
 
     bool onMouse(const MouseEvent&) override;
     bool onMotion(const MotionEvent&) override;
-
-    virtual void draw() = 0;
 
 private:
     void setButtonState(ButtonState state);

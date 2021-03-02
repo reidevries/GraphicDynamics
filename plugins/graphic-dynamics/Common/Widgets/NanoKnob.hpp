@@ -33,7 +33,6 @@ public:
   void setColor(Color color) noexcept;
 
 protected:
-  void onNanoDisplay() override;
   bool onMouse(const MouseEvent &) override;
   bool onMotion(const MotionEvent &) override;
   bool onScroll(const ScrollEvent &) override;
@@ -46,8 +45,6 @@ protected:
   virtual void onMouseLeave();
   virtual void onMouseUp();
   virtual void onMouseDown();
-
-  virtual void draw() = 0;
 
 private:
 	const float motion_resistance = 1200.f;

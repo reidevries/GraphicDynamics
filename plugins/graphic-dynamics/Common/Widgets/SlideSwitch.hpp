@@ -14,7 +14,7 @@ protected:
     void drawHandle();
     void drawSocket();
 
-    void draw() override;
+    void onNanoDisplay() override;
     
 private:
     DISTRHO_LEAK_DETECTOR(SlideSwitch)

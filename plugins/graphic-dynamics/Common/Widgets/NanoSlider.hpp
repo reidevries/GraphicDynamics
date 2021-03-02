@@ -46,15 +46,11 @@ public:
   void setSocketMargin(const float top, const float bottom);
 
 protected:
-  void onNanoDisplay() override;
-
   bool onScroll(const ScrollEvent &ev) override;
   bool onMouse(const MouseEvent &) override;
   bool onMotion(const MotionEvent &) override;
 
   void positionHandle();
-
-  virtual void draw() = 0;
 
   ScopedPointer<SliderHandle> fHandle;
 

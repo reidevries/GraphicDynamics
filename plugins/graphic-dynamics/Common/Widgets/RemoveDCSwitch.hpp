@@ -14,7 +14,7 @@ class RemoveDCSwitch : public NanoSwitch,
     explicit RemoveDCSwitch(NanoWidget *widget, Size<uint> size) noexcept;
 
   protected:
-    void draw() override;
+    void onNanoDisplay() override;
     void idleCallback() override;
     void onStateChanged() override;
 

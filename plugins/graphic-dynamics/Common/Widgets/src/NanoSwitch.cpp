@@ -29,11 +29,6 @@ void NanoSwitch::setDown(bool down) noexcept
     repaint();
 }
 
-void NanoSwitch::onNanoDisplay()
-{
-    draw();
-}
-
 void NanoSwitch::setCallback(Callback *callback) noexcept
 {
     fCallback = callback;

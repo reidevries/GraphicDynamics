@@ -11,7 +11,7 @@ public:
     explicit ResetGraphButton(NanoWidget *widget, Size<uint> size) noexcept;
 
 protected:
-    void draw() override;
+    void onNanoDisplay() override;
     
     void drawUp();
     void drawDown();

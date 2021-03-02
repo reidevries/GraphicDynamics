@@ -26,13 +26,9 @@ class NanoWheel : public WolfWidget
     void setCallback(Callback *callback) noexcept;
 
   protected:
-    void onNanoDisplay() override;
-
     bool onScroll(const ScrollEvent &ev) override;
     bool onMouse(const MouseEvent &) override;
     bool onMotion(const MotionEvent &) override;
-
-    virtual void draw() = 0;
 
   private:
     Callback *fCallback;

@@ -13,7 +13,7 @@ public:
     void setFontSize(float size);
 
 protected:
-    void draw() override;
+    void onNanoDisplay() override;
     void drawTriangles();
     void drawBackground();
     void drawText();

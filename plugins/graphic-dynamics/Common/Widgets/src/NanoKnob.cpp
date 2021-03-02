@@ -98,11 +98,6 @@ Color NanoKnob::getColor() noexcept
     return fColor;
 }
 
-void NanoKnob::onNanoDisplay()
-{
-    draw();
-}
-
 bool NanoKnob::onMouse(const MouseEvent &ev)
 {
     if (ev.button != 1)

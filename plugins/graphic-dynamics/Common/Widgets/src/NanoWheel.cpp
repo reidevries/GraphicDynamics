@@ -49,11 +49,6 @@ int NanoWheel::getValue() noexcept
     return fValue;
 }
 
-void NanoWheel::onNanoDisplay()
-{
-    draw();
-}
-
 bool NanoWheel::onScroll(const ScrollEvent &ev)
 {
     if (!contains(ev.pos))

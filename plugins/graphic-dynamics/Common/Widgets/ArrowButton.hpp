@@ -20,7 +20,7 @@ public:
 protected:
     void drawBackground();
     void drawArrow();
-    void draw() override;
+    void onNanoDisplay() override;
     
 private:
     ArrowDirection fArrowDirection;

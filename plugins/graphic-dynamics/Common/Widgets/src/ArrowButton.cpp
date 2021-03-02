@@ -61,7 +61,7 @@ void ArrowButton::drawBackground()
     closePath();
 }
 
-void ArrowButton::draw()
+void ArrowButton::onNanoDisplay()
 {
     drawBackground();
     drawArrow();

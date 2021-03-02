@@ -78,7 +78,7 @@ void VolumeKnob::onMouseUp()
     fGrowAnimation->play(Animation::Backward);
 }
 
-void VolumeKnob::draw()
+void VolumeKnob::onNanoDisplay()
 {
     const float height = getHeight();
     const Color color = getColor();

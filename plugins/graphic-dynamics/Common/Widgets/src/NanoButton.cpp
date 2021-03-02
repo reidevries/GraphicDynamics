@@ -17,11 +17,6 @@ void NanoButton::setCallback(Callback *callback) noexcept
     fCallback = callback;
 }
 
-void NanoButton::onNanoDisplay()
-{
-    draw();
-}
-
 NanoButton::ButtonState NanoButton::getButtonState()
 {
     return fState;
