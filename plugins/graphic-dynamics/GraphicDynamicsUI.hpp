@@ -11,7 +11,7 @@
 #include "ResizeHandle.hpp"
 #include "LabelBox.hpp"
 #include "DisplayLabel.hpp"
-#include "BipolarModeSwitch.hpp"
+#include "SlideSwitch.hpp"
 #include "GlowingLabelsBox.hpp"
 #include "NanoLabel.hpp"
 #include "WidgetBar.hpp"
@@ -65,6 +65,7 @@ private:
 	std::unique_ptr<RemoveDCSwitch> sw_remove_dc;
 	std::unique_ptr<NanoLabel> label_remove_dc;
 
+	std::unique_ptr<SlideSwitch> sw_linearity;
 	std::unique_ptr<GlowingLabelsBox> label_linearity;
 
 	std::unique_ptr<OversampleWheel> wheel_oversample;

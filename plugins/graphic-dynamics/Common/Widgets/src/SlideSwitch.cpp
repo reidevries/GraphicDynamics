@@ -1,12 +1,13 @@
-#include "BipolarModeSwitch.hpp"
+#include "SlideSwitch.hpp"
 
 START_NAMESPACE_DISTRHO
 
-BipolarModeSwitch::BipolarModeSwitch(NanoWidget *widget, Size<uint> size) noexcept : NanoSwitch(widget, size)
+SlideSwitch::SlideSwitch(NanoWidget *widget, Size<uint> size) noexcept
+	: NanoSwitch(widget, size)
 {
 }
 
-void BipolarModeSwitch::drawSocket()
+void SlideSwitch::drawSocket()
 {
     const float width = getWidth();
     const float height = getHeight();
@@ -21,13 +22,14 @@ void BipolarModeSwitch::drawSocket()
     beginPath();
     fillColor(0, 0, 0, 255);
 
-    ellipse(centerX, centerY, centerX - marginLeftRight, centerY - halfMarginTopBottom);
+    ellipse(centerX, centerY,
+		centerX - marginLeftRight, centerY - halfMarginTopBottom);
     fill();
 
     closePath();
 }
 
-void BipolarModeSwitch::drawHandle()
+void SlideSwitch::drawHandle()
 {
     const float width = getWidth();
     const float height = getHeight();
@@ -50,7 +52,7 @@ void BipolarModeSwitch::drawHandle()
     closePath();
 }
 
-void BipolarModeSwitch::draw()
+void SlideSwitch::draw()
 {
     drawSocket();
     drawHandle();

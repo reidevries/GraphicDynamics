@@ -67,6 +67,9 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
     label_remove_dc->setMargin(
 		Margin(3, 0, sw_remove_dc->getWidth() / 2.0f, 0));
 
+	sw_linearity = std::make_unique<SlideSwitch>(this, Size<uint>(16,34));
+	sw_linearity->setCallback(this);
+	sw_linearity->setId(p_linearity);
     label_linearity = std::make_unique<GlowingLabelsBox>(
 		this,
 		Size<uint>(34, 42)
@@ -293,7 +296,8 @@ void GraphicDynamicsUI::positionWidgets(uint width, uint height)
 	label_remove_dc->setAbsolutePos(
 		buttons_x + sw_remove_dc->getWidth(), height - 38 );
 
-	// Bipolar Labels Mode --------------------------------------------------//
+	// Linearity Toggle -----------------------------------------------------//
+	sw_linearity->setAbsolutePos(buttons_x+7, height-86);
     label_linearity->setAbsolutePos( buttons_x+29, height - 90 );
 
 	// Pre Gain Knob --------------------------------------------------------//
@@ -385,6 +389,9 @@ void GraphicDynamicsUI::parameterChanged(uint32_t index, float value)
 	case p_remove_dc:
 		sw_remove_dc->setDown(value >= 0.50f);
 		break;
+	case p_linearity:
+		sw_linearity->setDown(value >= 0.50f);
+		break;
 	case p_smooth:
 		wheel_oversample->setValue(value);
 		break;
@@ -418,6 +425,9 @@ void GraphicDynamicsUI::parameterChanged(uint32_t index, float value)
 void GraphicDynamicsUI::updateOnParamChange(uint32_t index, float value)
 {
 	switch(index) {
+	case p_linearity:
+		label_linearity->setSelectedIndex(value >= 0.5f ? 1 : 0);
+		break;
 	case p_hor_warp_amt:
 		graph_widget->setHorWarpAmt(value);
 		break;
@@ -431,16 +441,13 @@ void GraphicDynamicsUI::updateOnParamChange(uint32_t index, float value)
 		graph_widget->setVerWarpMode((graphdyn::WarpMode)std::round(value));
 		break;
 	case p_atk_ms:
-	{
 		label_attack->setDisplayNumber(value);
 		label_attack->repaint();
 		break;
-	}
 	case p_rls_ms:
-	{
 		label_release->setDisplayNumber(value);
 		label_release->repaint();
-	}
+		break;
 	default:
 		break;
 	}
@@ -553,10 +560,11 @@ bool GraphicDynamicsUI::onKeyboard(const KeyboardEvent &ev)
 
 void GraphicDynamicsUI::nanoSwitchClicked(NanoSwitch *nanoSwitch)
 {
-	const uint switchId = nanoSwitch->getId();
+	const uint sw_id = nanoSwitch->getId();
 	const int value = nanoSwitch->isDown() ? 1 : 0;
 
-	setParameterValue(switchId, value);
+	setParameterValue(sw_id, value);
+	updateOnParamChange(sw_id, value);
 }
 
 void GraphicDynamicsUI::nanoButtonClicked(NanoButton *nanoButton)

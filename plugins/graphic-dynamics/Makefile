@@ -60,7 +60,7 @@ FILES_UI  = \
 	Common/Widgets/src/ResizeHandle.cpp \
 	Common/Widgets/src/LabelBox.cpp \
 	Common/Widgets/src/LabelBoxList.cpp \
-	Common/Widgets/src/BipolarModeSwitch.cpp \
+	Common/Widgets/src/SlideSwitch.cpp \
 	Common/Widgets/src/LabelContainer.cpp \
 	Common/Widgets/src/GlowingLabelsBox.cpp \
 	Common/Widgets/src/NanoLabel.cpp \
