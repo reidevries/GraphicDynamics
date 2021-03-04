@@ -61,8 +61,7 @@ class GraphTensionHandle : public GraphNode
 public:
 	friend class GraphWidgetInner;
 
-	GraphTensionHandle( GraphWidgetInner *parent, GraphVertex *vertex,
-		const UIConfig& uiconf );
+	GraphTensionHandle( GraphWidgetInner *parent, GraphVertex *vertex );
 
 	void reset();
 	void render() override;
@@ -79,12 +78,6 @@ private:
 	GraphVertex *vertex;
 	Point<int> mouseDownPosition;
 
-	// configuration settings
-	const float radius;
-	const float stroke_w;
-	const Color col_normal;
-	const Color col_focus;
-
 	DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GraphTensionHandle)
 };
 
@@ -93,8 +86,7 @@ class GraphVertex : public GraphNode
 	friend class GraphWidgetInner;
 
 public:
-	GraphVertex( GraphWidgetInner *parent, GraphVertexType type,
-		const UIConfig& uiconf );
+	GraphVertex( GraphWidgetInner *parent, GraphVertexType type );
 
 	void render() override;
 
@@ -145,15 +137,6 @@ private:
 
 	std::chrono::steady_clock::time_point lastClickTimePoint;
 	int lastClickButton;
-
-	// ui configuration
-	const float radius;
-	const float stroke_w;
-	const Color fill_normal;
-	const Color fill_focus;
-	const Color stroke_normal;
-	const Color stroke_focus;
-	const Color halo;
 
 	DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GraphVertex)
 };

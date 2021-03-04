@@ -30,16 +30,11 @@ class GraphicDynamicsUI : public UI,
 	public NanoKnob::Callback,
 	public ResizeHandle::Callback
 {
-private:
-	UIConfig ui;
-
 public:
 	GraphicDynamicsUI();
 	~GraphicDynamicsUI();
 
 	float getParameterValue(uint32_t index) const;
-
-	auto conf() const { return ui; } // lets child classes access configuration
 
 protected:
 	void parameterChanged(uint32_t, float value) override;

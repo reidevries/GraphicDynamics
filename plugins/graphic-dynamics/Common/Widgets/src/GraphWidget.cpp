@@ -29,21 +29,9 @@ const std::array<MenuWidget::Item, 7> GraphWidgetInner::menu_layout
 		MenuWidget::Item( VertexMenuItem::Wave, "Wave", "")
 };
 
-GraphWidgetInner::GraphWidgetInner(UI *ui, Size<uint> size,
-	const UIConfig& uiconf)
+GraphWidgetInner::GraphWidgetInner( UI *ui, Size<uint> size )
 	: NanoWidget((NanoWidget *)ui),
 	  ui(ui),
-	  stroke_fg(uiconf.grid_stroke_fg),
-	  stroke_bg(uiconf.grid_stroke_bg),
-	  stroke_sub(uiconf.grid_stroke_sub),
-	  stroke_middle(uiconf.grid_stroke_middle),
-	  stroke_alignment(uiconf.grid_stroke_alignment),
-	  fill_bg(uiconf.grid_fill_bg),
-	  gradient_i(uiconf.grid_gradient_i),
-	  gradient_o(uiconf.grid_gradient_o),
-	  volume_indicator_stroke(uiconf.volume_indicator_stroke),
-	  playhead_fill(uiconf.playhead_fill),
-	  playhead_stroke(uiconf.playhead_stroke),
 	  graphVerticesPool(graphdyn::max_vertices, this, GraphVertexType::Middle),
 	  focusedElement(nullptr),
 	  mouseLeftDown(false),
@@ -61,7 +49,7 @@ GraphWidgetInner::GraphWidgetInner(UI *ui, Size<uint> size,
 
 	getParentWindow().addIdleCallback(this);
 
-	click_r_menu = std::make_unique<MenuWidget>(ui, uiconf);
+	click_r_menu = std::make_unique<MenuWidget>(ui);
 	click_r_menu->addItems(menu_layout);
 	click_r_menu->setCallback(this);
 	click_r_menu->hide();
@@ -199,7 +187,7 @@ void GraphWidgetInner::drawGrid()
         //subgrid
         beginPath();
         strokeWidth(lineWidth);
-        strokeColor(stroke_sub);
+        strokeColor(UIConfig::grid_stroke_sub);
 
         moveTo(std::round(posX + verticalStep / 2.0f), 0.0f);
         lineTo(std::round(posX + verticalStep / 2.0f), height);
@@ -210,7 +198,7 @@ void GraphWidgetInner::drawGrid()
         //background
         beginPath();
         strokeWidth(lineWidth);
-        strokeColor(stroke_bg);
+        strokeColor(UIConfig::grid_stroke_bg);
 
         moveTo(posX + lineWidth, 0.0f);
         lineTo(posX + lineWidth, height);
@@ -221,7 +209,9 @@ void GraphWidgetInner::drawGrid()
         //foreground
         beginPath();
         strokeWidth(lineWidth);
-        strokeColor(i == gridMiddleLineIndex ? stroke_middle : stroke_fg);
+		auto stroke_fg = UIConfig::grid_stroke_fg;
+		if (i == gridMiddleLineIndex) stroke_fg = UIConfig::grid_stroke_middle;
+        strokeColor(stroke_fg);
 
         moveTo(posX, 0.0f);
         lineTo(posX, height);
@@ -238,7 +228,7 @@ void GraphWidgetInner::drawGrid()
         //subgrid
         beginPath();
         strokeWidth(lineWidth);
-        strokeColor(stroke_sub);
+        strokeColor(UIConfig::grid_stroke_sub);
 
         moveTo(0.0f, std::round(posY + horizontalStep / 2.0f));
         lineTo(width, std::round(posY + horizontalStep / 2.0f));
@@ -253,7 +243,7 @@ void GraphWidgetInner::drawGrid()
         moveTo(0.0f, posY + lineWidth);
         lineTo(width, posY + lineWidth);
 
-        strokeColor(stroke_bg);
+        strokeColor(UIConfig::grid_stroke_bg);
 
         stroke();
         closePath();
@@ -261,11 +251,12 @@ void GraphWidgetInner::drawGrid()
         //foreground
         beginPath();
         strokeWidth(lineWidth);
+		auto stroke_fg = UIConfig::grid_stroke_fg;
+		if (i == gridMiddleLineIndex) stroke_fg = UIConfig::grid_stroke_middle;
+        strokeColor(stroke_fg);
 
         moveTo(0.0f, posY);
         lineTo(width, posY);
-
-        strokeColor(i == gridMiddleLineIndex ? stroke_middle : stroke_fg);
 
         stroke();
         closePath();
@@ -285,7 +276,7 @@ void GraphWidgetInner::drawBackground()
     rect(0.f, 0.f, width, height);
     //Paint gradient = radialGradient(centerX, centerY, 1.0f, centerX, Color(42, 42, 42, 255), Color(33, 32, 39, 255));
     //fillPaint(gradient);
-    fillColor(fill_bg);
+    fillColor(UIConfig::grid_fill_bg);
     fill();
 
     closePath();
@@ -366,7 +357,7 @@ void GraphWidgetInner::drawAlignmentLines()
     beginPath();
 
     strokeWidth(1.0f);
-    strokeColor(stroke_alignment);
+    strokeColor(UIConfig::grid_stroke_alignment);
 
     moveTo(x, 0);
     lineTo(x, h);
@@ -419,8 +410,8 @@ void GraphWidgetInner::drawGradient()
 	fillPaint( linearGradient(
 		width / 2.0f, 0,    // start x and y
 		width / 2.0f, peak, // end x and y
-		gradient_i,
-		gradient_o
+		UIConfig::grid_gradient_i,
+		UIConfig::grid_gradient_o
 	) );
 	fill();
 
@@ -482,7 +473,7 @@ void GraphWidgetInner::drawInputIndicator()
 
     beginPath();
 
-    strokeColor(volume_indicator_stroke);
+    strokeColor(UIConfig::volume_indicator_stroke);
     strokeWidth(1.0f);
 
     moveTo(inputIndicatorX, 0);
@@ -499,8 +490,8 @@ void GraphWidgetInner::drawInputIndicator()
 
     beginPath();
 
-    fillColor(playhead_fill);
-    strokeColor(playhead_stroke);
+    fillColor(UIConfig::playhead_fill);
+    strokeColor(UIConfig::playhead_stroke);
 
     circle(inputIndicatorX, circleY, 3.5f);
     fill();
@@ -922,8 +913,8 @@ void GraphWidget::onNanoDisplay()
 
 	beginPath();
 
-	strokeColor(top_stroke);
-	strokeWidth(top_w);
+	strokeColor(UIConfig::graph_top_stroke);
+	strokeWidth(UIConfig::graph_top_w);
 
 	moveTo(0, 1);
 	lineTo(w, 1);
@@ -932,10 +923,10 @@ void GraphWidget::onNanoDisplay()
 
 	closePath();
 
-	translate(margin, margin);
+	translate(UIConfig::graph_margin, UIConfig::graph_margin);
 	inner->setAbsolutePos(
-		getAbsoluteX() + margin,
-		getAbsoluteY() + margin );
+		getAbsoluteX() + UIConfig::graph_margin,
+		getAbsoluteY() + UIConfig::graph_margin );
 
 	inner->drawBackground();
 	inner->drawGrid();
@@ -949,7 +940,9 @@ void GraphWidget::onNanoDisplay()
 	}
 
 	inner->drawGradient();
-	inner->drawGraphLine( edge_w, edge_fg_normal, edge_fg_focus );
+	inner->drawGraphLine( UIConfig::graph_edge_w,
+		UIConfig::graph_edge_fg_normal,
+		UIConfig::graph_edge_fg_focus );
 
 	inner->drawInputIndicator();
 
@@ -1012,7 +1005,10 @@ void GraphWidget::setMustHideVertices(const bool hide)
 
 auto GraphWidget::calcInnerSize() -> Size<uint>
 {
-	return Size<uint>(getWidth() - margin*2, getHeight() - margin*2);
+	return Size<uint>(
+		getWidth()  - UIConfig::graph_margin*2,
+		getHeight() - UIConfig::graph_margin*2
+	);
 }
 
 END_NAMESPACE_DISTRHO

@@ -37,13 +37,13 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
 
 	graph_bar = std::make_unique<WidgetBar>(
 		this,
-		Size<uint>(width, ui.graph_bar_h)
+		Size<uint>(width, UIConfig::graph_bar_h)
 	);
 	graph_bar->setStrokePaint( linearGradient(
 		0, //start x coord
 		0, //start y coord
 		0, //end x coord
-		ui.graph_bar_h, //end y coord
+		UIConfig::graph_bar_h, //end y coord
 		Color(43, 43, 43, 255), // start colour
 		Color(34, 34, 34, 255)  // end colour
 	) );
@@ -76,42 +76,42 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
 	);
     label_linearity->setLabels({"LIN", "EXP"});
 
-    label_pre = std::make_unique<LabelBox>(this, ui.labelSize());
+    label_pre = std::make_unique<LabelBox>(this, UIConfig::labelSize());
     label_pre->setText("PRE");
 
-    knob_pre = std::make_unique<VolumeKnob>(this, ui.knob_s);
+    knob_pre = std::make_unique<VolumeKnob>(this, UIConfig::knob_s);
     knob_pre->setCallback(this);
     knob_pre->setRange(0.0f, 2.0f);
     knob_pre->setId(p_pre_gain);
-    knob_pre->setColor(ui.gain_col);
+    knob_pre->setColor(UIConfig::gain_col);
 
-    label_wet = std::make_unique<LabelBox>(this, ui.labelSize());
+    label_wet = std::make_unique<LabelBox>(this, UIConfig::labelSize());
     label_wet->setText("WET");
 
-    knob_wet = std::make_unique<VolumeKnob>(this, ui.knob_s);
+    knob_wet = std::make_unique<VolumeKnob>(this, UIConfig::knob_s);
     knob_wet->setCallback(this);
     knob_wet->setRange(0.0f, 1.0f);
     knob_wet->setId(p_wet);
-    knob_wet->setColor(ui.wet_col);
+    knob_wet->setColor(UIConfig::wet_col);
 
-    label_post = std::make_unique<LabelBox>(this, ui.labelSize());
+    label_post = std::make_unique<LabelBox>(this, UIConfig::labelSize());
     label_post->setText("POST");
 
-    knob_post = std::make_unique<VolumeKnob>(this, ui.knob_s);
+    knob_post = std::make_unique<VolumeKnob>(this, UIConfig::knob_s);
     knob_post->setCallback(this);
     knob_post->setRange(0.0f, 1.0f);
     knob_post->setId(p_post_gain);
-    knob_post->setColor(ui.gain_col);
+    knob_post->setColor(UIConfig::gain_col);
 
-    knob_hor_warp = std::make_unique<VolumeKnob>(this, ui.knob_s);
+    knob_hor_warp = std::make_unique<VolumeKnob>(this, UIConfig::knob_s);
     knob_hor_warp->setCallback(this);
     knob_hor_warp->setRange(0.0f, 1.0f);
     knob_hor_warp->setId(p_hor_warp_amt);
-    knob_hor_warp->setColor(ui.warp_col);
+    knob_hor_warp->setColor(UIConfig::warp_col);
 
     label_hor_warp = std::make_unique<LabelBoxList>(
 		this,
-		Size<uint>(ui.label_w + 3, ui.label_h)
+		Size<uint>(UIConfig::label_w + 3, UIConfig::label_h)
 	);
     label_hor_warp->setLabels({
 		"–",
@@ -119,15 +119,15 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
 		"SKEW +", "SKEW -", "SKEW +/-" 
 	});
 
-    knob_ver_warp = std::make_unique<VolumeKnob>(this, ui.knob_s);
+    knob_ver_warp = std::make_unique<VolumeKnob>(this, UIConfig::knob_s);
     knob_ver_warp->setCallback(this);
     knob_ver_warp->setRange(0.0f, 1.0f);
     knob_ver_warp->setId(p_ver_warp_amt);
-    knob_ver_warp->setColor(ui.warp_col);
+    knob_ver_warp->setColor(UIConfig::warp_col);
 
     label_ver_warp = std::make_unique<LabelBoxList>(
 		this,
-		Size<uint>(ui.label_w + 3, ui.label_h)
+		Size<uint>(UIConfig::label_w + 3, UIConfig::label_h)
 	);
     label_ver_warp->setLabels({
 		"–",
@@ -137,7 +137,7 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
 
     button_l_hor_warp_mode = std::make_unique<ArrowButton>(
 		this,
-		ui.lrButtonSize()
+		UIConfig::lrButtonSize()
 	);
     button_l_hor_warp_mode->setCallback(this);
     button_l_hor_warp_mode->setId(p_hor_warp_mode);
@@ -145,7 +145,7 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
 
     button_r_hor_warp_mode = std::make_unique<ArrowButton>(
 		this,
-		ui.lrButtonSize()
+		UIConfig::lrButtonSize()
 	);
     button_r_hor_warp_mode->setCallback(this);
     button_r_hor_warp_mode->setId(p_ver_warp_mode);
@@ -153,7 +153,7 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
 
     button_l_ver_warp_mode = std::make_unique<ArrowButton>(
 		this,
-		ui.lrButtonSize()
+		UIConfig::lrButtonSize()
 	);
     button_l_ver_warp_mode->setCallback(this);
     button_l_ver_warp_mode->setId(p_hor_warp_mode);
@@ -161,41 +161,41 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
 
     button_r_ver_warp_mode = std::make_unique<ArrowButton>(
 		this,
-		ui.lrButtonSize()
+		UIConfig::lrButtonSize()
 	);
     button_r_ver_warp_mode->setCallback(this);
     button_r_ver_warp_mode->setId(p_ver_warp_mode);
     button_r_ver_warp_mode->setArrowDirection(ArrowButton::Right);
 
-    label_attack = std::make_unique<DisplayLabel>(this, ui.labelSize());
+    label_attack = std::make_unique<DisplayLabel>(this, UIConfig::labelSize());
 	label_attack->setDisplayLabel("ATK ");
 	label_attack->setDisplayUnits("ms");
 	label_attack->setMaxDigits(4);
-	knob_attack = std::make_unique<VolumeKnob>(this, ui.knob_s);
+	knob_attack = std::make_unique<VolumeKnob>(this, UIConfig::knob_s);
 	knob_attack->setCallback(this);
 	knob_attack->setRange(0.1f, 9999.0f);
 	knob_attack->setId(p_atk_ms);
-	knob_attack->setColor(ui.time_col);
+	knob_attack->setColor(UIConfig::time_col);
 	knob_attack->setExponential(true);
 	knob_attack->setVariableResistance(true);
 	knob_attack->setMinResistance(0.1f);
 
-    label_release = std::make_unique<DisplayLabel>(this, ui.labelSize());
+    label_release = std::make_unique<DisplayLabel>(this, UIConfig::labelSize());
 	label_release->setDisplayLabel("RLS ");
 	label_release->setDisplayUnits("ms");
 	label_release->setMaxDigits(4);
-	knob_release = std::make_unique<VolumeKnob>(this, ui.knob_s);
+	knob_release = std::make_unique<VolumeKnob>(this, UIConfig::knob_s);
 	knob_release->setCallback(this);
 	knob_release->setRange(0.1f, 9999.0f);
 	knob_release->setId(p_rls_ms);
-	knob_release->setColor(ui.time_col);
+	knob_release->setColor(UIConfig::time_col);
 	knob_release->setExponential(true);
 	knob_release->setVariableResistance(true);
 	knob_release->setMinResistance(0.1f);
 
     handle_resize = std::make_unique<ResizeHandle>(this, Size<uint>(18, 18));
     handle_resize->setCallback(this);
-    handle_resize->setMinSize(ui.min_w, ui.min_h);
+    handle_resize->setMinSize(UIConfig::min_w, UIConfig::min_h);
 
     button_reset_graph = std::make_unique<ResetGraphButton>(
 		this, Size<uint>(32, 32));
@@ -242,15 +242,15 @@ void GraphicDynamicsUI::positionWidgets(uint width, uint height)
 
 	// Graph Widget ---------------------------------------------------------//
 	graph_widget->setSize(
-		width - ui.graph_m * 2,
-		height - ui.graph_m * 2 - control_bar_h - graph_bar_h );
-	graph_widget->setAbsolutePos(ui.graph_m, ui.graph_m);
+		width - UIConfig::graph_m * 2,
+		height - UIConfig::graph_m * 2 - control_bar_h - graph_bar_h );
+	graph_widget->setAbsolutePos(UIConfig::graph_m, UIConfig::graph_m);
 
     const float graphBottom = graph_widget->getAbsoluteY()
 		+ graph_widget->getHeight();
 
     graph_bar->setWidth(width);
-    graph_bar->setAbsolutePos(0, graphBottom + ui.graph_bar_m);
+    graph_bar->setAbsolutePos(0, graphBottom + UIConfig::graph_bar_m);
     graph_bar->setFillPaint( radialGradient(
 		width / 2.0f,          // centre x
 		graph_bar_h / 2.0f, //centre y
@@ -279,17 +279,19 @@ void GraphicDynamicsUI::positionWidgets(uint width, uint height)
 		wheel_oversample->getAbsoluteY() );
 	
 	// right-aligned controls
-	const uint verwarp_x   = width - ui.bar_m  - ui.x_grid*1.5f;
-	const uint horwarp_x   = verwarp_x         - ui.x_grid*1.5f;
+	const uint x_grid_wide = UIConfig::x_grid*1.5f;
+	const uint right_edge = width - UIConfig::bar_m;
 
-	const uint postgain_x  = horwarp_x         - ui.x_grid*1.5f;
-	const uint wetdry_x    = postgain_x        - ui.x_grid;
-	const uint pregain_x   = wetdry_x          - ui.x_grid;
+	const uint verwarp_x   = right_edge        - x_grid_wide;
+	const uint horwarp_x   = verwarp_x         - x_grid_wide;
+	const uint postgain_x  = horwarp_x         - x_grid_wide;
+	const uint wetdry_x    = postgain_x        - UIConfig::x_grid;
+	const uint pregain_x   = wetdry_x          - UIConfig::x_grid;
 
 	// left-aligned
-	const uint atk_x       = ui.bar_m          + ui.x_grid;
-	const uint rls_x       = atk_x             + ui.x_grid;
-	const uint buttons_x   = rls_x             + ui.x_grid;
+	const uint atk_x       = UIConfig::bar_m   + UIConfig::x_grid;
+	const uint rls_x       = atk_x             + UIConfig::x_grid;
+	const uint buttons_x   = rls_x             + UIConfig::x_grid;
 	
 	// DC Removal Toggle ----------------------------------------------------//
 	sw_remove_dc->setAbsolutePos(buttons_x, height - 38);
@@ -305,28 +307,28 @@ void GraphicDynamicsUI::positionWidgets(uint width, uint height)
 		(label_pre->getWidth() - knob_pre->getWidth()) / 2.0f;
     knob_pre->setAbsolutePos(pregain_x, height - 90);
     label_pre->setAbsolutePos(pregain_x - align_label,
-		height - label_pre->getHeight() - ui.label_m );
+		height - label_pre->getHeight() - UIConfig::label_m );
 
 	// Wet Dry Knob ---------------------------------------------------------//
 	align_label = 
 		(label_wet->getWidth() - knob_wet->getWidth()) / 2.0f;
 	knob_wet->setAbsolutePos(wetdry_x, height - 90);
 	label_wet->setAbsolutePos(wetdry_x - align_label,
-		height - label_wet->getHeight() - ui.label_m );
+		height - label_wet->getHeight() - UIConfig::label_m );
 
 	// Post Gain Knob -------------------------------------------------------//
     align_label =
 		(label_post->getWidth() - knob_post->getWidth()) / 2.0f;
     knob_post->setAbsolutePos(postgain_x, height - 90);
 	label_post->setAbsolutePos(postgain_x - align_label,
-		height - label_post->getHeight() - ui.label_m );
+		height - label_post->getHeight() - UIConfig::label_m );
 
 	// Horizontal Warp Control ----------------------------------------------//
 	align_label = (label_hor_warp->getWidth()
 		- knob_hor_warp->getWidth()) / 2.0f;
 	knob_hor_warp->setAbsolutePos(horwarp_x, height - 90);
 	label_hor_warp->setAbsolutePos( horwarp_x- align_label,
-		height - label_hor_warp->getHeight() - ui.label_m );
+		height - label_hor_warp->getHeight() - UIConfig::label_m );
 
     button_l_hor_warp_mode->setAbsolutePos(
 		label_hor_warp->getAbsoluteX() -
@@ -343,7 +345,7 @@ void GraphicDynamicsUI::positionWidgets(uint width, uint height)
 
     knob_ver_warp->setAbsolutePos(verwarp_x, height - 90);
     label_ver_warp->setAbsolutePos( verwarp_x - align_label,
-		height - label_ver_warp->getHeight() - ui.label_m);
+		height - label_ver_warp->getHeight() - UIConfig::label_m);
 
 	button_l_ver_warp_mode->setAbsolutePos(
 		label_ver_warp->getAbsoluteX() -
@@ -359,14 +361,14 @@ void GraphicDynamicsUI::positionWidgets(uint width, uint height)
 		(label_attack->getWidth() - knob_attack->getWidth()) / 2.0f;
 	knob_attack->setAbsolutePos(atk_x, height - 90);
 	label_attack->setAbsolutePos(atk_x - align_label,
-		height - label_attack->getHeight() - ui.label_m );
+		height - label_attack->getHeight() - UIConfig::label_m );
 
 	// Release Time Knob ----------------------------------------------------//
     align_label =
 		(label_release->getWidth() - knob_release->getWidth()) / 2.0f;
     knob_release->setAbsolutePos(rls_x, height - 90);
 	label_release->setAbsolutePos(rls_x- align_label,
-		height - label_release->getHeight() - ui.label_m );
+		height - label_release->getHeight() - UIConfig::label_m );
 
 	// Window Resize Handle -------------------------------------------------//
     handle_resize->setAbsolutePos(
