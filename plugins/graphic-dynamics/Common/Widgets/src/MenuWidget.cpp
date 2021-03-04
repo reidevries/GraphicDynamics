@@ -5,19 +5,13 @@
 
 START_NAMESPACE_DISTRHO
 
-MenuWidget::MenuWidget(NanoWidget *widget, const UIConfig& uiconf) noexcept
+MenuWidget::MenuWidget( NanoWidget *widget ) noexcept
 	: WolfWidget(widget),
 	  hover_i(-1),
 	  selected_i(-1),
 	  margin(Margin(7,15,7,13)),
-	  font_item_size(17.0f),
-	  font_section_size(14.0f),
-	  border_color(uiconf.menu_border_color),
-	  background_color(uiconf.menu_background_color),
-	  background_hover_color(uiconf.menu_background_hover_color),
-	  font_item_color(uiconf.menu_font_item_color),
-	  font_item_hover_color(uiconf.menu_font_item_hover_color),
-	  font_section_color(uiconf.menu_font_section_color),
+	  font_item_size(UIConfig::menu_font_item_size),
+	  font_section_size(UIConfig::menu_font_section_size),
 	  callback(nullptr)
 {
 }
@@ -118,9 +112,9 @@ void MenuWidget::onNanoDisplay()
 	textBounds(0, 0, items[0].name.c_str(), NULL, bounds);
 	const float text_h = bounds.getHeight();
 
-	fillColor(background_color);
+	fillColor(UIConfig::menu_background_color);
 
-	strokeColor(border_color);
+	strokeColor(UIConfig::menu_border_color);
 	strokeWidth(3.0f);
 
 	rect(0, 0, w, h);
@@ -148,7 +142,7 @@ void MenuWidget::onNanoDisplay()
 			&& !is_section
 			&& is_enabled) {
 			beginPath();
-			fillColor(background_hover_color);
+			fillColor(UIConfig::menu_background_hover_color);
 			rect(0, vertical_offset, w - margin.right, font_item_size);
 			fill();
 			closePath();
@@ -159,15 +153,15 @@ void MenuWidget::onNanoDisplay()
 		int left_offset=0;
 		if (is_section) {
 			fontSize(font_section_size);
-			fillColor(font_section_color);
+			fillColor(UIConfig::menu_font_section_color);
 		} else {
 			left_offset = font_section_size;
 			fontSize(font_item_size);
 			if (is_enabled) {
-				if (is_hovered) fillColor(font_item_hover_color);
-				else fillColor(font_item_color);
+				if (is_hovered) fillColor(UIConfig::menu_font_item_hover_color);
+				else fillColor(UIConfig::menu_font_item_color);
 			} else {
-				fillColor(font_section_color);
+				fillColor(UIConfig::menu_font_section_color);
 			}
 		}
 
@@ -180,7 +174,7 @@ void MenuWidget::onNanoDisplay()
 		// render description if an item has one
 		if (item.description.size() > 0) {
 			fontSize(font_section_size);
-			fillColor(font_section_color);
+			fillColor(UIConfig::menu_font_section_color);
 
 			text(item.name.size()*font_item_size + font_section_size,
 				 vertical_offset, item.description.c_str(), NULL);

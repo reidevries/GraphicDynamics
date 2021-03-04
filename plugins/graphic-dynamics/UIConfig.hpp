@@ -13,35 +13,32 @@ START_NAMESPACE_DISTRHO
 // fg = foreground, bg = background
 namespace UIConfig {
 
-	// Window minimum width and height
-extern uint min_w;
-extern uint min_h;
+// Window minimum width and height
+extern uint min_w, min_h;
 
-	// graph positioning parameters
+// graph positioning parameters
 extern uint graph_bar_m;
 extern uint graph_bar_h;
 
-	// label positioning parameters
+// label positioning parameters
 extern uint label_m;
-extern uint label_w;
-extern uint label_h;
+extern uint label_w, label_h;
 
-	// control bar parameters
+// control bar parameters
 extern uint x_grid;
 extern uint bar_m;
 
-	// knob sizes
-extern Size<uint> knob_s;
-extern Size<uint> knob_mini_s;
+// knob sizes
+extern Size<uint> knob_s, knob_mini_s;
 
 
-	// graph tension handle parameters
+// graph tension handle parameters
 extern float tension_handle_radius;
 extern float tension_handle_stroke_w;
 extern Color tension_handle_normal;
 extern Color tension_handle_focus;
 
-	// graph vertex parameters
+// graph vertex parameters
 extern float vertex_radius;
 extern float vertex_stroke_w;
 extern Color vertex_fill_normal;
@@ -51,22 +48,22 @@ extern Color vertex_stroke_normal;
 extern Color vertex_stroke_focus;
 
 
-	// colors representing various abstract concepts (used for knob colours)
+// colors representing various abstract concepts (used for knob colours)
 extern Color time_col;
 extern Color gain_col;
 extern Color wet_col ;
 extern Color warp_col;
 
-	// plugin colours
+// plugin colours
 extern Color plugin_background;
 extern Color top_border;
 
-	// graph area parameters
+// graph area parameters
 extern Color graph_edges_background_normal;
 extern Color graph_edges_background_focus;
 
-	// GraphWidget parameters
-extern uint graph_margin;
+// GraphWidget parameters
+extern uint  graph_margin;
 extern Color graph_m_fill;
 extern Color graph_m_stroke;
 extern float graph_m_stroke_w;
@@ -76,22 +73,22 @@ extern float graph_edge_w;
 extern Color graph_edge_fg_normal;
 extern Color graph_edge_fg_focus;
 
-	// GraphWidgetInner parameters
+// GraphWidgetInner parameters
 extern Color grid_stroke_fg;
 extern Color grid_stroke_bg;
 extern Color grid_stroke_sub;
 extern Color grid_stroke_middle;
 extern Color grid_stroke_alignment;
 extern Color grid_fill_bg;
-extern Color grid_gradient_i;
-extern Color grid_gradient_o;
+extern Color grid_gradient_i, grid_gradient_o;
 extern Color in_out_labels;
 
 extern Color volume_indicator_stroke;
 extern Color playhead_fill;
 extern Color playhead_stroke;
 
-	// menu colors
+// MenuWidget parameters
+extern float menu_font_item_size, menu_font_section_size;
 extern Color menu_border_color;
 extern Color menu_background_color;
 extern Color menu_background_hover_color;

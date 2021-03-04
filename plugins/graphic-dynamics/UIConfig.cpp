@@ -81,7 +81,9 @@ Color volume_indicator_stroke = Color(255, 255, 255, 180);
 Color playhead_fill = Color(255, 255, 255, 180);
 Color playhead_stroke = Color(255, 255, 255, 180);
 
-// menu colors
+// MenuWidget parameters
+float menu_font_item_size = 17.0f;
+float menu_font_section_size = 14.0f;
 Color menu_border_color = Color(10, 10, 10);
 Color menu_background_color = Color(39, 39, 39);
 Color menu_background_hover_color = Color(255, 255, 255);

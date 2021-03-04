@@ -58,7 +58,7 @@ public:
 		virtual void propagateMouseEvent(const MouseEvent& ev) = 0;
 	};
 
-	explicit MenuWidget( NanoWidget *widget, const UIConfig& uiconf ) noexcept;
+	explicit MenuWidget( NanoWidget *widget ) noexcept;
 
 	// shows and hides the widget without affecting the elements
 	void show(const Point<int>& click_pos,
@@ -126,13 +126,6 @@ private:
 	Margin margin;
 	float font_item_size;
 	float font_section_size;
-
-	const Color border_color;
-	const Color background_color;
-	const Color background_hover_color;
-	const Color font_item_color;
-	const Color font_item_hover_color;
-	const Color font_section_color;
 
 	Callback *callback;
 
