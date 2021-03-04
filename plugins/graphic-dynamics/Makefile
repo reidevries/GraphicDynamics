@@ -68,9 +68,9 @@ FILES_UI  = \
 	Common/Widgets/src/WidgetBar.cpp \
 	Common/Widgets/src/ArrowButton.cpp \
 	Common/Widgets/src/MenuWidget.cpp \
-	Config/src/Config.cpp \
 	Resources/Fonts/chivo_bold.cpp \
 	Resources/Fonts/chivo_italic.cpp \
+	UIConfig.cpp \
 	GraphicDynamicsUI.cpp
 
 # --------------------------------------------------------------

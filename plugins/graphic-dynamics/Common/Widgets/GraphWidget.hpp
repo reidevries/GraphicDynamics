@@ -243,7 +243,7 @@ class GraphWidget : public NanoWidget
 {
 public:
 	GraphWidget( UI *ui, Size<uint> size );
-	~GraphWidget();
+	~GraphWidget() {}
 
 	void rebuildFromString(const char *serializedGraph);
 	void reset();

@@ -2,7 +2,6 @@
 
 #include "GraphicDynamicsUI.hpp"
 #include "Window.hpp"
-#include "Config.hpp"
 #include "Margin.hpp"
 #include "Fonts/chivo_bold.hpp"
 
@@ -242,9 +241,9 @@ void GraphicDynamicsUI::positionWidgets(uint width, uint height)
 
 	// Graph Widget ---------------------------------------------------------//
 	graph_widget->setSize(
-		width - UIConfig::graph_m * 2,
-		height - UIConfig::graph_m * 2 - control_bar_h - graph_bar_h );
-	graph_widget->setAbsolutePos(UIConfig::graph_m, UIConfig::graph_m);
+		width - UIConfig::graph_bar_m * 2,
+		height - UIConfig::graph_bar_m * 2 - control_bar_h - graph_bar_h );
+	graph_widget->setAbsolutePos(UIConfig::graph_bar_m, UIConfig::graph_bar_m);
 
     const float graphBottom = graph_widget->getAbsoluteY()
 		+ graph_widget->getHeight();
@@ -472,7 +471,7 @@ void GraphicDynamicsUI::onNanoDisplay()
 	beginPath();
 
 	rect(0.f, 0.f, width, height);
-	fillColor(GraphicDynamicsConfig::plugin_background);
+	fillColor(UIConfig::plugin_background);
 
 	fill();
 

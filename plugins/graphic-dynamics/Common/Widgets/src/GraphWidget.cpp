@@ -876,20 +876,11 @@ void GraphWidgetInner::onMouseLeave()
     getParentWindow().setCursorStyle(Window::CursorStyle::Default);
 }
 
-GraphWidget::GraphWidget( UI *ui, Size<uint> size, const UIConfig& uiconf ) :
-	NanoWidget((NanoWidget *)ui),
-	margin(uiconf.graph_margin),
-	m_fill(uiconf.graph_m_fill),
-	m_stroke(uiconf.graph_m_stroke),
-	m_stroke_w(uiconf.graph_m_stroke_w),
-	top_stroke(uiconf.graph_top_stroke),
-	top_w(uiconf.graph_top_w),
-	edge_w(uiconf.graph_edge_w),
-	edge_fg_normal(uiconf.graph_edge_fg_normal),
-	edge_fg_focus(uiconf.graph_edge_fg_focus)
+GraphWidget::GraphWidget( UI *ui, Size<uint> size )
+	: NanoWidget((NanoWidget *)ui)
 {
 	setSize(size);
-	inner = std::make_unique<GraphWidgetInner>(ui, calcInnerSize(), uiconf);
+	inner = std::make_unique<GraphWidgetInner>(ui, calcInnerSize());
 	inner->parent = this;
 }
 
@@ -900,9 +891,9 @@ void GraphWidget::onNanoDisplay()
 
 	beginPath();
 
-	fillColor(m_fill);
-	strokeColor(m_stroke);
-	strokeWidth(m_stroke_w);
+	fillColor(UIConfig::graph_m_fill);
+	strokeColor(UIConfig::graph_m_stroke);
+	strokeWidth(UIConfig::graph_m_stroke_w);
 
 	rect(0.f, 0.f, w, h);
 
