@@ -3,7 +3,7 @@
 
 START_NAMESPACE_DISTRHO
 
-NanoKnob::NanoKnob(NanoWidget *widget, Size<uint> size) noexcept
+NanoKnob::NanoKnob(NanoWidget *widget, float radius) noexcept
     : WolfWidget(widget),
       fMin(0.0f),
       fMax(1.0f),
@@ -14,7 +14,7 @@ NanoKnob::NanoKnob(NanoWidget *widget, Size<uint> size) noexcept
       fColor(Color(255, 0, 0, 255)),
       fCallback(nullptr)
 {
-    setSize(size);
+    setSize(radius*2, radius*2);
 }
 
 float NanoKnob::getValue() const noexcept

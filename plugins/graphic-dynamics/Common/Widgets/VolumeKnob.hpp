@@ -4,14 +4,17 @@
 #include "NanoKnob.hpp"
 #include "Animation.hpp"
 
+#include <memory>
+
 START_NAMESPACE_DISTRHO
 
-class VolumeKnob : public NanoKnob,
-                   public IdleCallback
+class VolumeKnob
+	: public NanoKnob,
+      public IdleCallback
 {
 public:
   /* explicit VolumeKnob(Window &parent, Size<uint> size) noexcept; */
-  explicit VolumeKnob(NanoWidget *widget, Size<uint> size) noexcept;
+  explicit VolumeKnob( NanoWidget *widget, float radius ) noexcept;
 
 protected:
   void idleCallback() override;
@@ -24,8 +27,8 @@ protected:
 	void onNanoDisplay() override;
 
 private:
-  ScopedPointer<FloatTransition> fGrowAnimation;
-  ScopedPointer<ColorTransition> fHoverAnimation;
+  std::unique_ptr<FloatTransition> fGrowAnimation;
+  std::unique_ptr<ColorTransition> fHoverAnimation;
   
   float fKnobDiameter;
 

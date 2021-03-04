@@ -29,8 +29,7 @@ extern uint x_grid;
 extern uint bar_m;
 
 // knob sizes
-extern Size<uint> knob_s, knob_mini_s;
-
+extern float knob_r, knob_mini_r;
 
 // graph tension handle parameters
 extern float tension_handle_radius;

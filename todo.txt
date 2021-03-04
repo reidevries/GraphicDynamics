@@ -12,11 +12,12 @@ DONE -- close right click menu if mouse leaves graph drawing area
 DONE -- make attack/release knobs logarithmic
 DONE -- make warp knobs work agai
 DONE -- Put back in a switch for expo/linear
--- combine/reconcile Config.hpp and UIConfig.hpp
+DONE -- combine/reconcile Config.hpp and UIConfig.hpp
 -- redesign attack/release knobs, possibly with a graphic of the envelope
 -- add units to controls, preferrably generated from the control itself
 -- Implement smoothing control
 -- Add knob for stereo link
+-- implement theme loading from CSS or something like that
 DONE -- Investigate ParamSmooth stuff
 -- Investigate ways to implement gain reduction VU meters
 -- implement sidechain inputs and add switch for them
@@ -31,6 +32,7 @@ the graph contents, and faster to run as it's basically a wavetable. It would be
 quite slow to reconstruct the graph while it's moving, though.
 
 To (maybe) pull request in pdesaulniers' wolf-shaper
+-- make VolumeKnob pointer work properly at different radii
 -- make themes work more globally
 -- potentially reimplement right click menu as a widget like I am doing
 -- presets implementation from whenever I do t

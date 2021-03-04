@@ -2,10 +2,10 @@
 
 START_NAMESPACE_DISTRHO
 
-VolumeKnob::VolumeKnob(NanoWidget *widget, Size<uint> size) noexcept : NanoKnob(widget, size)
+VolumeKnob::VolumeKnob( NanoWidget *widget, float radius ) noexcept
+	: NanoKnob(widget, radius)
 
 {
-    const float radius = size.getHeight() / 2.0f;
     const float gaugeWidth = 3.5f;
     const float diameter = (radius - gaugeWidth) * 2.0f - 4;
 
@@ -16,8 +16,16 @@ VolumeKnob::VolumeKnob(NanoWidget *widget, Size<uint> size) noexcept : NanoKnob(
 
     fKnobDiameter = diameter;
 
-    fGrowAnimation = new FloatTransition(0.100f, &fKnobDiameter, fKnobDiameter - 7);
-    fHoverAnimation = new ColorTransition(0.200f, &fKnobOCol, fKnobTargetOCol);
+    fGrowAnimation = std::make_unique<FloatTransition>(
+		0.100f,
+		&fKnobDiameter,
+		fKnobDiameter - 7
+	);
+    fHoverAnimation = std::make_unique<ColorTransition>(
+		0.200f,
+		&fKnobOCol,
+		fKnobTargetOCol
+	);
 
     widget->getParentWindow().addIdleCallback(this);
 }

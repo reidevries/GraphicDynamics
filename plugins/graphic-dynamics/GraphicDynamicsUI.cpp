@@ -78,7 +78,7 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
     label_pre = std::make_unique<LabelBox>(this, UIConfig::labelSize());
     label_pre->setText("PRE");
 
-    knob_pre = std::make_unique<VolumeKnob>(this, UIConfig::knob_s);
+    knob_pre = std::make_unique<VolumeKnob>(this, UIConfig::knob_r);
     knob_pre->setCallback(this);
     knob_pre->setRange(0.0f, 2.0f);
     knob_pre->setId(p_pre_gain);
@@ -87,7 +87,7 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
     label_wet = std::make_unique<LabelBox>(this, UIConfig::labelSize());
     label_wet->setText("WET");
 
-    knob_wet = std::make_unique<VolumeKnob>(this, UIConfig::knob_s);
+    knob_wet = std::make_unique<VolumeKnob>(this, UIConfig::knob_r);
     knob_wet->setCallback(this);
     knob_wet->setRange(0.0f, 1.0f);
     knob_wet->setId(p_wet);
@@ -96,13 +96,13 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
     label_post = std::make_unique<LabelBox>(this, UIConfig::labelSize());
     label_post->setText("POST");
 
-    knob_post = std::make_unique<VolumeKnob>(this, UIConfig::knob_s);
+    knob_post = std::make_unique<VolumeKnob>(this, UIConfig::knob_r);
     knob_post->setCallback(this);
     knob_post->setRange(0.0f, 1.0f);
     knob_post->setId(p_post_gain);
     knob_post->setColor(UIConfig::gain_col);
 
-    knob_hor_warp = std::make_unique<VolumeKnob>(this, UIConfig::knob_s);
+    knob_hor_warp = std::make_unique<VolumeKnob>(this, UIConfig::knob_r);
     knob_hor_warp->setCallback(this);
     knob_hor_warp->setRange(0.0f, 1.0f);
     knob_hor_warp->setId(p_hor_warp_amt);
@@ -118,7 +118,7 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
 		"SKEW +", "SKEW -", "SKEW +/-" 
 	});
 
-    knob_ver_warp = std::make_unique<VolumeKnob>(this, UIConfig::knob_s);
+    knob_ver_warp = std::make_unique<VolumeKnob>(this, UIConfig::knob_r);
     knob_ver_warp->setCallback(this);
     knob_ver_warp->setRange(0.0f, 1.0f);
     knob_ver_warp->setId(p_ver_warp_amt);
@@ -170,7 +170,7 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
 	label_attack->setDisplayLabel("ATK ");
 	label_attack->setDisplayUnits("ms");
 	label_attack->setMaxDigits(4);
-	knob_attack = std::make_unique<VolumeKnob>(this, UIConfig::knob_s);
+	knob_attack = std::make_unique<VolumeKnob>(this, UIConfig::knob_mini_r);
 	knob_attack->setCallback(this);
 	knob_attack->setRange(0.1f, 9999.0f);
 	knob_attack->setId(p_atk_ms);
@@ -183,7 +183,7 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
 	label_release->setDisplayLabel("RLS ");
 	label_release->setDisplayUnits("ms");
 	label_release->setMaxDigits(4);
-	knob_release = std::make_unique<VolumeKnob>(this, UIConfig::knob_s);
+	knob_release = std::make_unique<VolumeKnob>(this, UIConfig::knob_mini_r);
 	knob_release->setCallback(this);
 	knob_release->setRange(0.1f, 9999.0f);
 	knob_release->setId(p_rls_ms);

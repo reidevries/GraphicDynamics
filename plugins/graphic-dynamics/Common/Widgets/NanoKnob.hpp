@@ -18,7 +18,7 @@ public:
     virtual void nanoKnobValueChanged(NanoKnob *nanoKnob, const float value) = 0;
   };
 
-  explicit NanoKnob(NanoWidget *widget, Size<uint> size) noexcept;
+  explicit NanoKnob( NanoWidget *widget, float radius ) noexcept;
 
   float getValue() const noexcept;
   void setValue(float value, bool sendCallback = false) noexcept;

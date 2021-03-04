@@ -20,10 +20,9 @@ uint  label_h = 24;
 uint  x_grid = 100;
 uint  bar_m = 16;
 
-// knob sizes
-Size<uint> knob_s = Size<uint>(54,54);
-Size<uint> knob_mini_s = Size<uint>(32,32);
-
+// knob radii
+float knob_r = 27;
+float knob_mini_r = 16;
 
 // graph tension handle parameters
 float tension_handle_radius = 4.5f;
