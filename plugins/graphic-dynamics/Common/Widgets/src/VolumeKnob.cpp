@@ -12,7 +12,7 @@ VolumeKnob::VolumeKnob( NanoWidget *widget, float radius ) noexcept
 
     const Color gradient_fill_i = UIConfig::knob_gradient_fill_i;
 	const Color gradient_fill_o = UIConfig::knob_gradient_fill_o;
-    const Color transition_target_o = Color::brighten(gradient_fill_o, 1.2);
+    //const Color transition_target_o = Color::brighten(gradient_fill_o, 1.2);
 
 	gradient_stroke = linearGradient(
 		0, 0, 0, getHeight()*4.f/5.f,
@@ -33,7 +33,7 @@ VolumeKnob::VolumeKnob( NanoWidget *widget, float radius ) noexcept
     fHoverAnimation = std::make_unique<ColorTransition>(
 		0.200f,
 		&gradient_fill.outerColor,
-		transition_target_o
+		gradient_fill.innerColor
 	);
 
     widget->getParentWindow().addIdleCallback(this);
