@@ -15,6 +15,7 @@ uint  graph_bar_h = 42;
 uint  label_m = 12;
 uint  label_w = 96;
 uint  label_h = 24;
+uint  label_font_size = 16;
 
 // control bar parameters
 uint  x_grid = 100;
@@ -89,6 +90,24 @@ Color menu_background_hover_color = Color(255, 255, 255);
 Color menu_font_item_color = Color(255, 255, 255);
 Color menu_font_item_hover_color = Color(39, 39, 39);
 Color menu_font_section_color = Color(100, 100, 100);
+
+// get label size as a Size object
+auto labelSize() -> Size<uint>
+{
+	return Size<uint>(label_w, label_h);
+}
+
+// get lr button size as a Size object
+auto lrButtonSize() -> Size<uint>
+{
+	return Size<uint>(label_h, label_h);
+}
+
+// get a smaller variation on label font size
+auto labelFontSizeSmall() -> uint
+{
+	return label_font_size*7/8;
+}
 
 } // end namespace UIConfig
 

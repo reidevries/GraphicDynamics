@@ -1,16 +1,13 @@
 #include "LabelBox.hpp"
 #include "Mathf.hpp"
-
-//#include "Fonts/chivo_bold.hpp"
+#include "UIConfig.hpp"
 
 START_NAMESPACE_DISTRHO
 
 LabelBox::LabelBox(NanoWidget *widget, Size<uint> size) noexcept : NanoWidget(widget)
 {
     setSize(size);
-
-    //using namespace WOLF_FONTS;
-    //createFontFromMemory("chivo_bold", (const uchar *)chivo_bold, chivo_bold_size, 0);
+	setFontSize(UIConfig::label_font_size);
 }
 
 void LabelBox::onNanoDisplay()

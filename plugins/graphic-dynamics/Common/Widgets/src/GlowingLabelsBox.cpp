@@ -1,9 +1,11 @@
 #include "GlowingLabelsBox.hpp"
 #include "Mathf.hpp"
+#include "UIConfig.hpp"
 
 START_NAMESPACE_DISTRHO
 
-GlowingLabelsBox::GlowingLabelsBox(NanoWidget *widget, Size<uint> size) noexcept : LabelContainer(widget, size)
+GlowingLabelsBox::GlowingLabelsBox(NanoWidget *widget, Size<uint> size) noexcept
+	: LabelContainer(widget, size)
 {
 }
 
@@ -25,7 +27,7 @@ void GlowingLabelsBox::onNanoDisplay()
 
     closePath();
 
-    const float labelSize = 14.0f;
+    const float labelSize = getFontSize();
     const float labelMarginLeft = 4.0f;
     const float labelMarginTop = 4.0f;
     const float labelVerticalSpacing = labelSize + 7.0f;
@@ -35,7 +37,7 @@ void GlowingLabelsBox::onNanoDisplay()
     {
         beginPath();
 
-        fontFace(NANOVG_DEJAVU_SANS_TTF);
+        fontFaceId(getFontId());
         fontSize(labelSize);
 
         const Color fontColor = (i == getSelectedIndex()) ? Color(235, 196, 74, 255) : Color(158, 158, 158, 255);

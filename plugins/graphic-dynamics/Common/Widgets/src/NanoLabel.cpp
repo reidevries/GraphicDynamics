@@ -1,14 +1,16 @@
 #include "NanoLabel.hpp"
 #include "Mathf.hpp"
+#include "UIConfig.hpp"
 
 START_NAMESPACE_DISTRHO
 
-NanoLabel::NanoLabel(NanoWidget *widget, Size<uint> size) noexcept : NanoWidget(widget),
-                                                                     fText(""),
-                                                                     fMargin(Margin(0, 0, 0, 0)),
-                                                                     fAlign(ALIGN_LEFT | ALIGN_TOP),
-                                                                     fColor(Color(255, 255, 255, 255)),
-                                                                     fFontSize(12.0f)
+NanoLabel::NanoLabel(NanoWidget *widget, Size<uint> size) noexcept
+	: NanoWidget(widget),
+	  fText(""),
+	  fMargin(Margin(0, 0, 0, 0)),
+	  fAlign(ALIGN_LEFT | ALIGN_TOP),
+	  fColor(Color(255, 255, 255, 255)),
+	  fFontSize(UIConfig::labelFontSizeSmall())
 {
     setSize(size);
 

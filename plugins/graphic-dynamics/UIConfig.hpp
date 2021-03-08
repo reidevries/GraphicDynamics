@@ -20,9 +20,10 @@ extern uint min_w, min_h;
 extern uint graph_bar_m;
 extern uint graph_bar_h;
 
-// label positioning parameters
+// label parameters
 extern uint label_m;
 extern uint label_w, label_h;
+extern uint label_font_size;
 
 // control bar parameters
 extern uint x_grid;
@@ -45,7 +46,6 @@ extern Color vertex_fill_focus;
 extern Color vertex_halo;
 extern Color vertex_stroke_normal;
 extern Color vertex_stroke_focus;
-
 
 // colors representing various abstract concepts (used for knob colours)
 extern Color time_col;
@@ -95,15 +95,12 @@ extern Color menu_font_item_color;
 extern Color menu_font_item_hover_color;
 extern Color menu_font_section_color;
 
-inline auto labelSize() -> Size<uint>
-{
-	return Size<uint>(label_w, label_h);
-}
-
-inline auto lrButtonSize() -> Size<uint>
-{
-	return Size<uint>(label_h, label_h);
-}
+// get label size as a Size object
+auto labelSize() -> Size<uint>;
+// get lr button size as a Size object
+auto lrButtonSize() -> Size<uint>;
+// get a smaller variation on label font size
+auto labelFontSizeSmall() -> uint;
 
 void load( std::string file_name ); // load parameters from a config file
 };
