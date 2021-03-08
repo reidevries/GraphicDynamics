@@ -1,6 +1,8 @@
 #include "NanoKnob.hpp"
 #include "Mathf.hpp"
 
+#include <iostream>
+
 START_NAMESPACE_DISTRHO
 
 NanoKnob::NanoKnob(NanoWidget *widget, float radius) noexcept

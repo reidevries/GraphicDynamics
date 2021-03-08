@@ -2,6 +2,8 @@
 #include "UIConfig.hpp"
 #include "UIFonts.hpp"
 
+#include <iostream>
+
 START_NAMESPACE_DISTRHO
 
 VolumeKnob::VolumeKnob( NanoWidget *widget, float radius ) noexcept
@@ -12,7 +14,6 @@ VolumeKnob::VolumeKnob( NanoWidget *widget, float radius ) noexcept
 
     const Color gradient_fill_i = UIConfig::knob_gradient_fill_i;
 	const Color gradient_fill_o = UIConfig::knob_gradient_fill_o;
-    //const Color transition_target_o = Color::brighten(gradient_fill_o, 1.2);
 
 	gradient_stroke = linearGradient(
 		0, 0, 0, getHeight()*4.f/5.f,
@@ -113,19 +114,20 @@ void VolumeKnob::onNanoDisplay()
 	const float margin = indicator_w;
     const float indicator_top_m = gauge_w*8.f/7.f;
 
-    Color gaugeColor = UIConfig::knob_gauge_stroke;
-    gaugeColor.interpolate(color, 0.4f);
+    Color gauge_color = UIConfig::knob_gauge_stroke;
+    gauge_color.interpolate(color, 0.4f);
 
     //Gauge (empty)
     beginPath();
 
     strokeWidth(gauge_w);
-    strokeColor(gaugeColor);
+    strokeColor(gauge_color);
     arc(radius, radius, radius - margin,
 		0.75f * M_PI, 0.25f * M_PI,
 		NanoVG::Winding::CW);
     stroke();
 
+	closePath();
     //Gauge (value)
     beginPath();
 
@@ -135,6 +137,8 @@ void VolumeKnob::onNanoDisplay()
 		0.75f * M_PI, (0.75f + 1.5f * value_normal) * M_PI,
 		NanoVG::Winding::CW);
     stroke();
+
+	closePath();
 
     //Knob
     beginPath();
@@ -147,6 +151,8 @@ void VolumeKnob::onNanoDisplay()
     circle(radius, radius, knob_diameter / 2.0f);
     fill();
     stroke();
+
+	closePath();
 
     //Indicator line
     beginPath();

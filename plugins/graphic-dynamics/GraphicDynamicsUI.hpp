@@ -18,7 +18,6 @@
 #include "ArrowButton.hpp"
 #include "LabelBoxList.hpp"
 #include "UIConfig.hpp"
-#include "UIFonts.hpp"
 
 #include <memory>
 
@@ -33,10 +32,13 @@ class GraphicDynamicsUI : public UI,
 {
 public:
 	GraphicDynamicsUI();
-	~GraphicDynamicsUI() {}
+	~GraphicDynamicsUI();
+
+	float getParameterValue(uint32_t index) const;
 
 protected:
 	void parameterChanged(uint32_t, float value) override;
+	void tryRememberSize();
 	void positionWidgets(uint width, uint height);
 
 	void nanoSwitchClicked(NanoSwitch *nanoSwitch) override;
@@ -53,8 +55,8 @@ protected:
 	bool onMouse(const MouseEvent &ev) override;
 
 private:
-	void updateOnParamChange(const uint32_t index, const float value);
-	void setControlBarVisible(const bool visible);
+	void updateOnParamChange(uint32_t index, float value);
+	void toggleControlBarVisibility();
 
 	std::unique_ptr<RemoveDCSwitch> sw_remove_dc;
 	std::unique_ptr<NanoLabel> label_remove_dc;

@@ -8,9 +8,12 @@ namespace UIConfig
 uint  min_w = 1280;
 uint  min_h = 420;
 
-// graph positioning parameters
+// graph bar parameters
 uint  graph_bar_m = 6;
 uint  graph_bar_h = 42;
+uint  graph_bar_x_grid = 32;
+Color graph_bar_gradient_i = Color(71, 74, 80);
+Color graph_bar_gradient_o = Color(40, 42, 46);
 
 // label parameters
 uint  label_m = 12;
@@ -21,8 +24,8 @@ Color label_font_color = Color(255,255,255);
 
 // control bar parameters
 uint  control_bar_h = 102;
-uint  x_grid = 100;
-uint  bar_m = 16;
+uint  control_bar_x_grid = 100;
+uint  control_bar_m = 16;
 
 // knob parameters
 float knob_r = 27.f;

@@ -17,9 +17,11 @@ namespace UIConfig
 // Window minimum width and height
 extern uint min_w, min_h;
 
-// graph positioning parameters
+// graph bar parameters
 extern uint graph_bar_m;
 extern uint graph_bar_h;
+extern uint graph_bar_x_grid;
+extern Color graph_bar_gradient_i, graph_bar_gradient_o;
 
 // label parameters
 extern uint  label_m;
@@ -29,8 +31,8 @@ extern Color label_font_color;
 
 // control bar parameters
 extern uint control_bar_h;
-extern uint x_grid;
-extern uint bar_m;
+extern uint control_bar_x_grid;
+extern uint control_bar_m;
 
 // knob parameters
 extern float knob_r, knob_mini_r, knob_gauge_w;
