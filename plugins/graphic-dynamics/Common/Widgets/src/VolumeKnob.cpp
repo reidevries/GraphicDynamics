@@ -164,7 +164,7 @@ void VolumeKnob::onNanoDisplay()
 
 	if (show_units) {
 		beginPath();
-		fontFace("chivo_bold");
+		fontFaceId(font_id);
 		fontSize(font_size);
 		fillColor(Color(255,255,255));
 		textAlign(ALIGN_CENTER | ALIGN_MIDDLE);
