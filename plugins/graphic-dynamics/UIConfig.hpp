@@ -31,8 +31,11 @@ extern Color label_font_color;
 extern uint x_grid;
 extern uint bar_m;
 
-// knob sizes
-extern float knob_r, knob_mini_r;
+// knob parameters
+extern float knob_r, knob_mini_r, knob_gauge_w;
+extern Color knob_gradient_stroke_i, knob_gradient_stroke_o;
+extern Color knob_gradient_fill_i, knob_gradient_fill_o;
+extern Color knob_gauge_stroke;
 
 // graph tension handle parameters
 extern float tension_handle_radius;

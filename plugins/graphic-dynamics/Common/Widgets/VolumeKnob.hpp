@@ -19,12 +19,6 @@ public:
   /* explicit VolumeKnob(Window &parent, Size<uint> size) noexcept; */
   explicit VolumeKnob( NanoWidget *widget, float radius ) noexcept;
 
-	void setShowUnits(bool show_units) {this->show_units = show_units;}
-	void setFontId(NanoVG::FontId font_id) {this->font_id = font_id;}
-	auto getFontId() const -> NanoVG::FontId {return font_id;}
-
-	void setRange(float min, float max) noexcept override;
-
 protected:
   void idleCallback() override;
 
@@ -34,21 +28,15 @@ protected:
   void onMouseDown() override;
 
 	void onNanoDisplay() override;
-	void renderUnits();
 private:
   std::unique_ptr<FloatTransition> fGrowAnimation;
   std::unique_ptr<ColorTransition> fHoverAnimation;
 
-  float fKnobDiameter;
+	float gauge_w;
+	float knob_diameter;
 
-  Color fKnobICol;
-  Color fKnobOCol;
-
-	bool show_units = false;
-	std::string text_max;
-	std::string text_min;
-	float font_size;
-	NanoVG::FontId font_id;
+	Paint gradient_stroke;
+	Paint gradient_fill;
 
   DISTRHO_LEAK_DETECTOR(VolumeKnob)
 };

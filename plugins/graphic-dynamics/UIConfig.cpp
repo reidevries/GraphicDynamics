@@ -23,9 +23,15 @@ Color label_font_color = Color(255,255,255);
 uint  x_grid = 100;
 uint  bar_m = 16;
 
-// knob radii
-float knob_r = 27;
-float knob_mini_r = 20;
+// knob parameters
+float knob_r = 27.f;
+float knob_mini_r = 20.f;
+float knob_gauge_w = 3.5f;
+Color knob_gradient_stroke_i = Color(190, 190, 190, 30);
+Color knob_gradient_stroke_o = Color(23, 23, 23);
+Color knob_gradient_fill_i   = Color(86, 92, 95);
+Color knob_gradient_fill_o   = Color(59, 63, 63);
+Color knob_gauge_stroke      = Color( 0,  0, 40);
 
 // graph tension handle parameters
 float tension_handle_radius = 4.5f;
