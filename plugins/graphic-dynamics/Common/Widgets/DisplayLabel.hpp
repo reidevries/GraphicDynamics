@@ -32,6 +32,7 @@ private:
 	std::string display_label;
 	std::string display_text;
 	std::string display_units;
+	float font_size_units;
 
 	int max_digits;
 };

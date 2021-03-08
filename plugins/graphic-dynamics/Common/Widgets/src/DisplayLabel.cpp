@@ -1,4 +1,5 @@
 #include "DisplayLabel.hpp"
+#include "UIConfig.hpp"
 
 START_NAMESPACE_DISTRHO
 
@@ -8,6 +9,7 @@ DisplayLabel::DisplayLabel(NanoWidget *widget, Size<uint> size) noexcept
 	  display_label(""),
 	  display_text(""),
 	  display_units(""),
+	  font_size_units(UIConfig::labelFontSizeSmall()),
 	  max_digits(3)
 {
 	LabelBox::setText(" "); // bit hacky way to draw custom text
@@ -53,8 +55,8 @@ void DisplayLabel::onNanoDisplay()
 	// left-aligned label text
 	beginPath();
 
-	fontFace("chivo_bold");
-	fontSize(16.0f);
+	fontFaceId(getFontId());
+	fontSize(getFontSize());
 	fillColor(Color(255,255,255));
 	textAlign(ALIGN_LEFT | ALIGN_MIDDLE);
 
@@ -66,8 +68,8 @@ void DisplayLabel::onNanoDisplay()
 
 	// right-aligned unit text
 	beginPath();
-	fontFace("chivo_bold");
-	fontSize(14.0f);
+	fontFaceId(getFontId());
+	fontSize(font_size_units);
 	fillColor(Color(255,255,255));
 	textAlign(ALIGN_RIGHT | ALIGN_MIDDLE);
 
