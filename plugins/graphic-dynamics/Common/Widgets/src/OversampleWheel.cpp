@@ -15,9 +15,9 @@ void OversampleWheel::setFontSize(const float size)
 {
 	fFontSize = size;
 	triangle_w = size/2.f;
-	triangle_h = 3.f*size/2.f;
-	triangle_m_x = size-triangle_w;
-	triangle_m_y = size-triangle_h;
+	triangle_h = 3.f*size/8.f;
+	triangle_m_x = (size-triangle_w)/2.f;
+	triangle_m_y = (size-triangle_h)/2.f;
 }
 
 void OversampleWheel::drawTriangles()
