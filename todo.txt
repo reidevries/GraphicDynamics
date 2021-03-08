@@ -15,6 +15,7 @@ DONE -- Put back in a switch for expo/linear
 DONE -- combine/reconcile Config.hpp and UIConfig.hpp
 -- redesign attack/release knobs, possibly with a graphic of the envelope
 -- add units to controls, preferrably generated from the control itself
+-- move font id's and font loading to UIConfig
 -- Implement smoothing control
 -- Add knob for stereo link
 -- implement theme loading from CSS or something like that

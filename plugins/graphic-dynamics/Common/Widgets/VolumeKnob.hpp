@@ -20,6 +20,8 @@ public:
   explicit VolumeKnob( NanoWidget *widget, float radius ) noexcept;
 
 	void setShowUnits(bool show_units) {this->show_units = show_units;}
+	void setFontId(NanoVG::FontId font_id) {this->font_id = font_id;}
+	auto getFontId() const -> NanoVG::FontId {return font_id;}
 
 	void setRange(float min, float max) noexcept override;
 

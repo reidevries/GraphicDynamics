@@ -1,10 +1,11 @@
 #include "VolumeKnob.hpp"
+#include "UIConfig.hpp"
 
 START_NAMESPACE_DISTRHO
 
 VolumeKnob::VolumeKnob( NanoWidget *widget, float radius ) noexcept
-	: NanoKnob(widget, radius)
-
+	: NanoKnob(widget, radius),
+	  font_size(UIConfig::labelFontSizeSmall())
 {
     const float gaugeWidth = 3.5f;
     const float diameter = (radius - gaugeWidth) * 2.0f - 4;

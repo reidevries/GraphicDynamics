@@ -84,6 +84,8 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
     knob_pre->setRange(0.0f, 2.0f);
     knob_pre->setId(p_pre_gain);
     knob_pre->setColor(UIConfig::gain_col);
+	knob_pre->setFontId(chivo_bold_id);
+	knob_pre->setShowUnits(true);
 
     label_wet = std::make_unique<LabelBox>(this, UIConfig::labelSize());
     label_wet->setText("WET");
