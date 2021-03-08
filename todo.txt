@@ -32,6 +32,7 @@ the graph contents, and faster to run as it's basically a wavetable. It would be
 quite slow to reconstruct the graph while it's moving, though.
 
 To (maybe) pull request in pdesaulniers' wolf-shaper
+-- increase pre/post range
 -- make VolumeKnob pointer work properly at different radii
 -- make themes work more globally
 -- potentially reimplement right click menu as a widget like I am doing

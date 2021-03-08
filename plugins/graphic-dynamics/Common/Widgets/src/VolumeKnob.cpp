@@ -19,7 +19,7 @@ VolumeKnob::VolumeKnob( NanoWidget *widget, float radius ) noexcept
     fGrowAnimation = std::make_unique<FloatTransition>(
 		0.100f,
 		&fKnobDiameter,
-		fKnobDiameter - 7
+		fKnobDiameter*7/8
 	);
     fHoverAnimation = std::make_unique<ColorTransition>(
 		0.200f,
@@ -28,6 +28,13 @@ VolumeKnob::VolumeKnob( NanoWidget *widget, float radius ) noexcept
 	);
 
     widget->getParentWindow().addIdleCallback(this);
+}
+
+void VolumeKnob::setRange(float min, float max) noexcept
+{
+	NanoKnob::setRange(min, max);
+	this->text_min = std::to_string(min);
+	this->text_max = std::to_string(max);
 }
 
 void VolumeKnob::idleCallback()
@@ -153,6 +160,16 @@ void VolumeKnob::onNanoDisplay()
     restore();
 
     closePath();
+
+	if (show_units) {
+		beginPath();
+		fontFace("chivo_bold");
+		fontSize(font_size);
+		fillColor(Color(255,255,255));
+		textAlign(ALIGN_CENTER | ALIGN_MIDDLE);
+		text(0,height, text_min.c_str(), NULL);
+		closePath();
+	}
 }
 
 END_NAMESPACE_DISTRHO

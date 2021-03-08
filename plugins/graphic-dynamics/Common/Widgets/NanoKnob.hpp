@@ -24,7 +24,7 @@ public:
   void setValue(float value, bool sendCallback = false) noexcept;
 
   void setDefault(float def) noexcept;
-  void setRange(float min, float max) noexcept;
+  virtual void setRange(float min, float max) noexcept;
   void setStep(float step) noexcept;
   void setExponential(const bool is_exponential) noexcept;
   void setVariableResistance(const bool variable_resistance) noexcept;

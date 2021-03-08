@@ -1,8 +1,11 @@
 #ifndef WOLF_VOLUME_KNOB_HPP_INCLUDED
 #define WOLF_VOLUME_KNOB_HPP_INCLUDED
 
+#include <string>
+
 #include "NanoKnob.hpp"
 #include "Animation.hpp"
+#include "NanoVG.hpp"
 
 #include <memory>
 
@@ -16,6 +19,10 @@ public:
   /* explicit VolumeKnob(Window &parent, Size<uint> size) noexcept; */
   explicit VolumeKnob( NanoWidget *widget, float radius ) noexcept;
 
+	void setShowUnits(bool show_units) {this->show_units = show_units;}
+
+	void setRange(float min, float max) noexcept override;
+
 protected:
   void idleCallback() override;
 
@@ -25,15 +32,21 @@ protected:
   void onMouseDown() override;
 
 	void onNanoDisplay() override;
-
+	void renderUnits();
 private:
   std::unique_ptr<FloatTransition> fGrowAnimation;
   std::unique_ptr<ColorTransition> fHoverAnimation;
-  
+
   float fKnobDiameter;
 
   Color fKnobICol;
   Color fKnobOCol;
+
+	bool show_units = false;
+	std::string text_max;
+	std::string text_min;
+	float font_size;
+	NanoVG::FontId font_id;
 
   DISTRHO_LEAK_DETECTOR(VolumeKnob)
 };

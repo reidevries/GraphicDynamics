@@ -22,7 +22,7 @@ uint  bar_m = 16;
 
 // knob radii
 float knob_r = 27;
-float knob_mini_r = 16;
+float knob_mini_r = 20;
 
 // graph tension handle parameters
 float tension_handle_radius = 4.5f;
