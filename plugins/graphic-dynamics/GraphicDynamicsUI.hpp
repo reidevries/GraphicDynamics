@@ -33,20 +33,16 @@ class GraphicDynamicsUI : public UI,
 {
 public:
 	GraphicDynamicsUI();
-	~GraphicDynamicsUI();
-
-	float getParameterValue(uint32_t index) const;
+	~GraphicDynamicsUI() {}
 
 protected:
 	void parameterChanged(uint32_t, float value) override;
-	void tryRememberSize();
 	void positionWidgets(uint width, uint height);
 
 	void nanoSwitchClicked(NanoSwitch *nanoSwitch) override;
 	void nanoButtonClicked(NanoButton *nanoButton) override;
 	void nanoWheelValueChanged(NanoWheel *nanoWheel, const int value) override;
 	void nanoKnobValueChanged(NanoKnob *nanoKnob, const float value) override;
-
 	void resizeHandleMoved(int width, int height) override;
 
 	void stateChanged(const char *key, const char *value) override;
@@ -57,8 +53,8 @@ protected:
 	bool onMouse(const MouseEvent &ev) override;
 
 private:
-	void updateOnParamChange(uint32_t index, float value);
-	void toggleBottomBarVisibility();
+	void updateOnParamChange(const uint32_t index, const float value);
+	void setControlBarVisible(const bool visible);
 
 	std::unique_ptr<RemoveDCSwitch> sw_remove_dc;
 	std::unique_ptr<NanoLabel> label_remove_dc;
@@ -88,7 +84,7 @@ private:
 	std::unique_ptr<ResetGraphButton> button_reset_graph;
 	std::unique_ptr<NanoLabel> label_reset_graph;
 
-	bool fBottomBarVisible;
+	bool control_bar_visible;
 
 	DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GraphicDynamicsUI)
 };

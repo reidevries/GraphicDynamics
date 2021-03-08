@@ -20,6 +20,7 @@ uint  label_font_size = 16;
 Color label_font_color = Color(255,255,255);
 
 // control bar parameters
+uint  control_bar_h = 102;
 uint  x_grid = 100;
 uint  bar_m = 16;
 

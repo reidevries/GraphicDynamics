@@ -17,7 +17,7 @@
 START_NAMESPACE_DISTRHO
 
 
-GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
+GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), control_bar_visible(true)
 {
     loadSharedResources();
 
@@ -227,13 +227,57 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
     positionWidgets(width, height);
 }
 
-GraphicDynamicsUI::~GraphicDynamicsUI()
+void GraphicDynamicsUI::parameterChanged(uint32_t index, float value)
 {
+	switch (index) {
+	case p_pre_gain:
+		knob_pre->setValue(value);
+		break;
+	case p_wet:
+		knob_wet->setValue(value);
+		break;
+	case p_post_gain:
+		knob_post->setValue(value);
+		break;
+	case p_remove_dc:
+		sw_remove_dc->setDown(value >= 0.50f);
+		break;
+	case p_linearity:
+		sw_linearity->setDown(value >= 0.50f);
+		break;
+	case p_smooth:
+		wheel_oversample->setValue(value);
+		break;
+	case p_hor_warp_mode:
+		label_hor_warp->setSelectedIndex(std::round(value));
+		break;
+	case p_hor_warp_amt:
+		knob_hor_warp->setValue(value);
+		break;
+	case p_ver_warp_mode:
+		label_ver_warp->setSelectedIndex(std::round(value));
+		break;
+	case p_ver_warp_amt:
+		knob_ver_warp->setValue(value);
+		break;
+	case p_atk_ms:
+		knob_attack->setValue(value);
+		break;
+	case p_rls_ms:
+		knob_release->setValue(value);
+		break;
+	case p_out:
+		graph_widget->updateInput(value);
+		break;
+	default:
+		break;
+	}
+	updateOnParamChange(index, value);
 }
 
 void GraphicDynamicsUI::positionWidgets(uint width, uint height)
 {
-	const uint control_bar_h = fBottomBarVisible ? 102 : 0;
+	const uint control_bar_h = control_bar_visible ? UIConfig::control_bar_h : 0;
 	const uint graph_bar_h = graph_bar->getHeight();
 
 	// Graph Widget ---------------------------------------------------------//
@@ -372,84 +416,71 @@ void GraphicDynamicsUI::positionWidgets(uint width, uint height)
 		height - handle_resize->getHeight() );
 }
 
-void GraphicDynamicsUI::parameterChanged(uint32_t index, float value)
+
+
+void GraphicDynamicsUI::nanoSwitchClicked(NanoSwitch *nanoSwitch)
 {
-	switch (index) {
-	case p_pre_gain:
-		knob_pre->setValue(value);
-		break;
-	case p_wet:
-		knob_wet->setValue(value);
-		break;
-	case p_post_gain:
-		knob_post->setValue(value);
-		break;
-	case p_remove_dc:
-		sw_remove_dc->setDown(value >= 0.50f);
-		break;
-	case p_linearity:
-		sw_linearity->setDown(value >= 0.50f);
-		break;
-	case p_smooth:
-		wheel_oversample->setValue(value);
-		break;
-	case p_hor_warp_mode:
-		label_hor_warp->setSelectedIndex(std::round(value));
-		break;
-	case p_hor_warp_amt:
-		knob_hor_warp->setValue(value);
-		break;
-	case p_ver_warp_mode:
-		label_ver_warp->setSelectedIndex(std::round(value));
-		break;
-	case p_ver_warp_amt:
-		knob_ver_warp->setValue(value);
-		break;
-	case p_atk_ms:
-		knob_attack->setValue(value);
-		break;
-	case p_rls_ms:
-		knob_release->setValue(value);
-		break;
-	case p_out:
-		graph_widget->updateInput(value);
-		break;
-	default:
-		break;
-	}
-	updateOnParamChange(index, value);
+	const uint sw_id = nanoSwitch->getId();
+	const int value = nanoSwitch->isDown() ? 1 : 0;
+
+	setParameterValue(sw_id, value);
+	updateOnParamChange(sw_id, value);
 }
 
-void GraphicDynamicsUI::updateOnParamChange(uint32_t index, float value)
+void GraphicDynamicsUI::nanoButtonClicked(NanoButton *nanoButton)
 {
-	switch(index) {
-	case p_linearity:
-		label_linearity->setSelectedIndex(value >= 0.5f ? 1 : 0);
-		break;
-	case p_hor_warp_amt:
-		graph_widget->setHorWarpAmt(value);
-		break;
-	case p_ver_warp_amt:
-		graph_widget->setVerWarpAmt(value);
-		break;
-	case p_hor_warp_mode:
-		graph_widget->setHorWarpMode((graphdyn::WarpMode)std::round(value));
-		break;
-	case p_ver_warp_mode:
-		graph_widget->setVerWarpMode((graphdyn::WarpMode)std::round(value));
-		break;
-	case p_atk_ms:
-		label_attack->setDisplayNumber(value);
-		label_attack->repaint();
-		break;
-	case p_rls_ms:
-		label_release->setDisplayNumber(value);
-		label_release->repaint();
-		break;
-	default:
-		break;
+	if (nanoButton == button_reset_graph.get()) {
+		graph_widget->reset();
+		return;
+	}
+
+	bool horizontal = false;
+
+	if (nanoButton == button_l_hor_warp_mode.get()) {
+		label_hor_warp->goPrevious();
+		horizontal = true;
+	} else if (nanoButton == button_r_hor_warp_mode.get()) {
+		label_hor_warp->goNext();
+		horizontal = true;
+	} else if (nanoButton == button_l_ver_warp_mode.get()) {
+		label_ver_warp->goPrevious();
+	} else if (nanoButton == button_r_ver_warp_mode.get()) {
+		label_ver_warp->goNext();
+	}
+
+	if (horizontal) {
+		const int index = label_hor_warp->getSelectedIndex();
+
+		setParameterValue(p_hor_warp_mode, index);
+		graph_widget->setHorWarpMode((graphdyn::WarpMode)index);
+	} else {
+		const int index = label_ver_warp->getSelectedIndex();
+
+		setParameterValue(p_ver_warp_mode, index);
+		graph_widget->setVerWarpMode((graphdyn::WarpMode)index);
 	}
 }
+
+void GraphicDynamicsUI::nanoWheelValueChanged(NanoWheel *nanoWheel, const int value)
+{
+	const uint id = nanoWheel->getId();
+	setParameterValue(id, value);
+	updateOnParamChange(id, value);
+}
+
+void GraphicDynamicsUI::nanoKnobValueChanged(NanoKnob *nanoKnob, const float value)
+{
+	const uint id = nanoKnob->getId();
+	setParameterValue(id, value);
+	updateOnParamChange(id, value);
+}
+
+void GraphicDynamicsUI::resizeHandleMoved(int width, int height)
+{
+	setSize(width, height);
+}
+
+
 
 void GraphicDynamicsUI::stateChanged(const char *key, const char *value)
 {
@@ -517,110 +548,80 @@ void GraphicDynamicsUI::uiReshape(uint width, uint height)
 	positionWidgets(width, height);
 }
 
-void GraphicDynamicsUI::toggleBottomBarVisibility()
-{
-	fBottomBarVisible = !fBottomBarVisible;
-
-	label_linearity->setVisible(fBottomBarVisible);
-	sw_remove_dc->setVisible(fBottomBarVisible);
-	knob_post->setVisible(fBottomBarVisible);
-	knob_pre->setVisible(fBottomBarVisible);
-
-	knob_hor_warp->setVisible(fBottomBarVisible);
-	label_hor_warp->setVisible(fBottomBarVisible);
-	button_l_hor_warp_mode->setVisible(fBottomBarVisible);
-	button_r_hor_warp_mode->setVisible(fBottomBarVisible);
-
-	knob_ver_warp->setVisible(fBottomBarVisible);
-	label_ver_warp->setVisible(fBottomBarVisible);
-	button_l_ver_warp_mode->setVisible(fBottomBarVisible);
-	button_r_ver_warp_mode->setVisible(fBottomBarVisible);
-
-	knob_wet->setVisible(fBottomBarVisible);
-	label_post->setVisible(fBottomBarVisible);
-	label_pre->setVisible(fBottomBarVisible);
-	label_wet->setVisible(fBottomBarVisible);
-	label_remove_dc->setVisible(fBottomBarVisible);
-
-	positionWidgets(getWidth(), getHeight());
-}
-
 bool GraphicDynamicsUI::onKeyboard(const KeyboardEvent &ev)
 {
 	if (ev.press) {
 		if (ev.key == 95) { //F11
-			toggleBottomBarVisibility();
+			setControlBarVisible(!control_bar_visible);
 		}
 	}
 
 	return true;
 }
 
-void GraphicDynamicsUI::nanoSwitchClicked(NanoSwitch *nanoSwitch)
-{
-	const uint sw_id = nanoSwitch->getId();
-	const int value = nanoSwitch->isDown() ? 1 : 0;
-
-	setParameterValue(sw_id, value);
-	updateOnParamChange(sw_id, value);
-}
-
-void GraphicDynamicsUI::nanoButtonClicked(NanoButton *nanoButton)
-{
-	if (nanoButton == button_reset_graph.get()) {
-		graph_widget->reset();
-		return;
-	}
-
-	bool horizontal = false;
-
-	if (nanoButton == button_l_hor_warp_mode.get()) {
-		label_hor_warp->goPrevious();
-		horizontal = true;
-	} else if (nanoButton == button_r_hor_warp_mode.get()) {
-		label_hor_warp->goNext();
-		horizontal = true;
-	} else if (nanoButton == button_l_ver_warp_mode.get()) {
-		label_ver_warp->goPrevious();
-	} else if (nanoButton == button_r_ver_warp_mode.get()) {
-		label_ver_warp->goNext();
-	}
-
-	if (horizontal) {
-		const int index = label_hor_warp->getSelectedIndex();
-
-		setParameterValue(p_hor_warp_mode, index);
-		graph_widget->setHorWarpMode((graphdyn::WarpMode)index);
-	} else {
-		const int index = label_ver_warp->getSelectedIndex();
-
-		setParameterValue(p_ver_warp_mode, index);
-		graph_widget->setVerWarpMode((graphdyn::WarpMode)index);
-	}
-}
-
-void GraphicDynamicsUI::nanoWheelValueChanged(NanoWheel *nanoWheel, const int value)
-{
-	const uint id = nanoWheel->getId();
-	setParameterValue(id, value);
-	updateOnParamChange(id, value);
-}
-
-void GraphicDynamicsUI::nanoKnobValueChanged(NanoKnob *nanoKnob, const float value)
-{
-	const uint id = nanoKnob->getId();
-	setParameterValue(id, value);
-	updateOnParamChange(id, value);
-}
-
-void GraphicDynamicsUI::resizeHandleMoved(int width, int height)
-{
-	setSize(width, height);
-}
-
 UI *createUI()
 {
 	return new GraphicDynamicsUI();
+}
+
+void GraphicDynamicsUI::updateOnParamChange(uint32_t index, float value)
+{
+	switch(index) {
+	case p_linearity:
+		label_linearity->setSelectedIndex(value >= 0.5f ? 1 : 0);
+		break;
+	case p_hor_warp_amt:
+		graph_widget->setHorWarpAmt(value);
+		break;
+	case p_ver_warp_amt:
+		graph_widget->setVerWarpAmt(value);
+		break;
+	case p_hor_warp_mode:
+		graph_widget->setHorWarpMode((graphdyn::WarpMode)std::round(value));
+		break;
+	case p_ver_warp_mode:
+		graph_widget->setVerWarpMode((graphdyn::WarpMode)std::round(value));
+		break;
+	case p_atk_ms:
+		label_attack->setDisplayNumber(value);
+		label_attack->repaint();
+		break;
+	case p_rls_ms:
+		label_release->setDisplayNumber(value);
+		label_release->repaint();
+		break;
+	default:
+		break;
+	}
+}
+
+
+void GraphicDynamicsUI::setControlBarVisible(const bool visible)
+{
+	control_bar_visible = visible;
+
+	label_linearity->setVisible(control_bar_visible);
+	sw_remove_dc->setVisible(control_bar_visible);
+	knob_post->setVisible(control_bar_visible);
+	knob_pre->setVisible(control_bar_visible);
+
+	knob_hor_warp->setVisible(control_bar_visible);
+	label_hor_warp->setVisible(control_bar_visible);
+	button_l_hor_warp_mode->setVisible(control_bar_visible);
+	button_r_hor_warp_mode->setVisible(control_bar_visible);
+
+	knob_ver_warp->setVisible(control_bar_visible);
+	label_ver_warp->setVisible(control_bar_visible);
+	button_l_ver_warp_mode->setVisible(control_bar_visible);
+	button_r_ver_warp_mode->setVisible(control_bar_visible);
+
+	knob_wet->setVisible(control_bar_visible);
+	label_post->setVisible(control_bar_visible);
+	label_pre->setVisible(control_bar_visible);
+	label_wet->setVisible(control_bar_visible);
+	label_remove_dc->setVisible(control_bar_visible);
+
+	positionWidgets(getWidth(), getHeight());
 }
 
 END_NAMESPACE_DISTRHO
