@@ -97,7 +97,7 @@ void OversampleWheel::drawText()
     {
         beginPath();
 
-        fontFace("chivo_bold");
+        fontFaceId(font_id);
         fontSize(fFontSize);
         fillColor(Color(193, 219, 240, 255));
         textAlign(ALIGN_RIGHT | ALIGN_CENTER);

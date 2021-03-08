@@ -11,6 +11,8 @@ public:
     explicit OversampleWheel(NanoWidget *widget, Size<uint> size) noexcept;
 
     void setFontSize(float size);
+	void setFontId(NanoVG::FontId font_id) {this->font_id = font_id;}
+	auto getFontId() const -> NanoVG::FontId {return font_id;}
 
 protected:
     void onNanoDisplay() override;
@@ -21,6 +23,7 @@ protected:
     
 private:
     float fFontSize;
+	NanoVG::FontId font_id;
 
     DISTRHO_LEAK_DETECTOR(OversampleWheel)
 };
