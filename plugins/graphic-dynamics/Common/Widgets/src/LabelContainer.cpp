@@ -1,15 +1,17 @@
 #include "LabelContainer.hpp"
 #include "Mathf.hpp"
 #include "UIConfig.hpp"
+#include "UIFonts.hpp"
 
 START_NAMESPACE_DISTRHO
 
 LabelContainer::LabelContainer(NanoWidget *widget, Size<uint> size) noexcept
 	: NanoWidget(widget),
-	  fSelectedIndex(0)
+	  fSelectedIndex(0),
+	  fFontSize(UIConfig::label_font_size),
+	  fFontId(UIFonts::chivo_bold_id)
 {
     setSize(size);
-	setFontSize(UIConfig::label_font_size);
 
     loadSharedResources();
 }

@@ -1,6 +1,7 @@
 #include "NanoLabel.hpp"
 #include "Mathf.hpp"
 #include "UIConfig.hpp"
+#include "UIFonts.hpp"
 
 START_NAMESPACE_DISTRHO
 
@@ -10,7 +11,8 @@ NanoLabel::NanoLabel(NanoWidget *widget, Size<uint> size) noexcept
 	  fMargin(Margin(0, 0, 0, 0)),
 	  fAlign(ALIGN_LEFT | ALIGN_TOP),
 	  fColor(Color(255, 255, 255, 255)),
-	  fFontSize(UIConfig::labelFontSizeSmall())
+	  fFontSize(UIConfig::labelFontSizeSmall()),
+	  fFontId(UIFonts::chivo_bold_id)
 {
     setSize(size);
 

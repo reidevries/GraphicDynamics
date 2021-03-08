@@ -71,6 +71,7 @@ FILES_UI  = \
 	Resources/Fonts/chivo_bold.cpp \
 	Resources/Fonts/chivo_italic.cpp \
 	UIConfig.cpp \
+	UIFonts.cpp \
 	GraphicDynamicsUI.cpp
 
 # --------------------------------------------------------------

@@ -2,7 +2,8 @@
 
 START_NAMESPACE_DISTRHO
 
-namespace UIConfig {
+namespace UIConfig
+{
 // Window minimum width and height
 uint  min_w = 1280;
 uint  min_h = 420;
@@ -11,11 +12,12 @@ uint  min_h = 420;
 uint  graph_bar_m = 6;
 uint  graph_bar_h = 42;
 
-// label positioning parameters
+// label parameters
 uint  label_m = 12;
 uint  label_w = 96;
 uint  label_h = 24;
 uint  label_font_size = 16;
+Color label_font_color = Color(255,255,255);
 
 // control bar parameters
 uint  x_grid = 100;
@@ -42,10 +44,10 @@ Color vertex_stroke_focus = Color(0,0,0, 255);
 
 
 // colors representing various abstract concepts (used for knob colours)
-Color time_col = Color(136, 228, 255);
-Color gain_col = Color(250, 250, 250);
-Color wet_col  = Color(255, 255, 169);
-Color warp_col = Color(143, 255, 147);
+Color time_color = Color(136, 228, 255);
+Color gain_color = Color(250, 250, 250);
+Color wet_color  = Color(255, 255, 169);
+Color warp_color = Color(143, 255, 147);
 
 // plugin colours
 Color plugin_background = Color(42, 44, 47, 255);
@@ -90,6 +92,15 @@ Color menu_background_hover_color = Color(255, 255, 255);
 Color menu_font_item_color = Color(255, 255, 255);
 Color menu_font_item_hover_color = Color(39, 39, 39);
 Color menu_font_section_color = Color(100, 100, 100);
+
+// OversampleWheel parameters
+float wheel_text_m     = 3.f;
+float wheel_outline_w  = 2.f;
+Color wheel_gradient_i = Color(54, 52, 88);
+Color wheel_gradient_o = Color(38, 37, 51);
+Color wheel_outline_fill = Color(27, 27, 27);
+Color wheel_top_line_stroke = Color(72, 137, 208, 150);
+//Color wheel_font_color = Color(193, 219, 240);
 
 // get label size as a Size object
 auto labelSize() -> Size<uint>

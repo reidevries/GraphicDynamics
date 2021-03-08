@@ -11,7 +11,8 @@ START_NAMESPACE_DISTRHO
 // config for graphic dynamics UI Visual parameters
 // m always means margin, w always means width, h always means height
 // fg = foreground, bg = background
-namespace UIConfig {
+namespace UIConfig
+{
 
 // Window minimum width and height
 extern uint min_w, min_h;
@@ -21,9 +22,10 @@ extern uint graph_bar_m;
 extern uint graph_bar_h;
 
 // label parameters
-extern uint label_m;
-extern uint label_w, label_h;
-extern uint label_font_size;
+extern uint  label_m;
+extern uint  label_w, label_h;
+extern uint  label_font_size;
+extern Color label_font_color;
 
 // control bar parameters
 extern uint x_grid;
@@ -48,10 +50,10 @@ extern Color vertex_stroke_normal;
 extern Color vertex_stroke_focus;
 
 // colors representing various abstract concepts (used for knob colours)
-extern Color time_col;
-extern Color gain_col;
-extern Color wet_col ;
-extern Color warp_col;
+extern Color time_color;
+extern Color gain_color;
+extern Color wet_color;
+extern Color warp_color;
 
 // plugin colours
 extern Color plugin_background;
@@ -94,6 +96,14 @@ extern Color menu_background_hover_color;
 extern Color menu_font_item_color;
 extern Color menu_font_item_hover_color;
 extern Color menu_font_section_color;
+
+// OversampleWheel parameters
+extern float wheel_text_m;
+extern float wheel_outline_w;
+extern Color wheel_gradient_i, wheel_gradient_o;
+extern Color wheel_outline_fill;
+extern Color wheel_top_line_stroke;
+//extern Color wheel_font_color;
 
 // get label size as a Size object
 auto labelSize() -> Size<uint>;

@@ -1,10 +1,10 @@
 #ifndef WOLF_GLOWING_LABELS_BOX_HPP_INCLUDED
 #define WOLF_GLOWING_LABELS_BOX_HPP_INCLUDED
 
+#include <vector>
 #include "Widget.hpp"
 #include "NanoVG.hpp"
 #include "LabelContainer.hpp"
-#include <vector>
 
 START_NAMESPACE_DISTRHO
 

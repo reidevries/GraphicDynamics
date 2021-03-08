@@ -21,10 +21,12 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
 {
     loadSharedResources();
 
-    using namespace WOLF_FONTS;
-    NanoVG::FontId chivo_bold_id = createFontFromMemory(
-		"chivo_bold", (const uchar *)chivo_bold, chivo_bold_size, 0);
-    NanoVG::FontId dejavu_sans_id = findFont(NANOVG_DEJAVU_SANS_TTF);
+    UIFonts::chivo_bold_id = createFontFromMemory(
+		"chivo_bold",
+		WOLF_FONTS::chivo_bold,
+		WOLF_FONTS::chivo_bold_size,
+		0);
+    UIFonts::dejavu_sans_id = findFont(NANOVG_DEJAVU_SANS_TTF);
 
     const float width = getWidth();
     const float height = getHeight();
@@ -60,7 +62,6 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
 		Size<uint>(100, 29)
 	);
     label_remove_dc->setText("CENTER");
-    label_remove_dc->setFontId(chivo_bold_id);
     label_remove_dc->setAlign(ALIGN_LEFT | ALIGN_MIDDLE);
     label_remove_dc->setMargin(
 		Margin(3, 0, sw_remove_dc->getWidth() / 2.0f, 0));
@@ -73,45 +74,40 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
 		Size<uint>(34, 42)
 	);
     label_linearity->setLabels({"LIN", "EXP"});
-	label_linearity->setFontId(chivo_bold_id);
 
     label_pre = std::make_unique<LabelBox>(this, UIConfig::labelSize());
     label_pre->setText("PRE");
-	label_pre->setFontId(chivo_bold_id);
 
     knob_pre = std::make_unique<VolumeKnob>(this, UIConfig::knob_r);
     knob_pre->setCallback(this);
     knob_pre->setRange(0.0f, 2.0f);
     knob_pre->setId(p_pre_gain);
-    knob_pre->setColor(UIConfig::gain_col);
-	knob_pre->setFontId(chivo_bold_id);
+    knob_pre->setColor(UIConfig::gain_color);
 	knob_pre->setShowUnits(true);
 
     label_wet = std::make_unique<LabelBox>(this, UIConfig::labelSize());
     label_wet->setText("WET");
-	label_wet->setFontId(chivo_bold_id);
 
     knob_wet = std::make_unique<VolumeKnob>(this, UIConfig::knob_r);
     knob_wet->setCallback(this);
     knob_wet->setRange(0.0f, 1.0f);
     knob_wet->setId(p_wet);
-    knob_wet->setColor(UIConfig::wet_col);
+    knob_wet->setColor(UIConfig::wet_color);
 
     label_post = std::make_unique<LabelBox>(this, UIConfig::labelSize());
     label_post->setText("POST");
-	label_post->setFontId(chivo_bold_id);
 
     knob_post = std::make_unique<VolumeKnob>(this, UIConfig::knob_r);
     knob_post->setCallback(this);
     knob_post->setRange(0.0f, 1.0f);
     knob_post->setId(p_post_gain);
-    knob_post->setColor(UIConfig::gain_col);
+    knob_post->setColor(UIConfig::gain_color);
 
     knob_hor_warp = std::make_unique<VolumeKnob>(this, UIConfig::knob_r);
     knob_hor_warp->setCallback(this);
     knob_hor_warp->setRange(0.0f, 1.0f);
     knob_hor_warp->setId(p_hor_warp_amt);
-    knob_hor_warp->setColor(UIConfig::warp_col);
+    knob_hor_warp->setColor(UIConfig::warp_color);
 
     label_hor_warp = std::make_unique<LabelBoxList>(
 		this,
@@ -122,13 +118,12 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
 		"BEND +", "BEND -", "BEND +/-",
 		"SKEW +", "SKEW -", "SKEW +/-" 
 	});
-	label_hor_warp->setFontId(chivo_bold_id);
 
     knob_ver_warp = std::make_unique<VolumeKnob>(this, UIConfig::knob_r);
     knob_ver_warp->setCallback(this);
     knob_ver_warp->setRange(0.0f, 1.0f);
     knob_ver_warp->setId(p_ver_warp_amt);
-    knob_ver_warp->setColor(UIConfig::warp_col);
+    knob_ver_warp->setColor(UIConfig::warp_color);
 
     label_ver_warp = std::make_unique<LabelBoxList>(
 		this,
@@ -139,7 +134,6 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
 		"BEND +", "BEND -", "BEND +/-",
 		"SKEW +", "SKEW -", "SKEW +/-"
 	});
-	label_ver_warp->setFontId(chivo_bold_id);
 
     button_l_hor_warp_mode = std::make_unique<ArrowButton>(
 		this,
@@ -177,12 +171,11 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
 	label_attack->setDisplayLabel("ATK ");
 	label_attack->setDisplayUnits("ms");
 	label_attack->setMaxDigits(4);
-	label_attack->setFontId(chivo_bold_id);
 	knob_attack = std::make_unique<VolumeKnob>(this, UIConfig::knob_mini_r);
 	knob_attack->setCallback(this);
 	knob_attack->setRange(0.1f, 9999.0f);
 	knob_attack->setId(p_atk_ms);
-	knob_attack->setColor(UIConfig::time_col);
+	knob_attack->setColor(UIConfig::time_color);
 	knob_attack->setExponential(true);
 	knob_attack->setVariableResistance(true);
 	knob_attack->setMinResistance(0.1f);
@@ -191,12 +184,11 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
 	label_release->setDisplayLabel("RLS ");
 	label_release->setDisplayUnits("ms");
 	label_release->setMaxDigits(4);
-	label_release->setFontId(chivo_bold_id);
 	knob_release = std::make_unique<VolumeKnob>(this, UIConfig::knob_mini_r);
 	knob_release->setCallback(this);
 	knob_release->setRange(0.1f, 9999.0f);
 	knob_release->setId(p_rls_ms);
-	knob_release->setColor(UIConfig::time_col);
+	knob_release->setColor(UIConfig::time_color);
 	knob_release->setExponential(true);
 	knob_release->setVariableResistance(true);
 	knob_release->setMinResistance(0.1f);
@@ -214,7 +206,7 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
 		Size<uint>(50, button_reset_graph->getHeight())
 	);
     label_reset_graph->setText("RESET");
-    label_reset_graph->setFontId(dejavu_sans_id);
+    label_reset_graph->setFontId(UIFonts::dejavu_sans_id);
     label_reset_graph->setAlign(ALIGN_LEFT | ALIGN_MIDDLE);
     label_reset_graph->setMargin( Margin(
 		6, 0,
@@ -227,7 +219,6 @@ GraphicDynamicsUI::GraphicDynamicsUI() : UI(1280, 662), fBottomBarVisible(true)
 
     label_oversample = std::make_unique<NanoLabel>(this, Size<uint>(85, 26));
     label_oversample->setText("OVERSAMPLE");
-    label_oversample->setFontId(chivo_bold_id);
     label_oversample->setAlign(ALIGN_LEFT | ALIGN_MIDDLE);
     label_oversample->setMargin( Margin(
 		0, 0,

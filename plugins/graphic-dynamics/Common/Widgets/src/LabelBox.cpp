@@ -1,13 +1,16 @@
 #include "LabelBox.hpp"
 #include "Mathf.hpp"
 #include "UIConfig.hpp"
+#include "UIFonts.hpp"
 
 START_NAMESPACE_DISTRHO
 
-LabelBox::LabelBox(NanoWidget *widget, Size<uint> size) noexcept : NanoWidget(widget)
+LabelBox::LabelBox(NanoWidget *widget, Size<uint> size) noexcept
+	: NanoWidget(widget),
+	  fFontSize(UIConfig::label_font_size),
+	  fFontId(UIFonts::chivo_bold_id)
 {
     setSize(size);
-	setFontSize(UIConfig::label_font_size);
 }
 
 void LabelBox::onNanoDisplay()

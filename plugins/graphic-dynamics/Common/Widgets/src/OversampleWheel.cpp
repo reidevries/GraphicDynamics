@@ -1,45 +1,49 @@
 #include "OversampleWheel.hpp"
-#include "Fonts/chivo_bold.hpp"
+#include "UIConfig.hpp"
+#include "UIFonts.hpp"
 
 START_NAMESPACE_DISTRHO
 
-//TODO: Put these in the config file
-const float trianglesVerticalMargin = 5.0f;
-const float trianglesHorizontalMargin = 4.0f;
-const float trianglesWidth = 8.0f;
-const float trianglesHeight = 6.0f;
-const float textMarginRight = 3.0f;
-const float outlineWidth = 2.0f;
-
-OversampleWheel::OversampleWheel(NanoWidget *widget, Size<uint> size) noexcept : NanoWheel(widget, size),
-                                                                                 fFontSize(18.0f)
+OversampleWheel::OversampleWheel(NanoWidget *widget, Size<uint> size) noexcept
+	: NanoWheel(widget, size)
 {
-    using namespace WOLF_FONTS;
-    createFontFromMemory("chivo_bold", (const uchar *)chivo_bold, chivo_bold_size, 0);
+	setFontSize(UIConfig::label_font_size);
+	setFontId(UIFonts::chivo_bold_id);
+}
+
+void OversampleWheel::setFontSize(const float size)
+{
+	fFontSize = size;
+	triangle_w = size/2.f;
+	triangle_h = 3.f*size/2.f;
+	triangle_m_x = size-triangle_w;
+	triangle_m_y = size-triangle_h;
 }
 
 void OversampleWheel::drawTriangles()
 {
-    const float width = getWidth();
-    const float height = getHeight();
+    const float w = getWidth();
+    const float h = getHeight();
 
-    const float rightPointXLocation = width - trianglesHorizontalMargin;
-    const float leftPointXLocation = rightPointXLocation - trianglesWidth;
-    const float middlePointXLocation = rightPointXLocation - trianglesWidth / 2.0f;
+    const float tri_right_x = w - triangle_m_x;
+    const float tri_left_x = tri_right_x - triangle_w;
+    const float tri_mid_x = tri_right_x - triangle_w / 2.0f;
 
     //top triangle
-    const float topTriangleBottomY = trianglesVerticalMargin + trianglesHeight;
+    const float top_tri_bottom_y = triangle_m_y + triangle_h;
+
+	const Color label_color_invert = Color::invert(UIConfig::label_font_color);
 
     beginPath();
 
-    moveTo(middlePointXLocation, trianglesVerticalMargin);
+    moveTo(tri_mid_x, triangle_m_y);
 
-    lineTo(leftPointXLocation, topTriangleBottomY);
-    lineTo(rightPointXLocation, topTriangleBottomY);
-    lineTo(middlePointXLocation, trianglesVerticalMargin);
+    lineTo(tri_left_x, top_tri_bottom_y);
+    lineTo(tri_right_x, top_tri_bottom_y);
+    lineTo(tri_mid_x, triangle_m_y);
 
-    fillColor(Color(255, 255, 255, 255));
-    strokeColor(Color(0, 0, 0, 255));
+    fillColor(UIConfig::label_font_color);
+    strokeColor(label_color_invert);
     strokeWidth(1.0f);
 
     fill();
@@ -50,17 +54,17 @@ void OversampleWheel::drawTriangles()
     //bottom triangle
     beginPath();
 
-    const float bottomTriangleBottomY = height - trianglesVerticalMargin;
-    const float bottomTriangleTopY = bottomTriangleBottomY - trianglesHeight;
+    const float bottom_tri_bottom_y = h - triangle_m_y;
+    const float bottom_tri_top_y = bottom_tri_bottom_y - triangle_h;
 
-    moveTo(middlePointXLocation, bottomTriangleBottomY);
+    moveTo(tri_mid_x, bottom_tri_bottom_y);
 
-    lineTo(leftPointXLocation, bottomTriangleTopY);
-    lineTo(rightPointXLocation, bottomTriangleTopY);
-    lineTo(middlePointXLocation, bottomTriangleBottomY);
+    lineTo(tri_left_x, bottom_tri_top_y);
+    lineTo(tri_right_x, bottom_tri_top_y);
+    lineTo(tri_mid_x, bottom_tri_bottom_y);
 
-    fillColor(Color(255, 255, 255, 255));
-    strokeColor(Color(0, 0, 0, 255));
+    fillColor(UIConfig::label_font_color);
+    strokeColor(label_color_invert);
 
     fill();
     stroke();
@@ -72,13 +76,18 @@ void OversampleWheel::drawBackground()
 {
     const float width = getWidth();
     const float height = getHeight();
+	const float outline_w = UIConfig::wheel_outline_w;
 
     beginPath();
 
-    Paint backgroundGradient = linearGradient(outlineWidth, outlineWidth, outlineWidth, height, Color(54, 52, 88, 255), Color(38, 37, 51, 255));
+    Paint background_gradient = linearGradient(
+		outline_w, outline_w, outline_w, height,
+		UIConfig::wheel_gradient_i,
+		UIConfig::wheel_gradient_o);
 
-    fillPaint(backgroundGradient);
-    rect(outlineWidth, outlineWidth, width - outlineWidth * 2.0f, height - outlineWidth * 2.0f);
+    fillPaint(background_gradient);
+    rect(outline_w, outline_w,
+		 width - outline_w * 2.0f, height - outline_w * 2.0f);
     fill();
 
     closePath();
@@ -86,8 +95,8 @@ void OversampleWheel::drawBackground()
 
 void OversampleWheel::drawText()
 {
-    const float width = getWidth();
-    const float height = getHeight();
+    const float w = getWidth();
+    const float h = getHeight();
 
     const char *oversamplingFactors[] = {"", "2x", "4x", "8x", "16x"};
 
@@ -99,29 +108,27 @@ void OversampleWheel::drawText()
 
         fontFaceId(font_id);
         fontSize(fFontSize);
-        fillColor(Color(193, 219, 240, 255));
+        fillColor(UIConfig::label_font_color);
         textAlign(ALIGN_RIGHT | ALIGN_CENTER);
 
-        text(std::round(width - trianglesWidth - trianglesHorizontalMargin - textMarginRight), std::round(height / 1.45f), oversamplingFactors[getValue()], NULL);
+		const uint text_x = std::round(w - fFontSize - UIConfig::wheel_text_m);
+		const uint text_y = std::round(h/1.45f);
+
+        text(text_x, text_y, oversamplingFactors[getValue()], NULL);
 
         fontBlur(5.0f);
         fillColor(Color(255, 255, 255, 80));
-
-        text(std::round(width - trianglesWidth - trianglesHorizontalMargin - textMarginRight), std::round(height / 1.45f), oversamplingFactors[getValue()], NULL);
-
+        text(text_x, text_y, oversamplingFactors[getValue()], NULL);
         closePath();
     }
 }
 
 void OversampleWheel::drawOutline()
 {
-    const float width = getWidth();
-    const float height = getHeight();
-
     beginPath();
 
-    fillColor(Color(27, 27, 27, 255));
-    roundedRect(0, 0, width, height, 5.0f);
+    fillColor(UIConfig::wheel_outline_fill);
+    roundedRect(0, 0, getWidth(), getHeight(), 5.0f);
     fill();
 
     closePath();
@@ -130,6 +137,8 @@ void OversampleWheel::drawOutline()
 void OversampleWheel::onNanoDisplay()
 {
     const float width = getWidth();
+	const float outline_w = UIConfig::wheel_outline_w;
+	const float top_line_w = 0.7*outline_w;
 
     //outline
     drawOutline();
@@ -140,13 +149,11 @@ void OversampleWheel::onNanoDisplay()
     //line at top of display
     beginPath();
 
-    const float widthLineTopDisplay = 1.4f;
+    strokeColor(UIConfig::wheel_top_line_stroke);
+    strokeWidth(top_line_w);
 
-    strokeColor(Color(72, 137, 208, 150));
-    strokeWidth(widthLineTopDisplay);
-
-    moveTo(outlineWidth, outlineWidth);
-    lineTo(width - outlineWidth, outlineWidth);
+    moveTo(outline_w, outline_w);
+    lineTo(width - outline_w, outline_w);
 
     stroke();
 
@@ -155,8 +162,8 @@ void OversampleWheel::onNanoDisplay()
     //reflection at bottom of wheel
     /*beginPath();
 
-    Paint wheelShadow = linearGradient(width / 2.0f, height - outlineWidth, width / 2.0f, height, Color(0,0,0,255), Color(0,0,0,0));
-    rect(0, height - outlineWidth, width, height);
+    Paint wheelShadow = linearGradient(width / 2.0f, height - outline_w, width / 2.0f, height, Color(0,0,0,255), Color(0,0,0,0));
+    rect(0, height - outline_w, width, height);
 
     fillPaint(wheelShadow);
 

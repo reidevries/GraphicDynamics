@@ -18,6 +18,7 @@
 #include "ArrowButton.hpp"
 #include "LabelBoxList.hpp"
 #include "UIConfig.hpp"
+#include "UIFonts.hpp"
 
 #include <memory>
 
