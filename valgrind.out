@@ -1,0 +1,194 @@
+==204469== Memcheck, a memory error detector
+==204469== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==204469== Using Valgrind-3.16.1 and LibVEX; rerun with -h for copyright info
+==204469== Command: ./bin/graphic_dynamics
+==204469== 
+==204469== Conditional jump or move depends on uninitialised value(s)
+==204469==    at 0x1187AC: DISTRHO::RCFilter::RCFilter(double, double, float) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x11AF73: DISTRHO::createPlugin() (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x130326: DISTRHO::PluginJack::PluginJack(_jack_client*) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x114739: main (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==  Uninitialised value was created by a heap allocation
+==204469==    at 0x483EDEF: operator new(unsigned long) (vg_replace_malloc.c:342)
+==204469==    by 0x11AF17: DISTRHO::createPlugin() (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x130326: DISTRHO::PluginJack::PluginJack(_jack_client*) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x114739: main (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469== 
+==204469== Conditional jump or move depends on uninitialised value(s)
+==204469==    at 0x1187AC: DISTRHO::RCFilter::RCFilter(double, double, float) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x11AFA0: DISTRHO::createPlugin() (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x130326: DISTRHO::PluginJack::PluginJack(_jack_client*) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x114739: main (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==  Uninitialised value was created by a heap allocation
+==204469==    at 0x483EDEF: operator new(unsigned long) (vg_replace_malloc.c:342)
+==204469==    by 0x11AF17: DISTRHO::createPlugin() (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x130326: DISTRHO::PluginJack::PluginJack(_jack_client*) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x114739: main (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469== 
+==204469== Conditional jump or move depends on uninitialised value(s)
+==204469==    at 0x1187AC: DISTRHO::RCFilter::RCFilter(double, double, float) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x11AFC9: DISTRHO::createPlugin() (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x130326: DISTRHO::PluginJack::PluginJack(_jack_client*) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x114739: main (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==  Uninitialised value was created by a heap allocation
+==204469==    at 0x483EDEF: operator new(unsigned long) (vg_replace_malloc.c:342)
+==204469==    by 0x11AF17: DISTRHO::createPlugin() (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x130326: DISTRHO::PluginJack::PluginJack(_jack_client*) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x114739: main (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469== 
+==204469== Conditional jump or move depends on uninitialised value(s)
+==204469==    at 0x1187AC: DISTRHO::RCFilter::RCFilter(double, double, float) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x11AFF5: DISTRHO::createPlugin() (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x130326: DISTRHO::PluginJack::PluginJack(_jack_client*) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x114739: main (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==  Uninitialised value was created by a heap allocation
+==204469==    at 0x483EDEF: operator new(unsigned long) (vg_replace_malloc.c:342)
+==204469==    by 0x11AF17: DISTRHO::createPlugin() (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x130326: DISTRHO::PluginJack::PluginJack(_jack_client*) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x114739: main (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469== 
+==204469== Conditional jump or move depends on uninitialised value(s)
+==204469==    at 0x1187AC: DISTRHO::RCFilter::RCFilter(double, double, float) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x11B021: DISTRHO::createPlugin() (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x130326: DISTRHO::PluginJack::PluginJack(_jack_client*) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x114739: main (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==  Uninitialised value was created by a heap allocation
+==204469==    at 0x483EDEF: operator new(unsigned long) (vg_replace_malloc.c:342)
+==204469==    by 0x11AF17: DISTRHO::createPlugin() (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x130326: DISTRHO::PluginJack::PluginJack(_jack_client*) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x114739: main (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469== 
+==204469== Conditional jump or move depends on uninitialised value(s)
+==204469==    at 0x1187AC: DISTRHO::RCFilter::RCFilter(double, double, float) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x11A273: DISTRHO::GraphicDynamics::initParameter(unsigned int, DISTRHO::Parameter&) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x1303E2: DISTRHO::PluginJack::PluginJack(_jack_client*) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x114739: main (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==  Uninitialised value was created by a stack allocation
+==204469==    at 0x11A120: DISTRHO::GraphicDynamics::initParameter(unsigned int, DISTRHO::Parameter&) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469== 
+==204469== Conditional jump or move depends on uninitialised value(s)
+==204469==    at 0x1187BB: DISTRHO::RCFilter::RCFilter(double, double, float) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x11A273: DISTRHO::GraphicDynamics::initParameter(unsigned int, DISTRHO::Parameter&) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x1303E2: DISTRHO::PluginJack::PluginJack(_jack_client*) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x114739: main (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==  Uninitialised value was created by a stack allocation
+==204469==    at 0x11A120: DISTRHO::GraphicDynamics::initParameter(unsigned int, DISTRHO::Parameter&) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469== 
+==204469== Thread 23:
+==204469== Conditional jump or move depends on uninitialised value(s)
+==204469==    at 0x1173D7: DISTRHO::graphdyn::Graph::getValueAt(float) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x119E3F: DISTRHO::GraphicDynamics::run(float const**, float**, unsigned int) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x12FFB2: DISTRHO::PluginJack::jackProcess(unsigned int) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x1302E1: DISTRHO::PluginJack::jackProcessCallback(unsigned int, void*) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x4A54229: ??? (in /usr/lib/libjack.so.0.1.0)
+==204469==    by 0x4A53EF7: ??? (in /usr/lib/libjack.so.0.1.0)
+==204469==    by 0x4A708EC: ??? (in /usr/lib/libjack.so.0.1.0)
+==204469==    by 0x4E05298: start_thread (in /usr/lib/libpthread-2.33.so)
+==204469==    by 0x4F1C052: clone (in /usr/lib/libc-2.33.so)
+==204469==  Uninitialised value was created by a stack allocation
+==204469==    at 0x11A120: DISTRHO::GraphicDynamics::initParameter(unsigned int, DISTRHO::Parameter&) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469== 
+==204469== Conditional jump or move depends on uninitialised value(s)
+==204469==    at 0x117958: DISTRHO::graphdyn::Graph::getValueAt(float) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x119E3F: DISTRHO::GraphicDynamics::run(float const**, float**, unsigned int) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x12FFB2: DISTRHO::PluginJack::jackProcess(unsigned int) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x1302E1: DISTRHO::PluginJack::jackProcessCallback(unsigned int, void*) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x4A54229: ??? (in /usr/lib/libjack.so.0.1.0)
+==204469==    by 0x4A53EF7: ??? (in /usr/lib/libjack.so.0.1.0)
+==204469==    by 0x4A708EC: ??? (in /usr/lib/libjack.so.0.1.0)
+==204469==    by 0x4E05298: start_thread (in /usr/lib/libpthread-2.33.so)
+==204469==    by 0x4F1C052: clone (in /usr/lib/libc-2.33.so)
+==204469==  Uninitialised value was created by a stack allocation
+==204469==    at 0x11A120: DISTRHO::GraphicDynamics::initParameter(unsigned int, DISTRHO::Parameter&) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469== 
+==204469== Conditional jump or move depends on uninitialised value(s)
+==204469==    at 0x11750A: DISTRHO::graphdyn::Graph::getValueAt(float) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x119E3F: DISTRHO::GraphicDynamics::run(float const**, float**, unsigned int) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x12FFB2: DISTRHO::PluginJack::jackProcess(unsigned int) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x1302E1: DISTRHO::PluginJack::jackProcessCallback(unsigned int, void*) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x4A54229: ??? (in /usr/lib/libjack.so.0.1.0)
+==204469==    by 0x4A53EF7: ??? (in /usr/lib/libjack.so.0.1.0)
+==204469==    by 0x4A708EC: ??? (in /usr/lib/libjack.so.0.1.0)
+==204469==    by 0x4E05298: start_thread (in /usr/lib/libpthread-2.33.so)
+==204469==    by 0x4F1C052: clone (in /usr/lib/libc-2.33.so)
+==204469==  Uninitialised value was created by a stack allocation
+==204469==    at 0x11A120: DISTRHO::GraphicDynamics::initParameter(unsigned int, DISTRHO::Parameter&) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469== 
+==204469== Conditional jump or move depends on uninitialised value(s)
+==204469==    at 0x117609: DISTRHO::graphdyn::Graph::getValueAt(float) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x119E3F: DISTRHO::GraphicDynamics::run(float const**, float**, unsigned int) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x12FFB2: DISTRHO::PluginJack::jackProcess(unsigned int) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x1302E1: DISTRHO::PluginJack::jackProcessCallback(unsigned int, void*) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x4A54229: ??? (in /usr/lib/libjack.so.0.1.0)
+==204469==    by 0x4A53EF7: ??? (in /usr/lib/libjack.so.0.1.0)
+==204469==    by 0x4A708EC: ??? (in /usr/lib/libjack.so.0.1.0)
+==204469==    by 0x4E05298: start_thread (in /usr/lib/libpthread-2.33.so)
+==204469==    by 0x4F1C052: clone (in /usr/lib/libc-2.33.so)
+==204469==  Uninitialised value was created by a stack allocation
+==204469==    at 0x11A120: DISTRHO::GraphicDynamics::initParameter(unsigned int, DISTRHO::Parameter&) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469== 
+==204469== Conditional jump or move depends on uninitialised value(s)
+==204469==    at 0x117582: DISTRHO::graphdyn::Graph::getValueAt(float) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x119E3F: DISTRHO::GraphicDynamics::run(float const**, float**, unsigned int) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x12FFB2: DISTRHO::PluginJack::jackProcess(unsigned int) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x1302E1: DISTRHO::PluginJack::jackProcessCallback(unsigned int, void*) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x4A54229: ??? (in /usr/lib/libjack.so.0.1.0)
+==204469==    by 0x4A53EF7: ??? (in /usr/lib/libjack.so.0.1.0)
+==204469==    by 0x4A708EC: ??? (in /usr/lib/libjack.so.0.1.0)
+==204469==    by 0x4E05298: start_thread (in /usr/lib/libpthread-2.33.so)
+==204469==    by 0x4F1C052: clone (in /usr/lib/libc-2.33.so)
+==204469==  Uninitialised value was created by a stack allocation
+==204469==    at 0x11A120: DISTRHO::GraphicDynamics::initParameter(unsigned int, DISTRHO::Parameter&) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469== 
+==204469== Conditional jump or move depends on uninitialised value(s)
+==204469==    at 0x117699: DISTRHO::graphdyn::Graph::getValueAt(float) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x119E3F: DISTRHO::GraphicDynamics::run(float const**, float**, unsigned int) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x12FFB2: DISTRHO::PluginJack::jackProcess(unsigned int) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x1302E1: DISTRHO::PluginJack::jackProcessCallback(unsigned int, void*) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x4A54229: ??? (in /usr/lib/libjack.so.0.1.0)
+==204469==    by 0x4A53EF7: ??? (in /usr/lib/libjack.so.0.1.0)
+==204469==    by 0x4A708EC: ??? (in /usr/lib/libjack.so.0.1.0)
+==204469==    by 0x4E05298: start_thread (in /usr/lib/libpthread-2.33.so)
+==204469==    by 0x4F1C052: clone (in /usr/lib/libc-2.33.so)
+==204469==  Uninitialised value was created by a stack allocation
+==204469==    at 0x11A120: DISTRHO::GraphicDynamics::initParameter(unsigned int, DISTRHO::Parameter&) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469== 
+==204469== 
+==204469== HEAP SUMMARY:
+==204469==     in use at exit: 928,141 bytes in 2,732 blocks
+==204469==   total heap usage: 106,229 allocs, 103,497 frees, 32,401,040 bytes allocated
+==204469== 
+==204469== Thread 1:
+==204469== 4,096 bytes in 1 blocks are possibly lost in loss record 2,129 of 2,140
+==204469==    at 0x483F50F: operator new[](unsigned long) (vg_replace_malloc.c:431)
+==204469==    by 0x11990A: DISTRHO::GraphicDynamics::run(float const**, float**, unsigned int) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x12FFB2: DISTRHO::PluginJack::jackProcess(unsigned int) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x1302E1: DISTRHO::PluginJack::jackProcessCallback(unsigned int, void*) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x4A54229: ??? (in /usr/lib/libjack.so.0.1.0)
+==204469==    by 0x4A53EF7: ??? (in /usr/lib/libjack.so.0.1.0)
+==204469==    by 0x4A708EC: ??? (in /usr/lib/libjack.so.0.1.0)
+==204469==    by 0x4E05298: start_thread (in /usr/lib/libpthread-2.33.so)
+==204469==    by 0x4F1C052: clone (in /usr/lib/libc-2.33.so)
+==204469== 
+==204469== 693,584 (1,360 direct, 692,224 indirect) bytes in 85 blocks are definitely lost in loss record 2,140 of 2,140
+==204469==    at 0x483F50F: operator new[](unsigned long) (vg_replace_malloc.c:431)
+==204469==    by 0x1198AC: DISTRHO::GraphicDynamics::run(float const**, float**, unsigned int) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x12FFB2: DISTRHO::PluginJack::jackProcess(unsigned int) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x1302E1: DISTRHO::PluginJack::jackProcessCallback(unsigned int, void*) (in /home/raeaw/Development/GraphicDynamics/bin/graphic_dynamics)
+==204469==    by 0x4A54229: ??? (in /usr/lib/libjack.so.0.1.0)
+==204469==    by 0x4A53EF7: ??? (in /usr/lib/libjack.so.0.1.0)
+==204469==    by 0x4A708EC: ??? (in /usr/lib/libjack.so.0.1.0)
+==204469==    by 0x4E05298: start_thread (in /usr/lib/libpthread-2.33.so)
+==204469==    by 0x4F1C052: clone (in /usr/lib/libc-2.33.so)
+==204469== 
+==204469== LEAK SUMMARY:
+==204469==    definitely lost: 1,360 bytes in 85 blocks
+==204469==    indirectly lost: 692,224 bytes in 169 blocks
+==204469==      possibly lost: 4,096 bytes in 1 blocks
+==204469==    still reachable: 230,437 bytes in 2,476 blocks
+==204469==         suppressed: 24 bytes in 1 blocks
+==204469== Reachable blocks (those to which a pointer was found) are not shown.
+==204469== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==204469== 
+==204469== For lists of detected and suppressed errors, rerun with: -s
+==204469== ERROR SUMMARY: 1044522 errors from 15 contexts (suppressed: 0 from 0)

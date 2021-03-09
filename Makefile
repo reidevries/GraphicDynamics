@@ -4,6 +4,8 @@
 # Created by falkTX
 # Modified by Rei de Vries for GraphicDynamics
 
+SKIP_STRIPPING=true
+
 include DPF/Makefile.base.mk
 
 all: dgl plugins gen
