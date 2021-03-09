@@ -234,7 +234,8 @@ GraphicDynamicsUI::~GraphicDynamicsUI()
 
 void GraphicDynamicsUI::positionWidgets(uint width, uint height)
 {
-	const uint control_bar_h = control_bar_visible ? 102 : 0;
+	const uint control_bar_h = control_bar_visible ?
+		UIConfig::control_bar_h : 0;
 	const uint graph_bar_h = graph_bar->getHeight();
 
 	// Graph Widget ---------------------------------------------------------//
@@ -262,14 +263,15 @@ void GraphicDynamicsUI::positionWidgets(uint width, uint height)
 
 	// Reset Graph Button ---------------------------------------------------//
     button_reset_graph->setAbsolutePos(
-		20, graph_bar_mid_y - button_reset_graph->getHeight() / 2.0f );
+		UIConfig::graph_bar_x_grid,
+		graph_bar_mid_y - button_reset_graph->getHeight() / 2.0f );
     label_reset_graph->setAbsolutePos(
 		button_reset_graph->getAbsoluteX() + button_reset_graph->getWidth(),
 		button_reset_graph->getAbsoluteY() );
 
 	// Oversample Wheel -----------------------------------------------------//
     wheel_oversample->setAbsolutePos(
-		width - wheel_oversample->getWidth() - 35,
+		width - wheel_oversample->getWidth() - UIConfig::graph_bar_x_grid,
 		graph_bar_mid_y - wheel_oversample->getHeight() / 2.0f );
     label_oversample->setAbsolutePos(
 		wheel_oversample->getAbsoluteX() - label_oversample->getWidth(),
@@ -291,88 +293,51 @@ void GraphicDynamicsUI::positionWidgets(uint width, uint height)
 	const uint atk_x       = left_edge  + x_grid;
 	const uint rls_x       = atk_x      + x_grid;
 	const uint buttons_x   = rls_x      + x_grid;
-	
-	// DC Removal Toggle ----------------------------------------------------//
-	sw_remove_dc->setAbsolutePos(buttons_x, height - 38);
+
+	// top alignment for controls
+	const uint knob_y      = height - UIConfig::control_bar_knob_y;
+	const uint label_y     = height - UIConfig::label_m - UIConfig::label_h;
+
+	// DC Removal Toggle
+	sw_remove_dc->setAbsolutePos(buttons_x, label_y);
 	label_remove_dc->setAbsolutePos(
-		buttons_x + sw_remove_dc->getWidth(), height - 38 );
-
-	// Linearity Toggle -----------------------------------------------------//
-	sw_linearity->setAbsolutePos(buttons_x+7, height-86);
-    label_linearity->setAbsolutePos( buttons_x+29, height - 90 );
-
-	// Pre Gain Knob --------------------------------------------------------//
-    float align_label = 
-		(label_pre->getWidth() - knob_pre->getWidth()) / 2.0f;
-    knob_pre->setAbsolutePos(pregain_x, height - 90);
-    label_pre->setAbsolutePos(pregain_x - align_label,
-		height - label_pre->getHeight() - UIConfig::label_m );
-
-	// Wet Dry Knob ---------------------------------------------------------//
-	align_label = 
-		(label_wet->getWidth() - knob_wet->getWidth()) / 2.0f;
-	knob_wet->setAbsolutePos(wetdry_x, height - 90);
-	label_wet->setAbsolutePos(wetdry_x - align_label,
-		height - label_wet->getHeight() - UIConfig::label_m );
-
-	// Post Gain Knob -------------------------------------------------------//
-    align_label =
-		(label_post->getWidth() - knob_post->getWidth()) / 2.0f;
-    knob_post->setAbsolutePos(postgain_x, height - 90);
-	label_post->setAbsolutePos(postgain_x - align_label,
-		height - label_post->getHeight() - UIConfig::label_m );
-
-	// Horizontal Warp Control ----------------------------------------------//
-	align_label = (label_hor_warp->getWidth()
-		- knob_hor_warp->getWidth()) / 2.0f;
-	knob_hor_warp->setAbsolutePos(horwarp_x, height - 90);
-	label_hor_warp->setAbsolutePos( horwarp_x- align_label,
-		height - label_hor_warp->getHeight() - UIConfig::label_m );
-
-    button_l_hor_warp_mode->setAbsolutePos(
-		label_hor_warp->getAbsoluteX() -
-			button_l_hor_warp_mode->getWidth(),
-		label_hor_warp->getAbsoluteY() );
-	button_r_hor_warp_mode->setAbsolutePos(
-		label_hor_warp->getAbsoluteX()
-			+ label_hor_warp->getWidth(),
-		label_hor_warp->getAbsoluteY() );
-
-	// Vertical Warp Control ------------------------------------------------//
-    align_label = (label_ver_warp->getWidth()
-		- knob_ver_warp->getWidth()) / 2.0f;
-
-    knob_ver_warp->setAbsolutePos(verwarp_x, height - 90);
-    label_ver_warp->setAbsolutePos( verwarp_x - align_label,
-		height - label_ver_warp->getHeight() - UIConfig::label_m);
-
-	button_l_ver_warp_mode->setAbsolutePos(
-		label_ver_warp->getAbsoluteX() -
-			button_l_ver_warp_mode->getWidth(),
-		label_ver_warp->getAbsoluteY() );
-    button_r_ver_warp_mode->setAbsolutePos(
-		label_ver_warp->getAbsoluteX()
-			+ label_ver_warp->getWidth(),
-		label_ver_warp->getAbsoluteY() );
-
-	// Attack Time Knob -----------------------------------------------------//
-	align_label = 
-		(label_attack->getWidth() - knob_attack->getWidth()) / 2.0f;
-	knob_attack->setAbsolutePos(atk_x, height - 90);
-	label_attack->setAbsolutePos(atk_x - align_label,
-		height - label_attack->getHeight() - UIConfig::label_m );
-
-	// Release Time Knob ----------------------------------------------------//
-    align_label =
-		(label_release->getWidth() - knob_release->getWidth()) / 2.0f;
-    knob_release->setAbsolutePos(rls_x, height - 90);
-	label_release->setAbsolutePos(rls_x- align_label,
-		height - label_release->getHeight() - UIConfig::label_m );
-
-	// Window Resize Handle -------------------------------------------------//
+		buttons_x + sw_remove_dc->getWidth(), label_y );
+	// Linearity Toggle
+	sw_linearity->setAbsolutePos(buttons_x+7,
+		knob_y - sw_linearity->getHeight()/2);
+    label_linearity->setAbsolutePos(buttons_x+29,
+		knob_y - label_linearity->getHeight()/2);
+	// Pre Gain Knob
+	alignKnob(knob_pre, label_pre, pregain_x, knob_y, label_y);
+	// Wet Dry Knob
+	alignKnob(knob_wet, label_wet, wetdry_x, knob_y, label_y);
+	// Post Gain Knob
+	alignKnob(knob_post, label_post, postgain_x, knob_y, label_y);
+	// Horizontal Warp Controls
+	alignKnob(knob_hor_warp, label_hor_warp, horwarp_x, knob_y, label_y);
+	alignArrowButtons(label_hor_warp,
+		button_l_hor_warp_mode, button_r_hor_warp_mode);
+	// Vertical Warp Controls
+	alignKnob(knob_ver_warp, label_ver_warp, verwarp_x, knob_y, label_y);
+	alignArrowButtons(label_ver_warp,
+		button_l_ver_warp_mode, button_r_ver_warp_mode);
+	// Attack Time Knob
+	alignKnob(knob_attack, label_attack, atk_x, knob_y, label_y);
+	// Release Time Knob
+	alignKnob(knob_release, label_release, rls_x, knob_y, label_y);
+	// Window Resize Handle
     handle_resize->setAbsolutePos(
 		width - handle_resize->getWidth(),
 		height - handle_resize->getHeight() );
+}
+
+void GraphicDynamicsUI::alignArrowButtons(std::unique_ptr<LabelBoxList>& label,
+		std::unique_ptr<ArrowButton>& l, std::unique_ptr<ArrowButton>& r)
+{
+	const uint label_x = label->getAbsoluteX();
+	const uint label_y = label->getAbsoluteY();
+	l->setAbsolutePos(label_x - l->getWidth(),     label_y);
+	r->setAbsolutePos(label_x + label->getWidth(), label_y);
 }
 
 void GraphicDynamicsUI::parameterChanged(uint32_t index, float value)

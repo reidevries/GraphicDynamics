@@ -25,6 +25,7 @@ Color label_font_color = Color(255,255,255);
 // control bar parameters
 uint  control_bar_h = 102;
 uint  control_bar_x_grid = 100;
+uint  control_bar_knob_y = 64;
 uint  control_bar_m = 16;
 
 // knob parameters

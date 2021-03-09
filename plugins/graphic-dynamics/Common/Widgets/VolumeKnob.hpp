@@ -19,6 +19,8 @@ public:
   /* explicit VolumeKnob(Window &parent, Size<uint> size) noexcept; */
   explicit VolumeKnob( NanoWidget *widget, float radius ) noexcept;
 
+	void setCentrePos(const uint x, const uint y) noexcept;
+
 protected:
   void idleCallback() override;
 

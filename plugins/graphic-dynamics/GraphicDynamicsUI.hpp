@@ -20,6 +20,7 @@
 #include "UIConfig.hpp"
 
 #include <memory>
+#include <type_traits>
 
 START_NAMESPACE_DISTRHO
 
@@ -55,6 +56,24 @@ protected:
 	bool onMouse(const MouseEvent &ev) override;
 
 private:
+	// hacky template shit to get multiple types of
+	// labels to work in this function without completely refactoring or complex
+	// pointer casts
+	template<typename T>
+	void alignKnob(std::unique_ptr<VolumeKnob>& knob, std::unique_ptr<T>& label,
+		uint x, uint knob_y, uint label_y)
+	{
+		bool valid_type = (std::is_same<T, LabelBox>::value
+			|| std::is_same<T, NanoLabel>::value
+			|| std::is_same<T, DisplayLabel>::value
+			|| std::is_same<T, LabelBoxList>::value);
+		DISTRHO_SAFE_ASSERT(valid_type);
+		knob->setCentrePos(x, knob_y);
+		label->setAbsolutePos(x - label->getWidth()/2, label_y);
+	}
+	void alignArrowButtons(std::unique_ptr<LabelBoxList>& label,
+		std::unique_ptr<ArrowButton>& l, std::unique_ptr<ArrowButton>& r);
+
 	void updateOnParamChange(uint32_t index, float value);
 	void toggleControlBarVisibility();
 

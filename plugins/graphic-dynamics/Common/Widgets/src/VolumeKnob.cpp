@@ -40,6 +40,11 @@ VolumeKnob::VolumeKnob( NanoWidget *widget, float radius ) noexcept
     widget->getParentWindow().addIdleCallback(this);
 }
 
+void VolumeKnob::setCentrePos(const uint x, const uint y) noexcept
+{
+	setAbsolutePos(x - getWidth()/2, y - getHeight()/2);
+}
+
 void VolumeKnob::idleCallback()
 {
     bool mustRepaint = false;

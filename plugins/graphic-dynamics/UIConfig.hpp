@@ -32,6 +32,7 @@ extern Color label_font_color;
 // control bar parameters
 extern uint control_bar_h;
 extern uint control_bar_x_grid;
+extern uint control_bar_knob_y;
 extern uint control_bar_m;
 
 // knob parameters
